@@ -1,0 +1,78 @@
+{
+  "notes": [],
+  "reminders": [
+    {
+      "id": 1749480437009,
+      "title": "xfgxhvf",
+      "date": "2025-06-09",
+      "time": "12:00",
+      "priority": "media",
+      "completed": false
+    },
+    {
+      "id": 1749095559087,
+      "title": "criar pagina de configuração",
+      "date": "2025-06-06",
+      "time": "10:00",
+      "priority": "media",
+      "completed": false
+    },
+    {
+      "id": 1749095404687,
+      "title": "musica do modo foco",
+      "date": "2025-06-15",
+      "time": "20:00",
+      "priority": "baixa",
+      "completed": false
+    },
+    {
+      "id": 1749095282569,
+      "title": "finalizar gráfico dashboard",
+      "date": "2025-06-06",
+      "time": "10:00",
+      "priority": "alta",
+      "completed": true
+    }
+  ],
+  "studyLog": {
+    "2025-06-04": 25
+  },
+  "subjects": [],
+  "events": [
+    {
+      "id": 1749087576146,
+      "title": "Prova Jean S.O.",
+      "date": "2025-06-25",
+      "time": "08:00",
+      "description": "Nota \u003e= 8"
+    },
+    {
+      "id": 1749088211265,
+      "title": "Seminario Elvo",
+      "date": "2025-06-16",
+      "time": "08:00",
+      "description": "Apresentação sobre inteligência artificial"
+    },
+    {
+      "id": 1749138257106,
+      "title": "Prova Ingês",
+      "date": "2025-06-16",
+      "time": "12:00",
+      "description": ""
+    },
+    {
+      "id": 1749480451401,
+      "title": "vgnh",
+      "date": "2025-06-09",
+      "time": "12:00",
+      "description": "vfgnh"
+    },
+    {
+      "id": 1749480490289,
+      "title": "fvngnf",
+      "date": "2025-06-10",
+      "time": "12:00",
+      "description": "cgfbc"
+    }
+  ]
+}

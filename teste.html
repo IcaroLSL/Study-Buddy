@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy - Seu Acompanhante de Estudos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="data:,">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .active-tab {
+            border-bottom: 3px solid #0ea5e9;
+            color: #0ea5e9;
+        }
+        .note-card {
+            transition: all 0.2s ease;
+        }
+        .note-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .note-actions-menu {
+            display: none;
+            position: absolute;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            min-width: 120px;
+        }
+        .dark .note-actions-menu {
+            background: #374151;
+        }
+        .note-actions-menu.show {
+            display: block;
+        }
+        .calendar-day {
+            width: 100%;
+            padding: 0.25rem 0;
+            box-sizing: border-box;
+            font-size: 0.875rem;
+        }        
+        
+        .calendar-day:hover {
+            background-color: rgba(14, 165, 233, 0.2);
+        }
+        
+        .calendar-day.today {
+            background-color: rgba(14, 165, 233, 0.1);
+            border-radius: 50%;
+            font-weight: bold;
+            color: #0ea5e9;
+        }
+        
+        .calendar-day.has-event::after {
+            content: '';
+            position: absolute;
+            bottom: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: #0ea5e9;
+            border-radius: 50%;
+        }
+        .reminder-item {
+            transition: all 0.2s ease;
+        }
+        .reminder-item:hover {
+            transform: translateY(-2px);
+        }
+        .summary-card {
+            transition: all 0.2s ease;
+        }
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .event-item {
+            transition: all 0.2s ease;
+        }
+        
+        .event-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: 8px;
+        }
+        
+        .dark .event-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        /* Garantir que o grid de dias tenha 7 colunas */
+        #calendar-days, .calendar-weekdays {
+            padding-left: 0;
+            padding-right: 0;
+            margin: 0;
+        }        
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            padding: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .calendar-day.opacity-0 {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .action-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .reminder-item {
+            transition: background-color 0.3s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .action-btn i {
+            transition: transform 0.3s ease, color 0.2s ease;
+        }
+        
+        .action-btn:hover i {
+            animation: bounce 0.5s;
+        }
+
+        #notifications-panel {
+            z-index: 100; /* Garante que fique acima de tudo */
+            will-change: transform; /* Otimização de performance */
+        }
+        
+        /* Impede que cliques no painel fechem a tela */
+        #notifications-panel * {
+            pointer-events: auto;
+        }
+
+        /* Garanta que nenhuma seção esteja com display: block por padrão */
+        /* main > section {
+            display: none;
+        }
+
+        main > section.fade-in {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        } */
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
+    <div class="max-w-md mx-auto pb-20">
+        <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
+            <div class="px-4 py-3 flex justify-between items-center">
+                <div id="home-btn" class="flex items-center space-x-2 cursor-pointer">
+                    <i class="fas fa-graduation-cap text-2xl text-primary-600"></i>
+                    <h1 class="text-xl font-bold">StudyBuddy</h1>
+                </div>                
+                <div class="flex items-center space-x-3">
+                    <button id="notifications-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 relative" onclick="event.stopPropagation()">
+                        <i class="fas fa-bell"></i>
+                        <span id="notification-badge" class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                    </button>
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-adjust hidden dark:block"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="px-4 py-4">
+            <section id="dashboard" class="mb-8 fade-in">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Meu Dashboard</h2>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Tempo Estudado</p>
+                                <p id="study-time" class="text-xl font-bold">0h 0m</p>
+
+                            </div>
+                            <div class="p-2 rounded-full bg-primary-100 dark:bg-primary-900">
+                                <i class="fas fa-clock text-primary-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">Tarefas</p>
+                                <p id="task-counter" class="text-xl font-bold">0/0</p>
+                            </div>
+                            <div class="p-2 rounded-full bg-green-100 dark:bg-green-900">
+                                <i class="fas fa-check-circle text-green-600"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-medium">Seu Desempenho</h3>
+                        <select id="study-range" class="text-sm bg-gray-100 dark:bg-gray-700 rounded px-2 py-1">
+                            <option>Esta Semana</option>
+                            <option>Este Mês</option>
+                            <option>Este Ano</option>
+                        </select>
+                    </div>
+                    <div id="study-chart-wrapper" class="overflow-x-auto bg-gray-100 dark:bg-gray-700 rounded">
+                        <div id="study-chart" class="h-40 flex items-end gap-2 px-4 transition-all duration-300 ease-in-out">
+                          <!-- barras injetadas via JS -->
+                        </div>
+                    </div>                     
+                </div>
+                
+                <div class="grid grid-cols-4 gap-2 mb-6">
+                    <button id="calendar-btn" class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <div class="p-2 rounded-full bg-purple-100 dark:bg-purple-900 mb-1">
+                            <i class="fas fa-calendar-alt text-purple-600"></i>
+                        </div>
+                        <span class="text-xs">Calendário</span>
+                    </button>
+                    <button id="summaries-btn" class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <div class="p-2 rounded-full bg-blue-100 dark:bg-blue-900 mb-1">
+                            <i class="fas fa-book text-blue-600"></i>
+                        </div>
+                        <span class="text-xs">Resumos</span>
+                    </button>
+                    <button id="reminders-btn" class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <div class="p-2 rounded-full bg-yellow-100 dark:bg-yellow-900 mb-1">
+                            <i class="fas fa-bell text-yellow-600"></i>
+                        </div>
+                        <span class="text-xs">Lembretes</span>
+                    </button>
+                    <button id="community-btn" class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <div class="p-2 rounded-full bg-green-100 dark:bg-green-900 mb-1">
+                            <i class="fas fa-user-circle text-green-600"></i>
+                        </div>
+                        <span class="text-xs">PDI</span>
+                    </button>
+                </div>
+            </section>
+            
+            <section id="techniques" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Técnicas de Estudo</h2>
+                    <button class="text-primary-600 text-sm font-medium">Ver todas</button>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                        <div class="flex items-start">
+                            <div class="p-2 rounded-full bg-red-100 dark:bg-red-900 mr-3">
+                                <i class="fas fa-stopwatch text-red-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Pomodoro</h3>
+                                <p class="text-sm text-gray-500">25 minutos de estudo + 5 minutos de descanso</p>
+                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn" data-technique="pomodoro">Iniciar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                        <div class="flex items-start">
+                            <div class="p-2 rounded-full bg-indigo-100 dark:bg-indigo-900 mr-3">
+                                <i class="fas fa-layer-group text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Feynman</h3>
+                                <p class="text-sm text-gray-500">Ensine o conteúdo para reforçar aprendizado</p>
+                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn" data-technique="feynman">Experimentar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                        <div class="flex items-start">
+                            <div class="p-2 rounded-full bg-green-100 dark:bg-green-900 mr-3">
+                                <i class="fas fa-brain text-green-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium">Mapa Mental</h3>
+                                <p class="text-sm text-gray-500">Organize ideias visualmente</p>
+                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn" data-technique="mindmap">Criar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="notes" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Minhas Anotações</h2>
+                    <button id="add-note-btn" class="text-primary-600 text-sm font-medium">+ Nova</button>
+                </div>
+                
+                <div id="notes-container" class="grid grid-cols-2 gap-3">
+                </div>
+            </section>
+            
+            <section id="community" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Comunidade</h2>
+                    <button class="text-primary-600 text-sm font-medium">Ver todos</button>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                        <div class="flex items-start mb-3">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <h3 class="font-medium">Ana Silva</h3>
+                                <p class="text-xs text-gray-500">Estudante de Medicina</p>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-3">Alguém pode me ajudar com bioquímica? Estou com dúvidas sobre o ciclo de Krebs.</p>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>2 horas atrás</span>
+                            <div class="flex space-x-3">
+                                <span><i class="far fa-comment mr-1"></i> 5</span>
+                                <span><i class="far fa-heart mr-1"></i> 12</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                        <div class="flex items-start mb-3">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <h3 class="font-medium">Carlos Oliveira</h3>
+                                <p class="text-xs text-gray-500">Estudante de Engenharia</p>
+                            </div>
+                        </div>
+                        <p class="text-sm mb-3">Compartilhando meu resumo sobre cálculo diferencial e integral. Espero que ajude!</p>
+                        <div class="flex justify-between text-xs text-gray-500">
+                            <span>5 horas atrás</span>
+                            <div class="flex space-x-3">
+                                <span><i class="far fa-comment mr-1"></i> 3</span>
+                                <span><i class="far fa-heart mr-1"></i> 24</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full py-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+                        <i class="fas fa-plus mr-1"></i> Nova publicação
+                    </button>
+                </div>
+            </section>
+            
+            <section id="focus" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Modo Foco</h2>
+                    <button class="text-primary-600 text-sm font-medium">Histórico</button>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow text-center">
+                    <div class="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-primary-500 flex items-center justify-center">
+                        <span id="timer-display" class="text-3xl font-bold">25:00</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-2 mb-6">
+                        <button class="timer-duration-btn py-2 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-300 rounded" data-duration="25">25 min</button>
+                        <button class="timer-duration-btn py-2 bg-gray-100 dark:bg-gray-700 rounded" data-duration="50">50 min</button>
+                        <button class="timer-duration-btn py-2 bg-gray-100 dark:bg-gray-700 rounded" data-duration="90">90 min</button>
+                    </div>
+                    
+                    <div class="flex gap-2 mb-6">
+                        <button id="timer-start-btn" class="flex-1 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition">
+                            Iniciar Sessão
+                        </button>
+                        <button id="timer-reset-btn" class="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                            Reset
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h3 class="font-medium mb-2">Configurações do Timer</h3>
+                        <div class="flex justify-between items-center mb-2">
+                            <span>Notificações</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer" checked>
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+                            </label>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Som de fundo</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="calendar" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Calendário</h2>
+                    <button id="add-event-btn" class="text-primary-600 text-sm font-medium">+ Novo Evento</button>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-4 w-full">
+                    <div class="flex justify-between items-center mb-4">
+                        <button id="prev-month" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 id="calendar-month-year" class="font-medium">Junho 2025</h3>
+                        <button id="next-month" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-7 gap-0 text-center text-xs text-gray-500 mb-2 w-full">
+                        <div>Dom</div>
+                        <div>Seg</div>
+                        <div>Ter</div>
+                        <div>Qua</div>
+                        <div>Qui</div>
+                        <div>Sex</div>
+                        <div>Sáb</div>
+                      </div>
+
+                      <div id="calendar-days" class="grid grid-cols-7 gap-0 text-center w-full">
+                      </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                    <h3 class="font-medium mb-3">Próximos Eventos</h3>
+                    <div id="upcoming-events" class="space-y-3">
+                    </div>
+                </div>
+            </section>
+
+            <section id="summaries" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Meus Resumos</h2>
+                    <button id="add-summary-btn" class="text-primary-600 text-sm font-medium">+ Novo</button>
+                </div>
+                
+                <div class="space-y-3" id="summaries-container">
+                </div>
+            </section>
+
+            <section id="reminders" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Lembretes</h2>
+                    <button id="add-reminder-btn" class="text-primary-600 text-sm font-medium">+ Novo</button>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-4">
+                    <h3 class="font-medium mb-3">Hoje</h3>
+                    <div id="today-reminders" class="space-y-2">
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                    <h3 class="font-medium mb-3">Próximos</h3>
+                    <div id="upcoming-reminders" class="space-y-2">
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg border-t border-gray-200 dark:border-gray-700">
+            <div class="max-w-md mx-auto flex justify-around">
+                <button data-tab="dashboard" class="tab-btn flex flex-col items-center py-3 px-4 text-primary-600 active-tab">
+                    <i class="fas fa-home text-xl"></i>
+                    <span class="text-xs mt-1">Início</span>
+                </button>
+                <button data-tab="techniques" class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-lightbulb text-xl"></i>
+                    <span class="text-xs mt-1">Técnicas</span>
+                </button>
+                <button data-tab="community" class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-users text-xl"></i>
+                    <span class="text-xs mt-1">Comunidade</span>
+                </button>
+                <button data-tab="focus" class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-bolt text-xl"></i>
+                    <span class="text-xs mt-1">Foco</span>
+                </button>
+                <button data-tab="config" class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
+                    <i class="fas fa-cog text-xl"></i>
+                    <span class="text-xs mt-1">Configurações</span>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Modal para Anotações -->
+        <div id="add-note-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+                <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
+                    <h3 id="modal-title" class="font-bold text-gray-800 dark:text-white">Nova Anotação</h3>
+                    <button id="close-note-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
+                        <input type="text" id="note-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o título da anotação">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Conteúdo</label>
+                        <textarea id="note-content" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" rows="5" placeholder="Digite o conteúdo da anotação"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Matéria</label>
+                        <select id="note-subject" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                            <option>Matemática</option>
+                            <option>Português</option>
+                            <option>História</option>
+                            <option>Geografia</option>
+                            <option>Biologia</option>
+                            <option>Química</option>
+                            <option>Física</option>
+                            <option>Inglês</option>
+                            <option value="outra">Outra</option>
+                        </select>
+                    </div>
+                    <div id="new-subject-container" class="mb-4 hidden">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Nova Matéria</label>
+                        <input type="text" id="new-subject" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o nome da nova matéria">
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+                    <button id="cancel-note-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                        Cancelar
+                    </button>
+                    <button id="save-note-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Salvar Anotação
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Eventos -->
+        <div id="add-event-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+                <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
+                    <h3 class="font-bold text-gray-800 dark:text-white" id="modal-title">Novo Evento</h3>
+                    <button id="close-event-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
+                        <input type="text" id="event-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o título do evento">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Data</label>
+                        <input type="date" id="event-date" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Hora</label>
+                        <input type="time" id="event-time" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Descrição</label>
+                        <textarea id="event-description" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" rows="3" placeholder="Digite a descrição do evento"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+                    <button id="cancel-event-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                        Cancelar
+                    </button>
+                    <button id="save-event-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Salvar Evento
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Resumos -->
+        <div id="add-summary-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+                <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
+                    <h3 class="font-bold text-gray-800 dark:text-white">Novo Resumo</h3>
+                    <button id="close-summary-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
+                        <input type="text" id="summary-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o título do resumo">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Matéria</label>
+                        <select id="summary-subject" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Conteúdo</label>
+                        <textarea id="summary-content" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" rows="6" placeholder="Digite o conteúdo do resumo"></textarea>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+                    <button id="cancel-summary-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                        Cancelar
+                    </button>
+                    <button id="save-summary-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Salvar Resumo
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal para Lembretes -->
+        <div id="add-reminder-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+                <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
+                    <h3 class="font-bold text-gray-800 dark:text-white">Novo Lembrete</h3>
+                    <button id="close-reminder-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
+                        <input type="text" id="reminder-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o título do lembrete">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Data</label>
+                        <input type="date" id="reminder-date" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Hora</label>
+                        <input type="time" id="reminder-time" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Prioridade</label>
+                        <select id="reminder-priority" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+                    <button id="cancel-reminder-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                        Cancelar
+                    </button>
+                    <button id="save-reminder-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Salvar Lembrete
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel de Notificações -->
+        <div id="notifications-panel" class="fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-gray-800 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out">
+            <div class="flex justify-between items-center p-4 border-b dark:border-gray-700">
+                <h3 class="font-bold text-lg">Eventos de Hoje</h3>
+                <button id="close-notifications" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 overflow-y-auto max-h-screen pb-20">
+                <div id="notifications-container" class="space-y-3">
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu de Ações das Anotações -->
+        <div id="note-actions-menu" class="note-actions-menu">
+            <button id="edit-note-action" class="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t text-sm">
+                <i class="fas fa-edit mr-2"></i> Editar
+            </button>
+            <button id="delete-note-action" class="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b text-sm text-red-500">
+                <i class="fas fa-trash mr-2"></i> Excluir
+            </button>
+        </div>
+    </div>
+
+    <script defer>
+        async function loadAppState() {
+            try {
+                const res = await fetch("http://localhost:8080/data");
+                if (!res.ok) throw new Error("Failed to fetch data");
+                const data = await res.json();
+                
+                AppState.notes = data.notes || [];
+                AppState.reminders = data.reminders || [];
+                AppState.studyLog = data.studyLog || {};
+                AppState.subjects = data.subjects || [];
+                AppState.events = data.events || []; 
+                
+                console.log('Dados carregados:', data); // Debug
+                
+                NotesManager.renderNotes();
+                RemindersManager.renderReminders();
+                DashboardManager.updateTaskProgress();
+                DashboardManager.updateStudyTime();
+            } catch (error) {
+                console.error("Error loading app state:", error);
+                AppState.notes = [];
+                AppState.reminders = [];
+                AppState.studyLog = {};
+                AppState.subjects = [];
+            }
+        }
+          
+        async function initApp() {
+            await loadAppState();
+            DashboardManager.updateStudyTime();
+            DashboardManager.renderStudyChart();
+            DashboardManager.updateTaskProgress();
+            DashboardManager.updateStudyTime();
+            DashboardManager.renderWeeklyChart();
+
+            
+            // Forçar dashboard como aba inicial
+            const sections = document.querySelectorAll('main > section');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            TabManager.switchTab('dashboard', null, tabButtons, sections);
+            
+            // Inicializar outros managers
+            RemindersManager.renderReminders();
+            CalendarManager.init();
+
+            document.getElementById('study-range').addEventListener('change', () => {
+                DashboardManager.renderStudyChart();
+            });            
+        }
+          
+        initApp();
+          
+
+        
+        
+        async function saveAppState() {
+            try {
+                const res = await fetch("http://localhost:8080/data", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        notes: AppState.notes,
+                        reminders: AppState.reminders,
+                        studyLog: AppState.studyLog,
+                        subjects: AppState.subjects,
+                        events: AppState.events  // Certifique-se que isso está incluído
+                    })
+                });
+                
+                if (!res.ok) throw new Error("Failed to save data");
+            } catch (error) {
+                console.error("Error saving app state:", error);
+            }
+        }
+        
+        // App State
+        const AppState = {
+            notes: [],
+            reminders: [],
+            studyLog: {},
+            subjects: [],
+            timer: {
+                timeLeft: 25 * 60,
+                isRunning: false,
+                selectedDuration: 25,
+                interval: null
+            },
+            currentEditingNote: null,
+            events: [],
+            summaries: [],
+            currentDate: new Date(),
+            currentMonth: new Date().getMonth(),
+            currentYear: new Date().getFullYear()
+        };
+
+        loadAppState();
+
+        // Theme Management
+        const ThemeManager = {
+            init() {
+                const savedTheme = localStorage.getItem('theme');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                }
+
+                document.getElementById('theme-toggle').addEventListener('click', this.toggle);
+            },
+
+            toggle() {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            }
+        };
+
+        let currentActiveTab = 'dashboard';
+
+        // No TabManager
+        const TabManager = {
+            switchTab(tabId, activeButton, allButtons, allSections) {
+                console.log('Mudando para aba:', tabId)
+
+                if (tabId === 'notifications') return;
+                
+                currentActiveTab = tabId;
+                
+                // Atualiza a aba ativa no localStorage
+                localStorage.setItem('activeTab', tabId);
+                
+                this.updateActiveTab(tabId, allButtons);
+                this.switchToSection(tabId, allSections);
+                
+                // Adicione estas linhas para garantir que o conteúdo seja renderizado
+                if (tabId === 'reminders') {
+                    RemindersManager.renderReminders();
+                }
+            },
+
+            init() {
+                localStorage.setItem('activeTab', 'dashboard'); // força início no dashboard
+                const savedTab = 'dashboard';
+            
+            
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                const sections = document.querySelectorAll('main > section');
+            
+                this.switchToSection(savedTab, sections);
+                this.updateActiveTab(savedTab, tabButtons);
+            
+                
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const tabId = button.getAttribute('data-tab');
+                        this.switchTab(tabId, button, tabButtons, sections);
+                    });
+                });
+
+                document.getElementById('home-btn').addEventListener('click', () => {
+                    this.switchToSection('dashboard', document.querySelectorAll('main > section'));
+                    this.updateActiveTab('dashboard', document.querySelectorAll('.tab-btn'));
+                });                
+
+                // Botões de ação rápida
+                document.getElementById('calendar-btn').addEventListener('click', () => {
+                    this.switchToSection('calendar', sections);
+                    this.updateActiveTab('calendar', tabButtons);
+                });
+
+                document.getElementById('summaries-btn').addEventListener('click', () => {
+                    this.switchToSection('summaries', sections);
+                    this.updateActiveTab('notes', tabButtons); // Usar notes como fallback
+                });
+
+                // No TabManager.init():
+                document.getElementById('reminders-btn').addEventListener('click', () => {
+                    const sections = document.querySelectorAll('main > section');
+                    const tabButtons = document.querySelectorAll('.tab-btn');
+                    this.switchTab('reminders', null, tabButtons, sections);
+                });
+                
+
+                document.getElementById('community-btn').addEventListener('click', () => {
+                    this.switchToSection('community', sections);
+                    this.updateActiveTab('community', tabButtons);
+                });
+
+                // Técnicas de estudo
+                document.querySelectorAll('.technique-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const technique = btn.dataset.technique;
+                        this.handleTechnique(technique);
+                    });
+                });
+
+                DashboardManager.updateStudyTime();
+                DashboardManager.updateTaskProgress();
+                DashboardManager.renderWeeklyChart();
+            },
+
+            updateActiveTab(tabId, allButtons) {
+                allButtons.forEach(btn => {
+                    btn.classList.remove('active-tab', 'text-primary-600');
+                    btn.classList.add('text-gray-500', 'dark:text-gray-400');
+                });
+                
+                const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
+                if (activeButton) {
+                    activeButton.classList.add('active-tab', 'text-primary-600');
+                    activeButton.classList.remove('text-gray-500', 'dark:text-gray-400');
+                }
+            },
+
+            switchToSection(sectionId, allSections) {
+                allSections.forEach(section => {
+                    section.classList.add('hidden');
+                    if (section.id === sectionId) {
+                        section.classList.remove('hidden');
+                        section.classList.add('fade-in');
+                    }
+                });
+            },
+
+            handleTechnique(technique) {
+                switch(technique) {
+                    case 'pomodoro':
+                        // Mudar para a aba de foco
+                        const sections = document.querySelectorAll('main > section');
+                        const tabButtons = document.querySelectorAll('.tab-btn');
+                        this.switchToSection('focus', sections);
+                        this.updateActiveTab('focus', tabButtons);
+                        break;
+                    case 'feynman':
+                        alert('Técnica Feynman: Tente explicar o conceito que você está estudando como se estivesse ensinando para uma criança de 5 anos. Isso ajuda a identificar lacunas no seu conhecimento!');
+                        break;
+                    case 'mindmap':
+                        alert('Mapa Mental: Comece com o tópico principal no centro e vá adicionando ramificações com subtópicos relacionados. Use cores e símbolos para facilitar a memorização!');
+                        break;
+                }
+            }
+        };
+
+        // Notes Management
+        const NotesManager = {
+            init() {
+                this.loadNotes();
+                this.loadSubjects();
+                this.renderNotes();
+                this.bindEvents();
+                this.updateSubjectDropdown();
+            },
+
+            loadNotes() {
+                const savedNotes = localStorage.getItem('studyBuddyNotes');
+                if (savedNotes) {
+                    AppState.notes = JSON.parse(savedNotes);
+                }
+            },
+
+            loadSubjects() {
+                const savedSubjects = localStorage.getItem('studyBuddySubjects');
+                if (savedSubjects) {
+                    AppState.subjects = JSON.parse(savedSubjects);
+                }
+            },
+
+            saveNotes() {
+                saveAppState();
+            },
+
+            saveSubjects() {
+                localStorage.setItem('studyBuddySubjects', JSON.stringify(AppState.subjects));
+            },
+
+            renderNotes() {
+                const container = document.getElementById('notes-container');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                AppState.notes.forEach(note => {
+                    const noteElement = document.createElement('div');
+                    noteElement.className = 'note-card bg-white dark:bg-gray-800 rounded-lg p-4 shadow h-40 flex flex-col cursor-pointer';
+                    noteElement.innerHTML = `
+                        <h3 class="font-medium mb-2">${note.title}</h3>
+                        <p class="text-sm text-gray-500 flex-grow overflow-hidden">${note.content.substring(0, 60)}...</p>
+                        <div class="flex justify-between items-center text-xs text-gray-400">
+                            <span>${note.date}</span>
+                            <button class="note-actions-btn p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" data-note-id="${note.id}">
+                                <i class="fas fa-ellipsis-h"></i>
+                            </button>
+                        </div>
+                    `;
+                    container.appendChild(noteElement);
+                });
+
+                // Bind note action events
+                document.querySelectorAll('.note-actions-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.showNoteActions(parseInt(btn.dataset.noteId), e);
+                    });
+                });
+            },
+
+            updateSubjectDropdown() {
+                const noteSubjectSelect = document.getElementById('note-subject');
+                const summarySubjectSelect = document.getElementById('summary-subject');
+                
+                if (noteSubjectSelect) {
+                    const currentValue = noteSubjectSelect.value;
+                    noteSubjectSelect.innerHTML = '';
+                    
+                    AppState.subjects.forEach(subject => {
+                        const option = document.createElement('option');
+                        option.value = subject;
+                        option.textContent = subject;
+                        noteSubjectSelect.appendChild(option);
+                    });
+                    
+                    const outraOption = document.createElement('option');
+                    outraOption.value = 'outra';
+                    outraOption.textContent = 'Outra';
+                    noteSubjectSelect.appendChild(outraOption);
+                    
+                    if (currentValue) {
+                        noteSubjectSelect.value = currentValue;
+                    }
+                }
+
+                if (summarySubjectSelect) {
+                    summarySubjectSelect.innerHTML = '';
+                    
+                    AppState.subjects.forEach(subject => {
+                        const option = document.createElement('option');
+                        option.value = subject;
+                        option.textContent = subject;
+                        summarySubjectSelect.appendChild(option);
+                    });
+                }
+            },
+
+            showNoteActions(noteId, event) {
+                const menu = document.getElementById('note-actions-menu');
+                const rect = event.target.getBoundingClientRect();
+                
+                menu.style.top = `${rect.bottom + window.scrollY}px`;
+                menu.style.left = `${rect.left + window.scrollX - 100}px`;
+                menu.classList.add('show');
+                
+                menu.dataset.noteId = noteId;
+                
+                const closeMenu = (e) => {
+                    if (!menu.contains(e.target)) {
+                        menu.classList.remove('show');
+                        document.removeEventListener('click', closeMenu);
+                    }
+                };
+                
+                setTimeout(() => {
+                    document.addEventListener('click', closeMenu);
+                }, 10);
+            },
+
+            bindEvents() {
+                document.getElementById('add-note-btn').addEventListener('click', () => {
+                    this.openModal();
+                });
+
+                document.getElementById('close-note-modal').addEventListener('click', () => {
+                    this.closeModal();
+                });
+
+                document.getElementById('cancel-note-btn').addEventListener('click', () => {
+                    this.closeModal();
+                });
+
+                document.getElementById('save-note-btn').addEventListener('click', () => {
+                    this.saveNote();
+                });
+
+                document.getElementById('edit-note-action').addEventListener('click', () => {
+                    const noteId = parseInt(document.getElementById('note-actions-menu').dataset.noteId);
+                    this.editNote(noteId);
+                    document.getElementById('note-actions-menu').classList.remove('show');
+                });
+
+                document.getElementById('delete-note-action').addEventListener('click', () => {
+                    const noteId = parseInt(document.getElementById('note-actions-menu').dataset.noteId);
+                    this.deleteNote(noteId);
+                    document.getElementById('note-actions-menu').classList.remove('show');
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.closeModal();
+                    }
+                });
+
+                document.getElementById('add-note-modal').addEventListener('click', (e) => {
+                    if (e.target === document.getElementById('add-note-modal')) {
+                        this.closeModal();
+                    }
+                });
+
+                document.getElementById('note-subject').addEventListener('change', (e) => {
+                    const newSubjectContainer = document.getElementById('new-subject-container');
+                    if (e.target.value === 'outra') {
+                        newSubjectContainer.classList.remove('hidden');
+                    } else {
+                        newSubjectContainer.classList.add('hidden');
+                    }
+                });
+            },
+
+            openModal(note = null) {
+                const modal = document.getElementById('add-note-modal');
+                const title = document.getElementById('modal-title');
+                const saveBtn = document.getElementById('save-note-btn');
+                const newSubjectContainer = document.getElementById('new-subject-container');
+                
+                AppState.currentEditingNote = note;
+                
+                if (note) {
+                    title.textContent = 'Editar Anotação';
+                    saveBtn.textContent = 'Atualizar Anotação';
+                    document.getElementById('note-title').value = note.title;
+                    document.getElementById('note-content').value = note.content;
+                    document.getElementById('note-subject').value = note.subject;
+                    
+                    if (!AppState.subjects.includes(note.subject)) {
+                        document.getElementById('note-subject').value = 'outra';
+                        newSubjectContainer.classList.remove('hidden');
+                        document.getElementById('new-subject').value = note.subject;
+                    } else {
+                        newSubjectContainer.classList.add('hidden');
+                    }
+                } else {
+                    title.textContent = 'Nova Anotação';
+                    saveBtn.textContent = 'Salvar Anotação';
+                    document.getElementById('note-title').value = '';
+                    document.getElementById('note-content').value = '';
+                    document.getElementById('note-subject').value = '';
+                    document.getElementById('new-subject').value = '';
+                    newSubjectContainer.classList.add('hidden');
+                }
+                
+                modal.classList.remove('hidden');
+            },
+
+            closeModal() {
+                document.getElementById('add-note-modal').classList.add('hidden');
+                AppState.currentEditingNote = null;
+            },
+
+            saveNote() {
+                const title = document.getElementById('note-title').value.trim();
+                const content = document.getElementById('note-content').value.trim();
+                let subject = document.getElementById('note-subject').value;
+                
+                if (subject === 'outra') {
+                    subject = document.getElementById('new-subject').value.trim();
+                    
+                    if (subject && !AppState.subjects.includes(subject)) {
+                        AppState.subjects.push(subject);
+                        this.saveSubjects();
+                        this.updateSubjectDropdown();
+                    }
+                }
+                
+                if (!title || !content || !subject) {
+                    alert('Por favor, preencha todos os campos obrigatórios.');
+                    return;
+                }
+                
+                const currentDate = new Date();
+                const formattedDate = `${currentDate.getDate()} ${this.getMonthName(currentDate.getMonth())}`;
+                
+                if (AppState.currentEditingNote) {
+                    const noteIndex = AppState.notes.findIndex(n => n.id === AppState.currentEditingNote.id);
+                    if (noteIndex !== -1) {
+                        AppState.notes[noteIndex] = {
+                            ...AppState.notes[noteIndex],
+                            title,
+                            content,
+                            subject,
+                            date: formattedDate
+                        };
+                    }
+                } else {
+                    const newNote = {
+                        id: Date.now(),
+                        title,
+                        content,
+                        subject,
+                        date: formattedDate
+                    };
+                    AppState.notes.unshift(newNote);
+                }
+                
+                this.saveNotes();
+                this.renderNotes();
+                this.closeModal();
+            },
+
+            editNote(noteId) {
+                const note = AppState.notes.find(n => n.id === noteId);
+                if (note) {
+                    this.openModal(note);
+                }
+            },
+
+            deleteNote(noteId) {
+                if (confirm('Tem certeza que deseja excluir esta anotação?')) {
+                    AppState.notes = AppState.notes.filter(n => n.id !== noteId);
+                    this.saveNotes();
+                    this.renderNotes();
+                }
+            },
+
+            getMonthName(monthIndex) {
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                return months[monthIndex];
+            }
+        };
+
+        // Timer Management
+        const TimerManager = {
+            init() {
+                this.updateTimerDisplay();
+                this.bindEvents();
+            },
+
+            bindEvents() {
+                document.getElementById('timer-start-btn').addEventListener('click', () => {
+                    this.toggleTimer();
+                });
+
+                document.getElementById('timer-reset-btn').addEventListener('click', () => {
+                    this.resetTimer();
+                });
+
+                document.querySelectorAll('.timer-duration-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.setDuration(parseInt(btn.dataset.duration));
+                    });
+                });
+            },
+
+            toggleTimer() {
+                if (AppState.timer.isRunning) {
+                    this.pauseTimer();
+                } else {
+                    this.startTimer();
+                }
+            },
+
+            startTimer() {
+                if (AppState.timer.timeLeft <= 0) {
+                    this.resetTimer();
+                    return;
+                }
+
+                AppState.timer.isRunning = true;
+                document.getElementById('timer-start-btn').textContent = 'Pausar';
+                
+                AppState.timer.interval = setInterval(() => {
+                    AppState.timer.timeLeft--;
+                    this.updateTimerDisplay();
+                    
+                    if (AppState.timer.timeLeft <= 0) {
+                        this.timerComplete();
+                    }
+                }, 1000);
+            },
+
+            pauseTimer() {
+                AppState.timer.isRunning = false;
+                clearInterval(AppState.timer.interval);
+                document.getElementById('timer-start-btn').textContent = 'Continuar';
+            },
+
+            resetTimer() {
+                this.pauseTimer();
+                AppState.timer.timeLeft = AppState.timer.selectedDuration * 60;
+                this.updateTimerDisplay();
+                document.getElementById('timer-start-btn').textContent = 'Iniciar Sessão';
+            },
+
+            setDuration(minutes) {
+                AppState.timer.selectedDuration = minutes;
+                this.resetTimer();
+                
+                document.querySelectorAll('.timer-duration-btn').forEach(btn => {
+                    btn.classList.remove('bg-primary-100', 'dark:bg-primary-900', 'text-primary-600', 'dark:text-primary-300');
+                    btn.classList.add('bg-gray-100', 'dark:bg-gray-700');
+                });
+                
+                const activeBtn = document.querySelector(`.timer-duration-btn[data-duration="${minutes}"]`);
+                if (activeBtn) {
+                    activeBtn.classList.add('bg-primary-100', 'dark:bg-primary-900', 'text-primary-600', 'dark:text-primary-300');
+                    activeBtn.classList.remove('bg-gray-100', 'dark:bg-gray-700');
+                }
+            },
+
+            updateTimerDisplay() {
+                const minutes = Math.floor(AppState.timer.timeLeft / 60);
+                const seconds = AppState.timer.timeLeft % 60;
+                const display = document.getElementById('timer-display');
+                if (display) {
+                    display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            },
+
+            timerComplete() {
+                this.pauseTimer();
+                alert('Tempo esgotado! Hora de fazer uma pausa.');
+                const todayStr = new Date().toISOString().split('T')[0];
+                AppState.studyLog = AppState.studyLog || {};
+                AppState.studyLog[todayStr] = (AppState.studyLog[todayStr] || 0) + AppState.timer.selectedDuration;
+                saveAppState();
+                DashboardManager.updateStudyTime(); // nova função
+
+                // Opcional: tocar um som de notificação
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification('StudyBuddy', {
+                        body: 'Sua sessão de estudo terminou!',
+                        icon: '/favicon.ico'
+                    });
+                }
+            }
+        };
+
+        const DashboardManager = {
+            updateStudyTime() {
+                const todayStr = new Date().toISOString().split('T')[0];
+                const minutes = AppState.studyLog[todayStr] || 0;
+                const hours = Math.floor(minutes / 60);
+                const mins = minutes % 60;
+                const element = document.getElementById('study-time');
+                if (element) element.textContent = `${hours}h ${mins}m`;
+            },
+        
+            renderStudyChart() {
+                const container = document.getElementById('study-chart');
+                if (!container) return;
+        
+                const studyLog = AppState.studyLog || {};
+                const today = new Date();
+                const option = document.getElementById('study-range')?.value || 'Esta Semana';
+        
+                let items = [];
+        
+                if (option === 'Esta Semana') {
+                    const start = new Date(today);
+                    start.setDate(today.getDate() - today.getDay());
+                    for (let i = 0; i < 7; i++) {
+                        const current = new Date(start);
+                        current.setDate(start.getDate() + i);
+                        const key = current.toISOString().split('T')[0];
+                        const minutes = studyLog[key] || 0;
+                        items.push({ label: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][i], value: minutes });
+                    }
+                }
+        
+                if (option === 'Este Mês') {
+                    const year = today.getFullYear();
+                    const month = today.getMonth();
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+        
+                    for (let i = 1; i <= daysInMonth; i++) {
+                        const date = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+                        const minutes = studyLog[date] || 0;
+                        items.push({ label: i.toString(), value: minutes });
+                    }
+                }
+        
+                if (option === 'Este Ano') {
+                    const year = today.getFullYear();
+                    for (let i = 0; i < 12; i++) {
+                        let total = 0;
+                        for (let d = 1; d <= 31; d++) {
+                            const date = `${year}-${(i + 1).toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
+                            total += studyLog[date] || 0;
+                        }
+                        const label = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'][i];
+                        items.push({ label, value: total });
+                    }
+                }
+        
+                container.innerHTML = '';
+                items.forEach(item => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'flex flex-col items-center justify-end w-10'; // largura fixa
+                
+                    const bar = document.createElement('div');
+                    bar.className = 'bg-primary-500 rounded-t';
+                    bar.style.height = `${Math.min(64, item.value * 2)}px`;
+                    bar.style.width = '100%'; // mesma largura que wrapper
+                
+                    const label = document.createElement('span');
+                    label.className = 'text-xs mt-1 text-center leading-tight';
+                    label.style.minHeight = '1rem'; // evita pular
+                
+                    label.textContent = item.label;
+                
+                    wrapper.appendChild(bar);
+                    wrapper.appendChild(label);
+                    container.appendChild(wrapper);
+                });                              
+                
+                const containerWrapper = document.getElementById('study-chart-wrapper');
+                const chart = document.getElementById('study-chart');
+
+                if (option === 'Esta Semana') {
+                    chart.classList.remove('min-w-[500px]', 'min-w-[800px]');
+                    chart.classList.add('w-full', 'justify-between');
+                } else if (option === 'Este Mês') {
+                    chart.classList.remove('w-full', 'justify-between');
+                    chart.classList.add('min-w-[1000px]');
+                } else if (option === 'Este Ano') {
+                    chart.classList.remove('w-full', 'justify-between');
+                    chart.classList.add('min-w-[600px]');
+                }
+            },
+        
+        
+            updateTaskProgress() {
+                const today = new Date().toISOString().split('T')[0];
+                const todayReminders = AppState.reminders.filter(r => r.date === today);
+                const total = todayReminders.length;
+                const completed = todayReminders.filter(r => r.completed).length;
+                
+                const counter = document.getElementById('task-counter');
+                if (counter) {
+                    counter.textContent = `${completed}/${total}`;
+                }
+            },
+        
+            renderWeeklyChart() {
+                const studyLog = AppState.studyLog || {};
+                const today = new Date();
+                const startOfWeek = new Date(today);
+                startOfWeek.setDate(today.getDate() - today.getDay()); // domingo
+        
+                for (let i = 0; i < 7; i++) {
+                    const current = new Date(startOfWeek);
+                    current.setDate(current.getDate() + i);
+                    const key = current.toISOString().split('T')[0];
+                    const minutes = studyLog[key] || 0;
+                    const height = Math.min(64, minutes * 2); // altura visual proporcional
+                    const el = document.querySelector(`[data-day="${(i + 1)}"] div`);
+                    if (el) el.style.height = `${height}px`;
+                }
+            }
+        };              
+        // Calendar Management
+        const CalendarManager = {
+            init() {
+                this.renderCalendar();
+                this.renderUpcomingEvents();
+                this.bindEvents();
+            },
+
+            bindEvents() {
+                document.getElementById('prev-month').addEventListener('click', () => {
+                    this.changeMonth(-1);
+                });
+
+                document.getElementById('next-month').addEventListener('click', () => {
+                    this.changeMonth(1);
+                });
+
+                document.getElementById('add-event-btn').addEventListener('click', () => {
+                    this.openEventModal();
+                });
+
+                document.getElementById('close-event-modal').addEventListener('click', () => {
+                    this.closeEventModal();
+                });
+
+                document.getElementById('cancel-event-btn').addEventListener('click', () => {
+                    this.closeEventModal();
+                });
+
+                document.getElementById('save-event-btn').addEventListener('click', () => {
+                    this.saveEvent();
+                });
+            },
+
+            changeMonth(direction) {
+                AppState.currentMonth += direction;
+                
+                if (AppState.currentMonth > 11) {
+                    AppState.currentMonth = 0;
+                    AppState.currentYear++;
+                } else if (AppState.currentMonth < 0) {
+                    AppState.currentMonth = 11;
+                    AppState.currentYear--;
+                }
+                
+                this.renderCalendar();
+            },
+
+            renderCalendar() {
+                const calendarDays = document.getElementById('calendar-days');
+                if (!calendarDays) return;
+                
+                calendarDays.innerHTML = '';
+                
+                const firstDay = new Date(AppState.currentYear, AppState.currentMonth, 1);
+                const lastDay = new Date(AppState.currentYear, AppState.currentMonth + 1, 0);
+                
+                // Ajuste aqui: usar getDay() que retorna 0 (Domingo) a 6 (Sábado)
+                const startDay = firstDay.getDay(); 
+                const totalDays = lastDay.getDate();
+                const today = new Date();
+                
+                const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
+                                  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+                const monthYearElement = document.getElementById('calendar-month-year');
+                if (monthYearElement) {
+                    monthYearElement.textContent = `${monthNames[AppState.currentMonth]} ${AppState.currentYear}`;
+                }
+                
+                // Dias vazios no início - garantir que comece no Domingo (0)
+                for (let i = 0; i < startDay; i++) {
+                    const emptyDay = document.createElement('div');
+                    emptyDay.className = 'calendar-day opacity-0';
+                    calendarDays.appendChild(emptyDay);
+                }
+                
+                // Dias do mês
+                for (let i = 1; i <= totalDays; i++) {
+                    const dayElement = document.createElement('div');
+                    dayElement.className = 'calendar-day';
+                    
+                    // Verificar se é o dia atual
+                    if (i === today.getDate() && 
+                        AppState.currentMonth === today.getMonth() && 
+                        AppState.currentYear === today.getFullYear()) {
+                        dayElement.classList.add('today');
+                    }
+                    
+                    const dateStr = `${AppState.currentYear}-${(AppState.currentMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
+                    const hasEvent = AppState.events.some(event => event.date === dateStr);
+                    
+                    if (hasEvent) {
+                        dayElement.classList.add('has-event');
+                    }
+                    
+                    dayElement.textContent = i;
+                    dayElement.addEventListener('click', () => {
+                        this.showEventsForDay(dateStr);
+                    });
+                    
+                    calendarDays.appendChild(dayElement);
+                }
+                
+                // Preencher os dias restantes para completar a última semana (opcional)
+                const totalCells = startDay + totalDays;
+                const remainingDays = 7 - (totalCells % 7);
+                if (remainingDays < 7) { // Só adiciona se não for uma semana completa
+                    for (let i = 0; i < remainingDays; i++) {
+                        const emptyDay = document.createElement('div');
+                        emptyDay.className = 'calendar-day opacity-0';
+                        calendarDays.appendChild(emptyDay);
+                    }
+                }
+            },
+
+            renderUpcomingEvents() {
+                const upcomingEvents = document.getElementById('upcoming-events');
+                if (!upcomingEvents) return;
+                
+                upcomingEvents.innerHTML = '';
+                
+                const sortedEvents = [...AppState.events].sort((a, b) => {
+                    const dateA = new Date(`${a.date}T${a.time}`);
+                    const dateB = new Date(`${b.date}T${b.time}`);
+                    return dateA - dateB;
+                });
+                
+                const today = new Date().toISOString().split('T')[0];
+                const futureEvents = sortedEvents.filter(event => event.date >= today);
+                
+                if (futureEvents.length === 0) {
+                    upcomingEvents.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum evento agendado</p>';
+                    return;
+                }
+                
+                const nextEvents = futureEvents.slice(0, 3);
+                
+                nextEvents.forEach(event => {
+                    const [year, month, day] = event.date.split('-');
+                    const formattedDate = `${parseInt(day)} ${this.getMonthName(parseInt(month) - 1)}`;
+
+                    
+                    const eventElement = document.createElement('div');
+                    eventElement.className = 'flex items-start p-3 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600';
+                    eventElement.innerHTML = `
+                        <div class="p-2 bg-primary-500 rounded-full mr-3">
+                            <i class="fas fa-calendar text-white text-xs"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="font-medium">${event.title}</h4>
+                            <p class="text-sm text-gray-500">${formattedDate} às ${event.time}</p>
+                            ${event.description ? `<p class="text-xs text-gray-400 mt-1">${event.description}</p>` : ''}
+                        </div>
+                    `;
+                    
+                    eventElement.addEventListener('click', () => {
+                        this.showEventsForDay(event.date);
+                    });
+                    
+                    upcomingEvents.appendChild(eventElement);
+                });
+            },
+        
+            showEventsForDay(dateStr) {
+                const eventsForDay = AppState.events.filter(event => event.date === dateStr);
+                
+                if (eventsForDay.length > 0) {
+                    // Criar um modal para mostrar os eventos com opção de editar/excluir
+                    const modal = document.createElement('div');
+                    modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+                    modal.innerHTML = `
+                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[80vh] overflow-y-auto">
+                            <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
+                                <h3 class="font-bold text-gray-800 dark:text-white">Eventos para ${this.formatFullDate(dateStr)}</h3>
+                                <button class="close-events-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                ${eventsForDay.map(event => `
+                                    <div class="event-item mb-4 p-3 border-b dark:border-gray-700 last:border-0">
+                                        <div class="flex justify-between items-start">
+                                            <h4 class="font-medium">${event.title}</h4>
+                                            <span class="text-sm text-gray-500">${event.time}</span>
+                                        </div>
+                                        ${event.description ? `<p class="text-sm text-gray-600 dark:text-gray-300 mt-1">${event.description}</p>` : ''}
+                                        <div class="flex justify-end mt-2 space-x-2">
+                                            <button class="edit-event-btn py-1 px-2 text-sm bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-300 rounded" data-event-id="${event.id}">
+                                                <i class="fas fa-edit mr-1"></i> Editar
+                                            </button>
+                                            <button class="delete-event-btn py-1 px-2 text-sm bg-red-100 dark:bg-red-900 text-red-600 dark:text-red-300 rounded" data-event-id="${event.id}">
+                                                <i class="fas fa-trash mr-1"></i> Excluir
+                                            </button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+                                <button class="add-event-for-day py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700">
+                                    <i class="fas fa-plus mr-1"></i> Adicionar Evento
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(modal);
+                    
+                    // Adicionar event listeners
+                    modal.querySelector('.close-events-modal').addEventListener('click', () => {
+                        modal.remove();
+                    });
+                    
+                    modal.querySelectorAll('.edit-event-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const eventId = parseInt(btn.dataset.eventId);
+                            const event = AppState.events.find(e => e.id === eventId);
+                            if (event) {
+                                this.openEventModal(event);
+                                modal.remove();
+                            }
+                        });
+                    });
+                    
+                    modal.querySelectorAll('.delete-event-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const eventId = parseInt(btn.dataset.eventId);
+                            if (confirm('Tem certeza que deseja excluir este evento?')) {
+                                AppState.events = AppState.events.filter(e => e.id !== eventId);
+                                this.renderCalendar();
+                                this.renderUpcomingEvents();
+                                NotificationsManager.renderNotifications();
+                                modal.remove();
+                            }
+                        });
+                    });
+                    
+                    modal.querySelector('.add-event-for-day').addEventListener('click', () => {
+                        this.openEventModal();
+                        document.getElementById('event-date').value = dateStr;
+                        modal.remove();
+                    });
+                    
+                    // Fechar modal ao clicar fora
+                    modal.addEventListener('click', (e) => {
+                        if (e.target === modal) {
+                            modal.remove();
+                        }
+                    });
+                } else {
+                    // Nenhum evento, oferecer para criar um
+                    if (confirm(`Nenhum evento agendado para ${this.formatFullDate(dateStr)}. Deseja criar um novo evento?`)) {
+                        this.openEventModal();
+                        document.getElementById('event-date').value = dateStr;
+                    }
+                }
+            },
+        
+            formatFullDate(dateStr) {
+                const [year, month, day] = dateStr.split('-').map(Number);
+                const date = new Date(year, month - 1, day); // cria localmente, sem UTC
+            
+                const monthName = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'][month - 1];
+            
+                return `${day} de ${monthName} de ${year}`;
+            },
+
+            openEventModal(event = null) {
+                const modal = document.getElementById('add-event-modal');
+                const title = document.getElementById('modal-title');
+                const saveBtn = document.getElementById('save-event-btn');
+                
+                if (event) {
+                    // Modo edição
+                    title.textContent = 'Editar Evento';
+                    saveBtn.textContent = 'Atualizar Evento';
+                    saveBtn.dataset.eventId = event.id;
+                    
+                    document.getElementById('event-title').value = event.title;
+                    document.getElementById('event-date').value = event.date;
+                    document.getElementById('event-time').value = event.time;
+                    document.getElementById('event-description').value = event.description || '';
+                } else {
+                    // Modo criação
+                    title.textContent = 'Novo Evento';
+                    saveBtn.textContent = 'Salvar Evento';
+                    delete saveBtn.dataset.eventId;
+                    
+                    // Definir data padrão como hoje
+                    const today = new Date().toISOString().split('T')[0];
+                    document.getElementById('event-date').value = today;
+                    document.getElementById('event-time').value = '12:00';
+                    document.getElementById('event-title').value = '';
+                    document.getElementById('event-description').value = '';
+                }
+                
+                modal.classList.remove('hidden');
+            },
+
+            closeEventModal() {
+                const modal = document.getElementById('add-event-modal');
+                modal.classList.add('hidden');
+                
+                // Limpar campos
+                document.getElementById('event-title').value = '';
+                document.getElementById('event-date').value = '';
+                document.getElementById('event-time').value = '';
+                document.getElementById('event-description').value = '';
+            },
+
+            saveEvent() {
+                const title = document.getElementById('event-title').value.trim();
+                const date = document.getElementById('event-date').value;
+                const time = document.getElementById('event-time').value;
+                const description = document.getElementById('event-description').value.trim();
+            
+                if (!title || !date || !time) {
+                    alert("Por favor, preencha todos os campos obrigatórios.");
+                    return;
+                }
+            
+                const newEvent = {
+                    id: Date.now(),
+                    title,
+                    date,
+                    time,
+                    description
+                };
+            
+                AppState.events.push(newEvent);
+            
+                // ✅ Adicione isso:
+                saveAppState();
+            
+                this.renderCalendar();
+                this.renderUpcomingEvents();
+                this.closeEventModal();
+            },
+
+            getMonthName(monthIndex) {
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                return months[monthIndex];
+            }
+        };
+
+        // Summaries Management
+        const SummariesManager = {
+            init() {
+                this.renderSummaries();
+                this.bindEvents();
+            },
+
+            renderSummaries() {
+                const container = document.getElementById('summaries-container');
+                if (!container) return;
+                
+                container.innerHTML = '';
+                
+                AppState.summaries.forEach(summary => {
+                    const summaryElement = document.createElement('div');
+                    summaryElement.className = 'summary-card bg-white dark:bg-gray-800 rounded-lg p-4 shadow cursor-pointer';
+                    summaryElement.innerHTML = `
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-medium">${summary.title}</h3>
+                            <span class="text-xs text-gray-500">${summary.date}</span>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">${summary.content.substring(0, 100)}...</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs px-2 py-1 rounded ${this.getSubjectColorClass(summary.subject)}">
+                                ${summary.subject}
+                            </span>
+                            <button class="text-primary-600 text-xs hover:underline">Ver completo</button>
+                        </div>
+                    `;
+                    
+                    summaryElement.addEventListener('click', () => {
+                        this.showFullSummary(summary);
+                    });
+                    
+                    container.appendChild(summaryElement);
+                });
+            },
+
+            showFullSummary(summary) {
+                alert(`${summary.title}\n\nMatéria: ${summary.subject}\nData: ${summary.date}\n\n${summary.content}`);
+            },
+
+            getSubjectColorClass(subject) {
+                const colorMap = {
+                    'Matemática': 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
+                    'História': 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
+                    'Química': 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200',
+                    'Física': 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
+                    'Biologia': 'bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200',
+                    'Português': 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200',
+                    'Inglês': 'bg-pink-100 dark:bg-pink-900 text-pink-800 dark:text-pink-200',
+                    'Geografia': 'bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200'
+                };
+                
+                return colorMap[subject] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
+            },
+
+            bindEvents() {
+                document.getElementById('add-summary-btn').addEventListener('click', () => {
+                    this.openSummaryModal();
+                });
+
+                document.getElementById('close-summary-modal').addEventListener('click', () => {
+                    this.closeSummaryModal();
+                });
+
+                document.getElementById('cancel-summary-btn').addEventListener('click', () => {
+                    this.closeSummaryModal();
+                });
+
+                document.getElementById('save-summary-btn').addEventListener('click', () => {
+                    this.saveSummary();
+                });
+            },
+
+            openSummaryModal() {
+                const modal = document.getElementById('add-summary-modal');
+                modal.classList.remove('hidden');
+                
+                // Limpar campos
+                document.getElementById('summary-title').value = '';
+                document.getElementById('summary-content').value = '';
+                
+                // Atualizar dropdown de matérias
+                NotesManager.updateSubjectDropdown();
+            },
+
+            closeSummaryModal() {
+                document.getElementById('add-summary-modal').classList.add('hidden');
+            },
+
+            saveSummary() {
+                const title = document.getElementById('summary-title').value.trim();
+                const subject = document.getElementById('summary-subject').value;
+                const content = document.getElementById('summary-content').value.trim();
+                
+                if (!title || !subject || !content) {
+                    alert('Por favor, preencha todos os campos obrigatórios.');
+                    return;
+                }
+                
+                const currentDate = new Date();
+                const formattedDate = `${currentDate.getDate()} ${this.getMonthName(currentDate.getMonth())}`;
+                
+                const newSummary = {
+                    id: Date.now(),
+                    title,
+                    subject,
+                    content,
+                    date: formattedDate
+                };
+                
+                AppState.summaries.unshift(newSummary);
+                this.renderSummaries();
+                this.closeSummaryModal();
+            },
+
+            getMonthName(monthIndex) {
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                return months[monthIndex];
+            }
+        };
+
+        // Reminders Management
+        const RemindersManager = {
+            init() {
+                this.renderReminders();
+                this.bindEvents();
+            },
+
+            renderReminders() {
+                const todayReminders = document.getElementById('today-reminders');
+                const upcomingReminders = document.getElementById('upcoming-reminders');
+                
+                if (!todayReminders || !upcomingReminders) return;
+                
+                todayReminders.innerHTML = '';
+                upcomingReminders.innerHTML = '';
+                
+                const today = new Date().toISOString().split('T')[0];
+                
+                AppState.reminders.forEach(reminder => {
+                    const reminderElement = document.createElement('div');
+                    let priorityClass = '';
+                    let iconClass = '';
+                    
+                    // Estilo baseado na prioridade
+                    switch (reminder.priority) {
+                        case 'alta':
+                            priorityClass = 'border-l-4 border-red-500';
+                            iconClass = 'fas fa-exclamation-circle text-red-500';
+                            break;
+                        case 'media':
+                            priorityClass = 'border-l-4 border-yellow-500';
+                            iconClass = 'fas fa-exclamation-triangle text-yellow-500';
+                            break;
+                        default:
+                            priorityClass = 'border-l-4 border-green-500';
+                            iconClass = 'fas fa-info-circle text-green-500';
+                    }
+                    
+                    reminderElement.className = `reminder-item flex items-center p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${priorityClass}`;
+                    
+                    // Conteúdo do lembrete
+                    reminderElement.innerHTML = `
+                        <i class="${iconClass} mr-3"></i>
+                        <div class="flex-1">
+                            <h4 class="font-medium ${reminder.completed ? 'line-through' : ''}">${reminder.title}</h4>
+                            <p class="text-sm text-gray-500 ${reminder.completed ? 'line-through' : ''}">${this.formatReminderDate(reminder.date)} às ${reminder.time}</p>
+                        </div>
+                        <button class="action-btn p-1 rounded" data-reminder-id="${reminder.id}">
+                            <i class="${reminder.completed ? 'fas fa-trash text-red-400 hover:text-red-600' : 'far fa-check-circle text-gray-400 hover:text-green-500'}"></i>
+                        </button>
+                    `;
+                    
+                    if (reminder.date === today) {
+                        todayReminders.appendChild(reminderElement);
+                    } else {
+                        upcomingReminders.appendChild(reminderElement);
+                    }
+                    
+                    // Evento do botão de ação
+                    const actionBtn = reminderElement.querySelector('.action-btn');
+                    if (actionBtn) {
+                        actionBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if (reminder.completed) {
+                                this.deleteReminder(reminder.id);
+                            } else {
+                                this.completeReminder(reminder.id);
+                            }
+                        });
+                    }
+                });
+                
+                // Mensagens quando não há lembretes
+                if (todayReminders.children.length === 0) {
+                    todayReminders.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum lembrete para hoje</p>';
+                }
+                
+                if (upcomingReminders.children.length === 0) {
+                    upcomingReminders.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum lembrete futuro</p>';
+                }
+            },
+            
+            // Adicione esta função auxiliar
+            formatReminderDate(dateStr) {
+                const [year, month, day] = dateStr.split('-');
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                return `${parseInt(day)} ${months[parseInt(month) - 1]}`;
+            },
+
+            bindEvents() {
+                document.getElementById('add-reminder-btn').addEventListener('click', () => {
+                    this.openReminderModal();
+                });
+
+                document.getElementById('close-reminder-modal').addEventListener('click', () => {
+                    this.closeReminderModal();
+                });
+
+                document.getElementById('cancel-reminder-btn').addEventListener('click', () => {
+                    this.closeReminderModal();
+                });
+
+                document.getElementById('save-reminder-btn').addEventListener('click', () => {
+                    this.saveReminder();
+                });
+
+                // Atualiza lembretes na tela
+                RemindersManager.renderReminders();
+                RemindersManager.renderTodayReminders?.();
+                RemindersManager.renderUpcomingReminders?.();
+
+                // Fecha o modal
+                document.getElementById('add-reminder-modal').classList.add('hidden');
+
+                // Volta para a aba de lembretes
+                const sections = document.querySelectorAll('main > section');
+                TabManager.switchToSection('reminders', sections);
+
+                // Se você **não tem** um botão específico no rodapé para "Lembretes", use:
+                TabManager.updateActiveTab('notes', document.querySelectorAll('.tab-btn'));
+
+                // Se **tiver** um botão com data-tab="reminders", use:
+                TabManager.updateActiveTab('reminders', document.querySelectorAll('.tab-btn'));
+
+            },
+
+            openReminderModal() {
+                const modal = document.getElementById('add-reminder-modal');
+                modal.classList.remove('hidden');
+                
+                // Definir a data padrão como hoje
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('reminder-date').value = today;
+                document.getElementById('reminder-time').value = '12:00';
+                document.getElementById('reminder-title').value = '';
+                document.getElementById('reminder-priority').value = 'media';
+            },
+
+            closeReminderModal() {
+                document.getElementById('add-reminder-modal').classList.add('hidden');
+            },
+
+            saveReminder() {
+                console.log('Salvando lembrete...');
+                const title = document.getElementById('reminder-title').value.trim();
+                const date = document.getElementById('reminder-date').value;
+                const time = document.getElementById('reminder-time').value;
+                const priority = document.getElementById('reminder-priority').value;
+                            
+                if (!title || !date || !time) {
+                    alert('Por favor, preencha todos os campos obrigatórios.');
+                    return;
+                }
+                
+                const newReminder = {
+                    id: Date.now(),
+                    title,
+                    date,
+                    time,
+                    priority,
+                    completed: false
+                };
+            
+                AppState.reminders.unshift(newReminder);
+                saveAppState().then(() => {
+                    this.renderReminders();
+                    DashboardManager.updateTaskProgress();
+                    this.closeReminderModal();
+                    
+                    // Mostrar a aba de lembretes após salvar
+                    const sections = document.querySelectorAll('main > section');
+                    const tabButtons = document.querySelectorAll('.tab-btn');
+                    TabManager.switchTab('reminders', null, tabButtons, sections);
+                });
+            },
+
+            completeReminder(reminderId) {
+                const reminder = AppState.reminders.find(r => r.id === reminderId);
+                if (reminder) {
+                    reminder.completed = true;
+                    saveAppState().then(() => {
+                        this.renderReminders();
+                        DashboardManager.updateTaskProgress();
+                    });
+                }
+            },
+            
+            deleteReminder(reminderId) {
+                if (confirm('Excluir este lembrete permanentemente?')) {
+                    AppState.reminders = AppState.reminders.filter(r => r.id !== reminderId);
+                    saveAppState().then(() => {
+                        this.renderReminders();
+                        DashboardManager.updateTaskProgress();
+                    });
+                }
+            },
+            
+            formatReminderDate(dateStr) {
+                const [year, month, day] = dateStr.split('-');
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                return `${parseInt(day)} ${months[parseInt(month) - 1]}`;
+            },
+
+            getMonthName(monthIndex) {
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                return months[monthIndex];
+            }
+        };
+
+        // Notifications Management
+        const NotificationsManager = {
+            init() {
+                this.renderNotifications();
+                this.bindEvents();
+            },
+        
+            bindEvents() {
+                document.getElementById('notifications-btn').addEventListener('click', (e) => {
+                    e.stopPropagation(); // Impede a propagação do evento
+                    this.toggleNotificationsPanel();
+                });
+            
+                // ... outros event listeners
+            },
+        
+            toggleNotificationsPanel() {
+                const panel = document.getElementById('notifications-panel');
+                panel.classList.toggle('translate-x-full');
+
+                // Não muda a aba ativa, apenas mostra/oculta o painel
+                TabManager.switchToSection(currentActiveTab, document.querySelectorAll('main > section'));
+            },
+        
+            // ... mantenha as outras funções
+        
+            renderNotifications() {
+                const container = document.getElementById('notifications-container');
+                if (!container) return;
+                
+                container.innerHTML = '';
+
+                const today = new Date().toISOString().split('T')[0];
+                const todayEvents = AppState.events.filter(event => event.date === today);
+
+                if (todayEvents.length > 0) {
+                    todayEvents.forEach(event => {
+                        const notificationElement = document.createElement('div');
+                        notificationElement.className = 'flex items-start p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700';
+
+                        notificationElement.innerHTML = `
+                            <div class="p-2 bg-primary-500 rounded-full mr-3">
+                                <i class="fas fa-calendar text-white text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="font-medium text-primary-600">${event.title}</h4>
+                                <p class="text-sm text-gray-600 dark:text-gray-300">${event.time} - ${event.description || 'Sem descrição'}</p>
+                            </div>
+                            <button class="delete-notification-btn p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded" data-event-id="${event.id}">
+                                <i class="fas fa-times text-gray-400 hover:text-red-500"></i>
+                            </button>
+                        `;
+                        
+                        container.appendChild(notificationElement);
+                    });
+                } else {
+                    container.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhuma notificação hoje</p>';
+                }
+
+                // Atualizar badge
+                const badge = document.getElementById('notification-badge');
+                if (badge) {
+                    badge.textContent = todayEvents.length;
+                    badge.classList.toggle('hidden', todayEvents.length === 0);
+                }
+            },
+        
+            bindEvents() {
+                document.getElementById('notifications-btn').addEventListener('click', () => {
+                    this.toggleNotificationsPanel();
+                });
+            
+                document.getElementById('close-notifications').addEventListener('click', () => {
+                    this.closeNotificationsPanel();
+                });
+            
+                // Deletar notificação/evento
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.delete-notification-btn')) {
+                        const eventId = parseInt(e.target.closest('.delete-notification-btn').dataset.eventId);
+                        this.deleteEvent(eventId);
+                    }
+                });
+            },
+        
+            deleteEvent(eventId) {
+                if (confirm('Deseja remover este evento?')) {
+                    AppState.events = AppState.events.filter(event => event.id !== eventId);
+                    this.renderNotifications();
+                    CalendarManager.renderCalendar();
+                    CalendarManager.renderUpcomingEvents();
+                }
+            },
+        
+            toggleNotificationsPanel() {
+                const panel = document.getElementById('notifications-panel');
+                panel.classList.toggle('translate-x-full');
+            },
+        
+            closeNotificationsPanel() {
+                const panel = document.getElementById('notifications-panel');
+                panel.classList.add('translate-x-full');
+                
+                // Restaura a aba que estava ativa antes
+                TabManager.switchToSection(currentActiveTab, document.querySelectorAll('main > section'));
+            }
+        };
+
+        // Initialize all managers when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            ThemeManager.init();
+            TabManager.init();
+            NotesManager.init();
+            TimerManager.init();
+            CalendarManager.init();
+            SummariesManager.init();
+            RemindersManager.init();
+            NotificationsManager.init();
+            
+            // Initialize task counter
+            const taskCounter = document.getElementById('task-counter');
+            if (taskCounter) {
+                const today = new Date().toISOString().split('T')[0];
+                const todayReminders = AppState.reminders.filter(r => r.date === today);
+                const completed = todayReminders.filter(r => r.completed).length;
+                const total = todayReminders.length;
+                taskCounter.textContent = `${completed}/${total}`;
+            }
+            
+
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        });
+    </script>
+</body>
+</html>
