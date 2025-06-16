@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,21 +35,33 @@
         .fade-in {
             animation: fadeIn 0.3s ease-in-out;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         .active-tab {
             border-bottom: 3px solid #0ea5e9;
             color: #0ea5e9;
         }
+
         .note-card {
             transition: all 0.2s ease;
         }
+
         .note-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+
         .note-actions-menu {
             display: none;
             position: absolute;
@@ -58,30 +71,44 @@
             z-index: 50;
             min-width: 120px;
         }
+
         .dark .note-actions-menu {
             background: #374151;
         }
+
         .note-actions-menu.show {
             display: block;
         }
+
         .calendar-day {
             width: 100%;
             padding: 0.25rem 0;
             box-sizing: border-box;
             font-size: 0.875rem;
-        }        
-        
+        }
+
+        .reminder-overdue {
+            border-left: 4px solid #ef4444;
+            background-color: rgba(239, 68, 68, 0.05);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .dark .reminder-overdue {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
         .calendar-day:hover {
             background-color: rgba(14, 165, 233, 0.2);
         }
-        
+
         .calendar-day.today {
             background-color: rgba(14, 165, 233, 0.1);
             border-radius: 50%;
             font-weight: bold;
             color: #0ea5e9;
         }
-        
+
         .calendar-day.has-event::after {
             content: '';
             position: absolute;
@@ -93,37 +120,63 @@
             background-color: #0ea5e9;
             border-radius: 50%;
         }
+
         .reminder-item {
             transition: all 0.2s ease;
         }
+
         .reminder-item:hover {
             transform: translateY(-2px);
         }
+
         .summary-card {
             transition: all 0.2s ease;
         }
+
         .summary-card:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
+
         .event-item {
             transition: all 0.2s ease;
         }
-        
+
         .event-item:hover {
             background-color: rgba(0, 0, 0, 0.02);
             border-radius: 8px;
         }
-        
+
         .dark .event-item:hover {
             background-color: rgba(255, 255, 255, 0.05);
         }
+
+        .edit-reminder-btn {
+            transition: all 0.2s ease;
+        }
+
+        .edit-reminder-btn:hover {
+            transform: scale(1.1);
+        }
+
+        #custom-minutes {
+            appearance: textfield;
+        }
+
+        #custom-minutes::-webkit-outer-spin-button,
+        #custom-minutes::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
         /* Garantir que o grid de dias tenha 7 colunas */
-        #calendar-days, .calendar-weekdays {
+        #calendar-days,
+        .calendar-weekdays {
             padding-left: 0;
             padding-right: 0;
             margin: 0;
-        }        
+        }
+
         .calendar-day {
             aspect-ratio: 1;
             display: flex;
@@ -144,36 +197,96 @@
         .action-btn {
             transition: all 0.2s ease;
         }
-        
+
         .action-btn:hover {
             transform: scale(1.1);
         }
-        
+
         .reminder-item {
             transition: background-color 0.3s ease;
         }
 
         @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
         }
-        
+
         .action-btn i {
             transition: transform 0.3s ease, color 0.2s ease;
         }
-        
+
         .action-btn:hover i {
             animation: bounce 0.5s;
         }
 
         #notifications-panel {
-            z-index: 100; /* Garante que fique acima de tudo */
-            will-change: transform; /* Otimização de performance */
+            z-index: 100;
+            /* Garante que fique acima de tudo */
+            will-change: transform;
+            /* Otimização de performance */
         }
-        
+
         /* Impede que cliques no painel fechem a tela */
         #notifications-panel * {
             pointer-events: auto;
+        }
+
+        .folder-card {
+            transition: all 0.2s ease;
+        }
+
+        .folder-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .material-card {
+            transition: all 0.2s ease;
+        }
+
+        .material-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .dark .material-card:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.25);
+        }
+
+        #timer-sound:checked~.toggle-dot {
+            transform: translateX(100%);
+            background-color: #0ea5e9;
+            /* Cor primária do seu tema */
+        }
+
+        /* Estilos para o player do Spotify */
+        #spotify-container {
+            transition: all 0.3s ease;
+        }
+
+        #spotify-container iframe {
+            border: none;
+        }
+
+        #close-spotify {
+            display: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #spotify-container:hover #close-spotify {
+            display: block;
+        }
+
+        /* Dark mode support */
+        .dark #spotify-container {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
         }
 
         /* Garanta que nenhuma seção esteja com display: block por padrão */
@@ -185,8 +298,57 @@
             display: block;
             animation: fadeIn 0.3s ease-in-out;
         } */
+        .play-btn.playing {
+            background-color: #0ea5e9;
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .play-btn.paused {
+            background-color: transparent;
+            color: #0ea5e9;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            transition: all 0.2s ease;
+        }
+
+        #custom-music-player {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(14, 165, 233, 0.2);
+        }
+
+        .dark #custom-music-player {
+            border-color: rgba(14, 165, 233, 0.4);
+        }
+
+        #custom-music-player button {
+            padding: 8px 12px;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        #custom-music-player button:hover {
+            background-color: rgba(14, 165, 233, 0.1);
+        }
+
+        #close-music-player {
+            padding: 4px;
+            border-radius: 50%;
+        }
+
+        #close-music-player:hover {
+            background-color: rgba(239, 68, 68, 0.1);
+        }
     </style>
 </head>
+
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 min-h-screen">
     <div class="max-w-md mx-auto pb-20">
         <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
@@ -194,11 +356,14 @@
                 <div id="home-btn" class="flex items-center space-x-2 cursor-pointer">
                     <i class="fas fa-graduation-cap text-2xl text-primary-600"></i>
                     <h1 class="text-xl font-bold">StudyBuddy</h1>
-                </div>                
+                </div>
                 <div class="flex items-center space-x-3">
-                    <button id="notifications-btn" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 relative" onclick="event.stopPropagation()">
+                    <button id="notifications-btn"
+                        class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 relative"
+                        onclick="event.stopPropagation()">
                         <i class="fas fa-bell"></i>
-                        <span id="notification-badge" class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                        <span id="notification-badge"
+                            class="absolute top-0 right-0 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
                     </button>
                     <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
                         <i class="fas fa-moon dark:hidden"></i>
@@ -213,7 +378,7 @@
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold">Meu Dashboard</h2>
                 </div>
-                
+
                 <div class="grid grid-cols-2 gap-3 mb-6">
                     <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
                         <div class="flex items-center justify-between">
@@ -239,7 +404,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-6">
                     <div class="flex justify-between items-center mb-3">
                         <h3 class="font-medium">Seu Desempenho</h3>
@@ -250,46 +415,51 @@
                         </select>
                     </div>
                     <div id="study-chart-wrapper" class="overflow-x-auto bg-gray-100 dark:bg-gray-700 rounded">
-                        <div id="study-chart" class="h-40 flex items-end gap-2 px-4 transition-all duration-300 ease-in-out">
-                          <!-- barras injetadas via JS -->
+                        <div id="study-chart"
+                            class="h-40 flex items-end gap-2 px-4 transition-all duration-300 ease-in-out">
+                            <!-- barras injetadas via JS -->
                         </div>
-                    </div>                     
+                    </div>
                 </div>
-                
+
                 <div class="grid grid-cols-4 gap-2 mb-6">
-                    <button id="calendar-btn" class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <button id="calendar-btn"
+                        class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
                         <div class="p-2 rounded-full bg-purple-100 dark:bg-purple-900 mb-1">
                             <i class="fas fa-calendar-alt text-purple-600"></i>
                         </div>
                         <span class="text-xs">Calendário</span>
                     </button>
-                    <button id="summaries-btn" class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <button id="summaries-btn"
+                        class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
                         <div class="p-2 rounded-full bg-blue-100 dark:bg-blue-900 mb-1">
                             <i class="fas fa-book text-blue-600"></i>
                         </div>
                         <span class="text-xs">Resumos</span>
                     </button>
-                    <button id="reminders-btn" class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <button id="reminders-btn"
+                        class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
                         <div class="p-2 rounded-full bg-yellow-100 dark:bg-yellow-900 mb-1">
                             <i class="fas fa-bell text-yellow-600"></i>
                         </div>
-                        <span class="text-xs">Lembretes</span>
+                        <span class="text-xs">Tarefas</span>
                     </button>
-                    <button id="community-btn" class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
-                        <div class="p-2 rounded-full bg-green-100 dark:bg-green-900 mb-1">
-                            <i class="fas fa-user-circle text-green-600"></i>
+                    <button id="materials-btn"
+                        class="flex flex-col items-center p-3 bg-white dark:bg-gray-800 rounded-lg shadow">
+                        <div class="p-2 rounded-full bg-indigo-100 dark:bg-indigo-900 mb-1">
+                            <i class="fas fa-book-open text-indigo-600"></i>
                         </div>
-                        <span class="text-xs">PDI</span>
+                        <span class="text-xs">Materiais</span>
                     </button>
                 </div>
             </section>
-            
+
             <section id="techniques" class="mb-8 fade-in hidden">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold">Técnicas de Estudo</h2>
                     <button class="text-primary-600 text-sm font-medium">Ver todas</button>
                 </div>
-                
+
                 <div class="space-y-3">
                     <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
                         <div class="flex items-start">
@@ -298,12 +468,13 @@
                             </div>
                             <div>
                                 <h3 class="font-medium">Pomodoro</h3>
-                                <p class="text-sm text-gray-500">25 minutos de estudo + 5 minutos de descanso</p>
-                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn" data-technique="pomodoro">Iniciar</button>
+                                <p class="text-sm text-gray-500">Tempo de estudo + Tempo de descanso</p>
+                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn"
+                                    data-technique="pomodoro">Iniciar</button>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
                         <div class="flex items-start">
                             <div class="p-2 rounded-full bg-indigo-100 dark:bg-indigo-900 mr-3">
@@ -312,11 +483,12 @@
                             <div>
                                 <h3 class="font-medium">Feynman</h3>
                                 <p class="text-sm text-gray-500">Ensine o conteúdo para reforçar aprendizado</p>
-                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn" data-technique="feynman">Experimentar</button>
+                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn"
+                                    data-technique="feynman">Experimentar</button>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
                         <div class="flex items-start">
                             <div class="p-2 rounded-full bg-green-100 dark:bg-green-900 mr-3">
@@ -325,39 +497,42 @@
                             <div>
                                 <h3 class="font-medium">Mapa Mental</h3>
                                 <p class="text-sm text-gray-500">Organize ideias visualmente</p>
-                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn" data-technique="mindmap">Criar</button>
+                                <button class="mt-2 text-primary-600 text-sm font-medium technique-btn"
+                                    data-technique="mindmap">Criar</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            
+
             <section id="notes" class="mb-8 fade-in hidden">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold">Minhas Anotações</h2>
                     <button id="add-note-btn" class="text-primary-600 text-sm font-medium">+ Nova</button>
                 </div>
-                
+
                 <div id="notes-container" class="grid grid-cols-2 gap-3">
                 </div>
             </section>
-            
+
             <section id="community" class="mb-8 fade-in hidden">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold">Comunidade</h2>
                     <button class="text-primary-600 text-sm font-medium">Ver todos</button>
                 </div>
-                
+
                 <div class="space-y-3">
                     <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
                         <div class="flex items-start mb-3">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-10 h-10 rounded-full mr-3">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                                class="w-10 h-10 rounded-full mr-3">
                             <div>
                                 <h3 class="font-medium">Ana Silva</h3>
                                 <p class="text-xs text-gray-500">Estudante de Medicina</p>
                             </div>
                         </div>
-                        <p class="text-sm mb-3">Alguém pode me ajudar com bioquímica? Estou com dúvidas sobre o ciclo de Krebs.</p>
+                        <p class="text-sm mb-3">Alguém pode me ajudar com bioquímica? Estou com dúvidas sobre o ciclo de
+                            Krebs.</p>
                         <div class="flex justify-between text-xs text-gray-500">
                             <span>2 horas atrás</span>
                             <div class="flex space-x-3">
@@ -366,16 +541,18 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
                         <div class="flex items-start mb-3">
-                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-10 h-10 rounded-full mr-3">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg"
+                                class="w-10 h-10 rounded-full mr-3">
                             <div>
                                 <h3 class="font-medium">Carlos Oliveira</h3>
                                 <p class="text-xs text-gray-500">Estudante de Engenharia</p>
                             </div>
                         </div>
-                        <p class="text-sm mb-3">Compartilhando meu resumo sobre cálculo diferencial e integral. Espero que ajude!</p>
+                        <p class="text-sm mb-3">Compartilhando meu resumo sobre cálculo diferencial e integral. Espero
+                            que ajude!</p>
                         <div class="flex justify-between text-xs text-gray-500">
                             <span>5 horas atrás</span>
                             <div class="flex space-x-3">
@@ -384,55 +561,127 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <button class="w-full py-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
+
+                    <button
+                        class="w-full py-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition">
                         <i class="fas fa-plus mr-1"></i> Nova publicação
                     </button>
                 </div>
             </section>
-            
+
             <section id="focus" class="mb-8 fade-in hidden">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold">Modo Foco</h2>
                     <button class="text-primary-600 text-sm font-medium">Histórico</button>
                 </div>
-                
+
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow text-center">
-                    <div class="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-primary-500 flex items-center justify-center">
+                    <!-- Timer Display -->
+                    <div
+                        class="w-40 h-40 mx-auto mb-6 rounded-full border-4 border-primary-500 flex items-center justify-center">
                         <span id="timer-display" class="text-3xl font-bold">25:00</span>
                     </div>
-                    
+
+                    <!-- Preset Buttons -->
                     <div class="grid grid-cols-3 gap-2 mb-6">
-                        <button class="timer-duration-btn py-2 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-300 rounded" data-duration="25">25 min</button>
-                        <button class="timer-duration-btn py-2 bg-gray-100 dark:bg-gray-700 rounded" data-duration="50">50 min</button>
-                        <button class="timer-duration-btn py-2 bg-gray-100 dark:bg-gray-700 rounded" data-duration="90">90 min</button>
+                        <button
+                            class="timer-duration-btn py-2 bg-primary-100 dark:bg-primary-900 text-primary-600 dark:text-primary-300 rounded"
+                            data-duration="25">25 min</button>
+                        <button class="timer-duration-btn py-2 bg-gray-100 dark:bg-gray-700 rounded"
+                            data-duration="50">50 min</button>
+                        <button class="timer-duration-btn py-2 bg-gray-100 dark:bg-gray-700 rounded"
+                            data-duration="90">90 min</button>
                     </div>
-                    
+
+                    <!-- Custom Time Input -->
+                    <div class="mb-6 flex items-center justify-center space-x-2">
+                        <input type="number" id="custom-minutes" min="1" max="240"
+                            class="w-16 py-2 px-3 border border-gray-200 dark:border-gray-700 rounded-lg text-center dark:bg-gray-900"
+                            placeholder="0">
+                        <span>minutos</span>
+                        <button id="set-custom-time"
+                            class="py-2 px-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700">
+                            Definir
+                        </button>
+                    </div>
+
+                    <!-- Control Buttons -->
                     <div class="flex gap-2 mb-6">
-                        <button id="timer-start-btn" class="flex-1 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition">
+                        <button id="timer-start-btn"
+                            class="flex-1 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition">
                             Iniciar Sessão
                         </button>
-                        <button id="timer-reset-btn" class="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        <button id="timer-reset-btn"
+                            class="px-4 py-3 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition">
                             Reset
                         </button>
                     </div>
-                    
+
+                    <!-- Settings -->
                     <div class="mt-6">
                         <h3 class="font-medium mb-2">Configurações do Timer</h3>
                         <div class="flex justify-between items-center mb-2">
                             <span>Notificações</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer" checked>
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+                                <input type="checkbox" id="timer-notifications" class="sr-only peer" checked>
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600">
+                                </div>
                             </label>
                         </div>
                         <div class="flex justify-between items-center">
-                            <span>Som de fundo</span>
+                            <span>Música de fundo</span>
                             <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600"></div>
+                                <input type="checkbox" id="timer-sound" class="sr-only peer">
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600">
+                                </div>
                             </label>
                         </div>
+                        <p class="text-sm text-gray-500">Para alterar a playlist acesse a aba de configurações.</p>
+                        <div class="mt-4 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                            <p class="text-sm mb-2">Para música de fundo no Spotify:</p>
+                            <a href="https://open.spotify.com/playlist/1QcsybeUidDJIrPQTHS6dD" target="_blank"
+                                class="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded-lg">
+                                <i class="fab fa-spotify mr-2"></i>
+                                Abrir
+                            </a>
+                        </div>
+                        <!-- Div onde a API do YouTube irá montar o player (invisível) -->
+                        <div id="youtube-player"></div>
+                    </div>
+                    <!-- <div id="custom-music-player"
+                        class="fixed bottom-24 left-1/2 transform -translate-x-1/2 w-[300px] p-4 bg-white dark:bg-gray-800 shadow-lg rounded-lg hidden z-40">
+                        <div class="flex items-center justify-between mb-2">
+                            <span id="current-song-title" class="text-sm font-medium truncate w-52">Nenhuma
+                                música</span>
+                            <button id="close-music-player" class="text-gray-500 hover:text-red-500">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button id="prev-song" class="text-primary-600"><i class="fas fa-backward"></i></button>
+                            <button id="toggle-play" class="text-primary-600 text-xl"><i
+                                    class="fas fa-play"></i></button>
+                            <button id="next-song" class="text-primary-600"><i class="fas fa-forward"></i></button>
+                        </div>
+                        <div class="mt-2 text-xs text-gray-500 text-center" id="song-time">00:00</div>
+                    </div> -->
+                    <div id="custom-music-player"
+                        class="mt-6 w-full p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+                        <div class="flex items-center justify-between mb-2">
+                            <span id="current-song-title" class="text-sm font-medium truncate">Nenhuma música</span>
+                            <button id="close-music-player" class="text-gray-500 hover:text-red-500">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <button id="prev-song" class="text-primary-600"><i class="fas fa-backward"></i></button>
+                            <button id="toggle-play" class="text-primary-600 text-xl"><i
+                                    class="fas fa-play"></i></button>
+                            <button id="next-song" class="text-primary-600"><i class="fas fa-forward"></i></button>
+                        </div>
+                        <div class="mt-2 text-xs text-gray-500 text-center" id="song-time">00:00</div>
                     </div>
                 </div>
             </section>
@@ -442,7 +691,7 @@
                     <h2 class="text-lg font-semibold">Calendário</h2>
                     <button id="add-event-btn" class="text-primary-600 text-sm font-medium">+ Novo Evento</button>
                 </div>
-                
+
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-4 w-full">
                     <div class="flex justify-between items-center mb-4">
                         <button id="prev-month" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -453,7 +702,7 @@
                             <i class="fas fa-chevron-right"></i>
                         </button>
                     </div>
-                    
+
                     <div class="grid grid-cols-7 gap-0 text-center text-xs text-gray-500 mb-2 w-full">
                         <div>Dom</div>
                         <div>Seg</div>
@@ -462,12 +711,12 @@
                         <div>Qui</div>
                         <div>Sex</div>
                         <div>Sáb</div>
-                      </div>
+                    </div>
 
-                      <div id="calendar-days" class="grid grid-cols-7 gap-0 text-center w-full">
-                      </div>
+                    <div id="calendar-days" class="grid grid-cols-7 gap-0 text-center w-full">
+                    </div>
                 </div>
-                
+
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
                     <h3 class="font-medium mb-3">Próximos Eventos</h3>
                     <div id="upcoming-events" class="space-y-3">
@@ -480,7 +729,7 @@
                     <h2 class="text-lg font-semibold">Meus Resumos</h2>
                     <button id="add-summary-btn" class="text-primary-600 text-sm font-medium">+ Novo</button>
                 </div>
-                
+
                 <div class="space-y-3" id="summaries-container">
                 </div>
             </section>
@@ -490,48 +739,142 @@
                     <h2 class="text-lg font-semibold">Lembretes</h2>
                     <button id="add-reminder-btn" class="text-primary-600 text-sm font-medium">+ Novo</button>
                 </div>
-                
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-4">
+                    <h3 class="font-medium mb-3 text-red-500">Atrasados</h3>
+                    <div id="overdue-reminders" class="space-y-2">
+                        <!-- preenchido via JS -->
+                    </div>
+                </div>
+
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-4">
                     <h3 class="font-medium mb-3">Hoje</h3>
                     <div id="today-reminders" class="space-y-2">
                     </div>
                 </div>
-                
+
                 <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
                     <h3 class="font-medium mb-3">Próximos</h3>
                     <div id="upcoming-reminders" class="space-y-2">
                     </div>
                 </div>
+
+                <!-- Adicione esta seção após a div de "Próximos" -->
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mt-4">
+                    <h3 class="font-medium mb-3 text-gray-500">Concluídos</h3>
+                    <div id="completed-reminders" class="space-y-2">
+                        <!-- preenchido via JS -->
+                    </div>
+                </div>
+            </section>
+            <section id="materials" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Materiais de Estudo</h2>
+                    <button id="add-material-btn" class="text-primary-600 text-sm font-medium">+ Adicionar</button>
+                </div>
+
+                <!-- Seção de Pastas -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-medium">Pastas</h3>
+                        <button id="add-folder-btn" class="text-primary-600 text-xs font-medium">+ Nova Pasta</button>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2">
+                        <!-- Pastas serão injetadas via JS -->
+                        <div
+                            class="folder-card bg-white dark:bg-gray-800 rounded-lg p-3 shadow border border-gray-200 dark:border-gray-700 flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            <i class="fas fa-folder text-primary-500"></i>
+                            <span class="text-sm font-medium truncate">Matemática</span>
+                        </div>
+                        <!-- Mais pastas... -->
+                    </div>
+                </div>
+
+                <!-- Divisor -->
+                <div class="border-t border-dashed border-gray-300 dark:border-gray-600 my-4"></div>
+
+                <!-- Seção de Materiais -->
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <h3 class="font-medium">Todos os Materiais</h3>
+                        <div class="flex space-x-2">
+                            <select class="text-xs bg-gray-100 dark:bg-gray-700 rounded px-2 py-1">
+                                <option>Todos</option>
+                                <option>PDF</option>
+                                <option>Vídeo</option>
+                                <option>Link</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="materials-container">
+                        <!-- Material Card Example -->
+                        <div
+                            class="material-card bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-gray-200 dark:border-gray-700 hover:shadow-md transition">
+                            <span
+                                class="inline-block px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs rounded mb-2">PDF</span>
+                            <h3 class="font-medium text-gray-800 dark:text-gray-200 mb-1">Apostila de Cálculo I</h3>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Introdução a limites e derivadas
+                            </p>
+                            <div class="flex space-x-2">
+                                <button
+                                    class="flex-1 py-1 px-2 bg-primary-600 hover:bg-primary-700 text-white text-xs rounded transition">
+                                    Visualizar
+                                </button>
+                                <button
+                                    class="py-1 px-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 text-xs rounded transition">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Mais materiais... -->
+                    </div>
+
+                    <!-- Estado vazio -->
+                    <div id="no-materials"
+                        class="hidden bg-white dark:bg-gray-800 rounded-lg p-6 text-center border border-dashed border-gray-300 dark:border-gray-600 mt-4">
+                        <p class="text-gray-500 dark:text-gray-400 mb-3">Nenhum material adicionado ainda</p>
+                        <button class="text-primary-600 text-sm font-medium hover:underline">Adicionar primeiro
+                            material</button>
+                    </div>
+                </div>
             </section>
         </main>
-        
-        <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg border-t border-gray-200 dark:border-gray-700">
+
+        <nav
+            class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg border-t border-gray-200 dark:border-gray-700">
             <div class="max-w-md mx-auto flex justify-around">
-                <button data-tab="dashboard" class="tab-btn flex flex-col items-center py-3 px-4 text-primary-600 active-tab">
+                <button data-tab="dashboard"
+                    class="tab-btn flex flex-col items-center py-3 px-4 text-primary-600 active-tab">
                     <i class="fas fa-home text-xl"></i>
                     <span class="text-xs mt-1">Início</span>
                 </button>
-                <button data-tab="techniques" class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
+                <button data-tab="techniques"
+                    class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
                     <i class="fas fa-lightbulb text-xl"></i>
                     <span class="text-xs mt-1">Técnicas</span>
                 </button>
-                <button data-tab="community" class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
+                <button data-tab="community"
+                    class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
                     <i class="fas fa-users text-xl"></i>
                     <span class="text-xs mt-1">Comunidade</span>
                 </button>
-                <button data-tab="focus" class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
+                <button data-tab="focus"
+                    class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
                     <i class="fas fa-bolt text-xl"></i>
                     <span class="text-xs mt-1">Foco</span>
                 </button>
-                <button data-tab="config" class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
+                <button data-tab="config"
+                    class="tab-btn flex flex-col items-center py-3 px-4 text-gray-500 dark:text-gray-400">
                     <i class="fas fa-cog text-xl"></i>
                     <span class="text-xs mt-1">Configurações</span>
                 </button>
             </div>
         </nav>
-        
+
         <!-- Modal para Anotações -->
-        <div id="add-note-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div id="add-note-modal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
                 <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
                     <h3 id="modal-title" class="font-bold text-gray-800 dark:text-white">Nova Anotação</h3>
@@ -542,15 +885,20 @@
                 <div class="p-4">
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
-                        <input type="text" id="note-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o título da anotação">
+                        <input type="text" id="note-title"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                            placeholder="Digite o título da anotação">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Conteúdo</label>
-                        <textarea id="note-content" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" rows="5" placeholder="Digite o conteúdo da anotação"></textarea>
+                        <textarea id="note-content"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                            rows="5" placeholder="Digite o conteúdo da anotação"></textarea>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Matéria</label>
-                        <select id="note-subject" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                        <select id="note-subject"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
                             <option>Matemática</option>
                             <option>Português</option>
                             <option>História</option>
@@ -564,14 +912,18 @@
                     </div>
                     <div id="new-subject-container" class="mb-4 hidden">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Nova Matéria</label>
-                        <input type="text" id="new-subject" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o nome da nova matéria">
+                        <input type="text" id="new-subject"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                            placeholder="Digite o nome da nova matéria">
                     </div>
                 </div>
                 <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-                    <button id="cancel-note-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                    <button id="cancel-note-btn"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
                         Cancelar
                     </button>
-                    <button id="save-note-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                    <button id="save-note-btn"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
                         Salvar Anotação
                     </button>
                 </div>
@@ -579,7 +931,8 @@
         </div>
 
         <!-- Modal para Eventos -->
-        <div id="add-event-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div id="add-event-modal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
                 <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
                     <h3 class="font-bold text-gray-800 dark:text-white" id="modal-title">Novo Evento</h3>
@@ -590,26 +943,34 @@
                 <div class="p-4">
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
-                        <input type="text" id="event-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o título do evento">
+                        <input type="text" id="event-title"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                            placeholder="Digite o título do evento">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Data</label>
-                        <input type="date" id="event-date" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                        <input type="date" id="event-date"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Hora</label>
-                        <input type="time" id="event-time" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                        <input type="time" id="event-time"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Descrição</label>
-                        <textarea id="event-description" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" rows="3" placeholder="Digite a descrição do evento"></textarea>
+                        <textarea id="event-description"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                            rows="3" placeholder="Digite a descrição do evento"></textarea>
                     </div>
                 </div>
                 <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-                    <button id="cancel-event-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                    <button id="cancel-event-btn"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
                         Cancelar
                     </button>
-                    <button id="save-event-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                    <button id="save-event-btn"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
                         Salvar Evento
                     </button>
                 </div>
@@ -617,7 +978,8 @@
         </div>
 
         <!-- Modal para Resumos -->
-        <div id="add-summary-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div id="add-summary-modal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
                 <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
                     <h3 class="font-bold text-gray-800 dark:text-white">Novo Resumo</h3>
@@ -628,23 +990,30 @@
                 <div class="p-4">
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
-                        <input type="text" id="summary-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o título do resumo">
+                        <input type="text" id="summary-title"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                            placeholder="Digite o título do resumo">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Matéria</label>
-                        <select id="summary-subject" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                        <select id="summary-subject"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
                         </select>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Conteúdo</label>
-                        <textarea id="summary-content" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" rows="6" placeholder="Digite o conteúdo do resumo"></textarea>
+                        <textarea id="summary-content"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                            rows="6" placeholder="Digite o conteúdo do resumo"></textarea>
                     </div>
                 </div>
                 <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-                    <button id="cancel-summary-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                    <button id="cancel-summary-btn"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
                         Cancelar
                     </button>
-                    <button id="save-summary-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                    <button id="save-summary-btn"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
                         Salvar Resumo
                     </button>
                 </div>
@@ -652,30 +1021,37 @@
         </div>
 
         <!-- Modal para Lembretes -->
-        <div id="add-reminder-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+        <div id="add-reminder-modal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
                 <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
                     <h3 class="font-bold text-gray-800 dark:text-white">Novo Lembrete</h3>
-                    <button id="close-reminder-modal" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                    <button id="close-reminder-modal"
+                        class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <div class="p-4">
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
-                        <input type="text" id="reminder-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Digite o título do lembrete">
+                        <input type="text" id="reminder-title"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                            placeholder="Digite o título do lembrete">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Data</label>
-                        <input type="date" id="reminder-date" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                        <input type="date" id="reminder-date"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Hora</label>
-                        <input type="time" id="reminder-time" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                        <input type="time" id="reminder-time"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium mb-2 dark:text-white">Prioridade</label>
-                        <select id="reminder-priority" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                        <select id="reminder-priority"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
                             <option value="baixa">Baixa</option>
                             <option value="media" selected>Média</option>
                             <option value="alta">Alta</option>
@@ -683,18 +1059,69 @@
                     </div>
                 </div>
                 <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
-                    <button id="cancel-reminder-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                    <button id="cancel-reminder-btn"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
                         Cancelar
                     </button>
-                    <button id="save-reminder-btn" class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                    <button id="save-reminder-btn"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
                         Salvar Lembrete
                     </button>
                 </div>
             </div>
         </div>
-
+        <!-- Substitua o modal existente por este (já com botão de edição) -->
+        <div id="reminder-actions-modal"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+                <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
+                    <h3 class="font-bold text-gray-800 dark:text-white">Editar Lembrete</h3>
+                    <button id="close-reminder-actions-modal"
+                        class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-4">
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
+                        <input type="text" id="edit-reminder-title"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Data</label>
+                        <input type="date" id="edit-reminder-date"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Hora</label>
+                        <input type="time" id="edit-reminder-time"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-2 dark:text-white">Prioridade</label>
+                        <select id="edit-reminder-priority"
+                            class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                            <option value="baixa">Baixa</option>
+                            <option value="media" selected>Média</option>
+                            <option value="alta">Alta</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+                    <button id="cancel-edit-reminder"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                        Cancelar
+                    </button>
+                    <button id="save-edit-reminder"
+                        class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </div>
+        </div>
         <!-- Painel de Notificações -->
-        <div id="notifications-panel" class="fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-gray-800 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out">
+        <div id="notifications-panel"
+            class="fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-gray-800 shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out">
             <div class="flex justify-between items-center p-4 border-b dark:border-gray-700">
                 <h3 class="font-bold text-lg">Eventos de Hoje</h3>
                 <button id="close-notifications" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
@@ -709,30 +1136,37 @@
 
         <!-- Menu de Ações das Anotações -->
         <div id="note-actions-menu" class="note-actions-menu">
-            <button id="edit-note-action" class="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t text-sm">
+            <button id="edit-note-action"
+                class="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-t text-sm">
                 <i class="fas fa-edit mr-2"></i> Editar
             </button>
-            <button id="delete-note-action" class="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b text-sm text-red-500">
+            <button id="delete-note-action"
+                class="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-b text-sm text-red-500">
                 <i class="fas fa-trash mr-2"></i> Excluir
             </button>
         </div>
     </div>
 
-    <script defer>
+    <div id="youtube-player-container" style="display: none;">
+        <iframe id="youtube-player" width="0" height="0" src="" frameborder="0" allow="autoplay" allowfullscreen>
+        </iframe>
+    </div>
+
+    <script>
         async function loadAppState() {
             try {
                 const res = await fetch("http://localhost:8080/data");
                 if (!res.ok) throw new Error("Failed to fetch data");
                 const data = await res.json();
-                
+
                 AppState.notes = data.notes || [];
                 AppState.reminders = data.reminders || [];
                 AppState.studyLog = data.studyLog || {};
                 AppState.subjects = data.subjects || [];
-                AppState.events = data.events || []; 
-                
+                AppState.events = data.events || [];
+
                 console.log('Dados carregados:', data); // Debug
-                
+
                 NotesManager.renderNotes();
                 RemindersManager.renderReminders();
                 DashboardManager.updateTaskProgress();
@@ -745,35 +1179,35 @@
                 AppState.subjects = [];
             }
         }
-          
+
         async function initApp() {
             await loadAppState();
+            NotificationsManager.renderNotifications();
+
             DashboardManager.updateStudyTime();
             DashboardManager.renderStudyChart();
             DashboardManager.updateTaskProgress();
             DashboardManager.updateStudyTime();
             DashboardManager.renderWeeklyChart();
 
-            
+
             // Forçar dashboard como aba inicial
             const sections = document.querySelectorAll('main > section');
             const tabButtons = document.querySelectorAll('.tab-btn');
             TabManager.switchTab('dashboard', null, tabButtons, sections);
-            
+
             // Inicializar outros managers
             RemindersManager.renderReminders();
             CalendarManager.init();
 
             document.getElementById('study-range').addEventListener('change', () => {
                 DashboardManager.renderStudyChart();
-            });            
+            });
+            TimerManager.init();
         }
-          
-        initApp();
-          
 
-        
-        
+        initApp();
+
         async function saveAppState() {
             try {
                 const res = await fetch("http://localhost:8080/data", {
@@ -787,13 +1221,13 @@
                         events: AppState.events  // Certifique-se que isso está incluído
                     })
                 });
-                
+
                 if (!res.ok) throw new Error("Failed to save data");
             } catch (error) {
                 console.error("Error saving app state:", error);
             }
         }
-        
+
         // App State
         const AppState = {
             notes: [],
@@ -821,7 +1255,7 @@
             init() {
                 const savedTheme = localStorage.getItem('theme');
                 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                
+
                 if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
                     document.documentElement.classList.add('dark');
                 }
@@ -843,15 +1277,15 @@
                 console.log('Mudando para aba:', tabId)
 
                 if (tabId === 'notifications') return;
-                
+
                 currentActiveTab = tabId;
-                
+
                 // Atualiza a aba ativa no localStorage
                 localStorage.setItem('activeTab', tabId);
-                
+
                 this.updateActiveTab(tabId, allButtons);
                 this.switchToSection(tabId, allSections);
-                
+
                 // Adicione estas linhas para garantir que o conteúdo seja renderizado
                 if (tabId === 'reminders') {
                     RemindersManager.renderReminders();
@@ -861,15 +1295,15 @@
             init() {
                 localStorage.setItem('activeTab', 'dashboard'); // força início no dashboard
                 const savedTab = 'dashboard';
-            
-            
+
+
                 const tabButtons = document.querySelectorAll('.tab-btn');
                 const sections = document.querySelectorAll('main > section');
-            
+
                 this.switchToSection(savedTab, sections);
                 this.updateActiveTab(savedTab, tabButtons);
-            
-                
+
+
                 tabButtons.forEach(button => {
                     button.addEventListener('click', () => {
                         const tabId = button.getAttribute('data-tab');
@@ -880,7 +1314,7 @@
                 document.getElementById('home-btn').addEventListener('click', () => {
                     this.switchToSection('dashboard', document.querySelectorAll('main > section'));
                     this.updateActiveTab('dashboard', document.querySelectorAll('.tab-btn'));
-                });                
+                });
 
                 // Botões de ação rápida
                 document.getElementById('calendar-btn').addEventListener('click', () => {
@@ -899,12 +1333,17 @@
                     const tabButtons = document.querySelectorAll('.tab-btn');
                     this.switchTab('reminders', null, tabButtons, sections);
                 });
-                
 
-                document.getElementById('community-btn').addEventListener('click', () => {
-                    this.switchToSection('community', sections);
-                    this.updateActiveTab('community', tabButtons);
+                document.getElementById('materials-btn').addEventListener('click', () => {
+                    const sections = document.querySelectorAll('main > section');
+                    const tabButtons = document.querySelectorAll('.tab-btn');
+                    this.switchTab('materials', null, tabButtons, sections);
                 });
+
+                // document.getElementById('community-btn').addEventListener('click', () => {
+                //     this.switchToSection('community', sections);
+                //     this.updateActiveTab('community', tabButtons);
+                // });
 
                 // Técnicas de estudo
                 document.querySelectorAll('.technique-btn').forEach(btn => {
@@ -924,7 +1363,7 @@
                     btn.classList.remove('active-tab', 'text-primary-600');
                     btn.classList.add('text-gray-500', 'dark:text-gray-400');
                 });
-                
+
                 const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
                 if (activeButton) {
                     activeButton.classList.add('active-tab', 'text-primary-600');
@@ -943,7 +1382,7 @@
             },
 
             handleTechnique(technique) {
-                switch(technique) {
+                switch (technique) {
                     case 'pomodoro':
                         // Mudar para a aba de foco
                         const sections = document.querySelectorAll('main > section');
@@ -996,9 +1435,9 @@
             renderNotes() {
                 const container = document.getElementById('notes-container');
                 if (!container) return;
-                
+
                 container.innerHTML = '';
-                
+
                 AppState.notes.forEach(note => {
                     const noteElement = document.createElement('div');
                     noteElement.className = 'note-card bg-white dark:bg-gray-800 rounded-lg p-4 shadow h-40 flex flex-col cursor-pointer';
@@ -1027,23 +1466,23 @@
             updateSubjectDropdown() {
                 const noteSubjectSelect = document.getElementById('note-subject');
                 const summarySubjectSelect = document.getElementById('summary-subject');
-                
+
                 if (noteSubjectSelect) {
                     const currentValue = noteSubjectSelect.value;
                     noteSubjectSelect.innerHTML = '';
-                    
+
                     AppState.subjects.forEach(subject => {
                         const option = document.createElement('option');
                         option.value = subject;
                         option.textContent = subject;
                         noteSubjectSelect.appendChild(option);
                     });
-                    
+
                     const outraOption = document.createElement('option');
                     outraOption.value = 'outra';
                     outraOption.textContent = 'Outra';
                     noteSubjectSelect.appendChild(outraOption);
-                    
+
                     if (currentValue) {
                         noteSubjectSelect.value = currentValue;
                     }
@@ -1051,7 +1490,7 @@
 
                 if (summarySubjectSelect) {
                     summarySubjectSelect.innerHTML = '';
-                    
+
                     AppState.subjects.forEach(subject => {
                         const option = document.createElement('option');
                         option.value = subject;
@@ -1064,20 +1503,20 @@
             showNoteActions(noteId, event) {
                 const menu = document.getElementById('note-actions-menu');
                 const rect = event.target.getBoundingClientRect();
-                
+
                 menu.style.top = `${rect.bottom + window.scrollY}px`;
                 menu.style.left = `${rect.left + window.scrollX - 100}px`;
                 menu.classList.add('show');
-                
+
                 menu.dataset.noteId = noteId;
-                
+
                 const closeMenu = (e) => {
                     if (!menu.contains(e.target)) {
                         menu.classList.remove('show');
                         document.removeEventListener('click', closeMenu);
                     }
                 };
-                
+
                 setTimeout(() => {
                     document.addEventListener('click', closeMenu);
                 }, 10);
@@ -1139,16 +1578,16 @@
                 const title = document.getElementById('modal-title');
                 const saveBtn = document.getElementById('save-note-btn');
                 const newSubjectContainer = document.getElementById('new-subject-container');
-                
+
                 AppState.currentEditingNote = note;
-                
+
                 if (note) {
                     title.textContent = 'Editar Anotação';
                     saveBtn.textContent = 'Atualizar Anotação';
                     document.getElementById('note-title').value = note.title;
                     document.getElementById('note-content').value = note.content;
                     document.getElementById('note-subject').value = note.subject;
-                    
+
                     if (!AppState.subjects.includes(note.subject)) {
                         document.getElementById('note-subject').value = 'outra';
                         newSubjectContainer.classList.remove('hidden');
@@ -1165,7 +1604,7 @@
                     document.getElementById('new-subject').value = '';
                     newSubjectContainer.classList.add('hidden');
                 }
-                
+
                 modal.classList.remove('hidden');
             },
 
@@ -1178,25 +1617,25 @@
                 const title = document.getElementById('note-title').value.trim();
                 const content = document.getElementById('note-content').value.trim();
                 let subject = document.getElementById('note-subject').value;
-                
+
                 if (subject === 'outra') {
                     subject = document.getElementById('new-subject').value.trim();
-                    
+
                     if (subject && !AppState.subjects.includes(subject)) {
                         AppState.subjects.push(subject);
                         this.saveSubjects();
                         this.updateSubjectDropdown();
                     }
                 }
-                
+
                 if (!title || !content || !subject) {
                     alert('Por favor, preencha todos os campos obrigatórios.');
                     return;
                 }
-                
+
                 const currentDate = new Date();
                 const formattedDate = `${currentDate.getDate()} ${this.getMonthName(currentDate.getMonth())}`;
-                
+
                 if (AppState.currentEditingNote) {
                     const noteIndex = AppState.notes.findIndex(n => n.id === AppState.currentEditingNote.id);
                     if (noteIndex !== -1) {
@@ -1218,7 +1657,7 @@
                     };
                     AppState.notes.unshift(newNote);
                 }
-                
+
                 this.saveNotes();
                 this.renderNotes();
                 this.closeModal();
@@ -1248,107 +1687,195 @@
         // Timer Management
         const TimerManager = {
             init() {
+                this.bindTimerControls();
+                this.setupBackgroundMusicToggle();
                 this.updateTimerDisplay();
-                this.bindEvents();
             },
 
-            bindEvents() {
-                document.getElementById('timer-start-btn').addEventListener('click', () => {
-                    this.toggleTimer();
-                });
-
-                document.getElementById('timer-reset-btn').addEventListener('click', () => {
-                    this.resetTimer();
-                });
+            bindTimerControls() {
+                const startBtn = document.getElementById('timer-start-btn');
+                const resetBtn = document.getElementById('timer-reset-btn');
+                const customBtn = document.getElementById('set-custom-time');
 
                 document.querySelectorAll('.timer-duration-btn').forEach(btn => {
                     btn.addEventListener('click', () => {
-                        this.setDuration(parseInt(btn.dataset.duration));
+                        const minutes = parseInt(btn.getAttribute('data-duration'));
+                        AppState.timer.selectedDuration = minutes;
+                        AppState.timer.timeLeft = minutes * 60;
+                        this.updateTimerDisplay();
                     });
+                });
+
+                customBtn.addEventListener('click', () => {
+                    const input = document.getElementById('custom-minutes');
+                    const minutes = parseInt(input.value);
+                    if (!isNaN(minutes) && minutes > 0) {
+                        AppState.timer.selectedDuration = minutes;
+                        AppState.timer.timeLeft = minutes * 60;
+                        this.updateTimerDisplay();
+                    }
+                });
+
+                startBtn.addEventListener('click', () => {
+                    if (!AppState.timer.isRunning) {
+                        this.startTimer();
+                    }
+                });
+
+                resetBtn.addEventListener('click', () => {
+                    this.resetTimer();
                 });
             },
 
-            toggleTimer() {
-                if (AppState.timer.isRunning) {
-                    this.pauseTimer();
-                } else {
-                    this.startTimer();
-                }
+            updateTimerDisplay() {
+                const display = document.getElementById('timer-display');
+                const minutes = Math.floor(AppState.timer.timeLeft / 60);
+                const seconds = AppState.timer.timeLeft % 60;
+                display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
             },
 
             startTimer() {
-                if (AppState.timer.timeLeft <= 0) {
-                    this.resetTimer();
-                    return;
-                }
-
                 AppState.timer.isRunning = true;
-                document.getElementById('timer-start-btn').textContent = 'Pausar';
-                
                 AppState.timer.interval = setInterval(() => {
-                    AppState.timer.timeLeft--;
-                    this.updateTimerDisplay();
-                    
-                    if (AppState.timer.timeLeft <= 0) {
-                        this.timerComplete();
+                    if (AppState.timer.timeLeft > 0) {
+                        AppState.timer.timeLeft--;
+                        this.updateTimerDisplay();
+                    } else {
+                        this.stopTimer();
+                        if (document.getElementById('timer-notifications').checked) {
+                            alert("Tempo esgotado! Hora de fazer uma pausa.");
+                        }
                     }
                 }, 1000);
             },
 
-            pauseTimer() {
-                AppState.timer.isRunning = false;
+            stopTimer() {
                 clearInterval(AppState.timer.interval);
-                document.getElementById('timer-start-btn').textContent = 'Continuar';
+                AppState.timer.isRunning = false;
             },
 
             resetTimer() {
-                this.pauseTimer();
+                this.stopTimer();
                 AppState.timer.timeLeft = AppState.timer.selectedDuration * 60;
                 this.updateTimerDisplay();
-                document.getElementById('timer-start-btn').textContent = 'Iniciar Sessão';
             },
 
-            setDuration(minutes) {
-                AppState.timer.selectedDuration = minutes;
-                this.resetTimer();
-                
-                document.querySelectorAll('.timer-duration-btn').forEach(btn => {
-                    btn.classList.remove('bg-primary-100', 'dark:bg-primary-900', 'text-primary-600', 'dark:text-primary-300');
-                    btn.classList.add('bg-gray-100', 'dark:bg-gray-700');
-                });
-                
-                const activeBtn = document.querySelector(`.timer-duration-btn[data-duration="${minutes}"]`);
-                if (activeBtn) {
-                    activeBtn.classList.add('bg-primary-100', 'dark:bg-primary-900', 'text-primary-600', 'dark:text-primary-300');
-                    activeBtn.classList.remove('bg-gray-100', 'dark:bg-gray-700');
-                }
-            },
+            setupBackgroundMusicToggle() {
+                const toggle = document.getElementById('timer-sound');
+                const playerBox = document.getElementById('custom-music-player');
+                const titleElem = document.getElementById('current-song-title');
+                const timeElem = document.getElementById('song-time');
+                const playBtn = document.getElementById('toggle-play');
+                const nextBtn = document.getElementById('next-song');
+                const prevBtn = document.getElementById('prev-song');
+                const closeBtn = document.getElementById('close-music-player');
+                const playlistId = "PLu1OeKsX41Tdri-S7bSPiP7RBm67cpeY9";
 
-            updateTimerDisplay() {
-                const minutes = Math.floor(AppState.timer.timeLeft / 60);
-                const seconds = AppState.timer.timeLeft % 60;
-                const display = document.getElementById('timer-display');
-                if (display) {
-                    display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }
-            },
+                // Carregar estado salvo ou usar false como padrão
+                const savedState = localStorage.getItem('musicEnabled');
+                const isMusicEnabled = savedState ? JSON.parse(savedState) : false;
 
-            timerComplete() {
-                this.pauseTimer();
-                alert('Tempo esgotado! Hora de fazer uma pausa.');
-                const todayStr = new Date().toISOString().split('T')[0];
-                AppState.studyLog = AppState.studyLog || {};
-                AppState.studyLog[todayStr] = (AppState.studyLog[todayStr] || 0) + AppState.timer.selectedDuration;
-                saveAppState();
-                DashboardManager.updateStudyTime(); // nova função
+                // Definir estado inicial do toggle e do player
+                toggle.checked = isMusicEnabled;
+                playerBox.style.display = isMusicEnabled ? 'block' : 'none';
 
-                // Opcional: tocar um som de notificação
-                if ('Notification' in window && Notification.permission === 'granted') {
-                    new Notification('StudyBuddy', {
-                        body: 'Sua sessão de estudo terminou!',
-                        icon: '/favicon.ico'
+                let ytPlayer;
+                let updateTimeInterval;
+
+                function createPlayer() {
+                    ytPlayer = new YT.Player('youtube-player', {
+                        height: '0',
+                        width: '0',
+                        playerVars: {
+                            listType: 'playlist',
+                            list: playlistId,
+                            autoplay: isMusicEnabled ? 1 : 0,
+                            loop: 1
+                        },
+                        events: {
+                            onReady: () => {
+                                if (isMusicEnabled) {
+                                    ytPlayer.playVideo();
+                                    titleElem.textContent = ytPlayer.getVideoData().title;
+                                    playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                                    playBtn.classList.add('playing');
+                                } else {
+                                    titleElem.textContent = "Nenhuma música";
+                                    playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                                    playBtn.classList.add('paused');
+                                }
+                            },
+                            onStateChange: (event) => {
+                                if (event.data === YT.PlayerState.PLAYING) {
+                                    updateTimeInterval = setInterval(() => {
+                                        const current = ytPlayer.getCurrentTime();
+                                        const minutes = Math.floor(current / 60);
+                                        const seconds = Math.floor(current % 60);
+                                        timeElem.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                                        titleElem.textContent = ytPlayer.getVideoData().title;
+                                    }, 1000);
+                                } else {
+                                    clearInterval(updateTimeInterval);
+                                }
+                            }
+                        }
                     });
                 }
+
+                // Carrega API do YouTube
+                if (!window.YT) {
+                    const tag = document.createElement('script');
+                    tag.src = "https://www.youtube.com/iframe_api";
+                    document.head.appendChild(tag);
+                }
+
+                window.onYouTubeIframeAPIReady = createPlayer;
+
+                toggle.addEventListener('change', function () {
+                    const isEnabled = this.checked;
+                    localStorage.setItem('musicEnabled', JSON.stringify(isEnabled));
+
+                    if (ytPlayer) {
+                        if (isEnabled) {
+                            playerBox.style.display = 'block';
+                            ytPlayer.playVideo();
+                            playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                            playBtn.classList.add('playing');
+                            playBtn.classList.remove('paused');
+                        } else {
+                            ytPlayer.pauseVideo();
+                            playerBox.style.display = 'none';
+                            playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                            playBtn.classList.remove('playing');
+                            playBtn.classList.add('paused');
+                        }
+                    }
+                });
+
+                playBtn.addEventListener('click', () => {
+                    const state = ytPlayer.getPlayerState();
+                    if (state === YT.PlayerState.PLAYING) {
+                        ytPlayer.pauseVideo();
+                        playBtn.innerHTML = '<i class="fas fa-play"></i>';
+                        playBtn.classList.remove('playing');
+                        playBtn.classList.add('paused');
+                    } else {
+                        ytPlayer.playVideo();
+                        playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        playBtn.classList.remove('paused');
+                        playBtn.classList.add('playing');
+                    }
+                });
+
+                nextBtn.addEventListener('click', () => ytPlayer.nextVideo());
+                prevBtn.addEventListener('click', () => ytPlayer.previousVideo());
+
+                closeBtn.addEventListener('click', () => {
+                    toggle.checked = false;
+                    localStorage.setItem('musicEnabled', 'false');
+                    ytPlayer.pauseVideo();
+                    playerBox.style.display = 'none';
+                });
             }
         };
 
@@ -1361,17 +1888,17 @@
                 const element = document.getElementById('study-time');
                 if (element) element.textContent = `${hours}h ${mins}m`;
             },
-        
+
             renderStudyChart() {
                 const container = document.getElementById('study-chart');
                 if (!container) return;
-        
+
                 const studyLog = AppState.studyLog || {};
                 const today = new Date();
                 const option = document.getElementById('study-range')?.value || 'Esta Semana';
-        
+
                 let items = [];
-        
+
                 if (option === 'Esta Semana') {
                     const start = new Date(today);
                     start.setDate(today.getDate() - today.getDay());
@@ -1383,19 +1910,19 @@
                         items.push({ label: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'][i], value: minutes });
                     }
                 }
-        
+
                 if (option === 'Este Mês') {
                     const year = today.getFullYear();
                     const month = today.getMonth();
                     const daysInMonth = new Date(year, month + 1, 0).getDate();
-        
+
                     for (let i = 1; i <= daysInMonth; i++) {
                         const date = `${year}-${(month + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
                         const minutes = studyLog[date] || 0;
                         items.push({ label: i.toString(), value: minutes });
                     }
                 }
-        
+
                 if (option === 'Este Ano') {
                     const year = today.getFullYear();
                     for (let i = 0; i < 12; i++) {
@@ -1408,28 +1935,28 @@
                         items.push({ label, value: total });
                     }
                 }
-        
+
                 container.innerHTML = '';
                 items.forEach(item => {
                     const wrapper = document.createElement('div');
                     wrapper.className = 'flex flex-col items-center justify-end w-10'; // largura fixa
-                
+
                     const bar = document.createElement('div');
                     bar.className = 'bg-primary-500 rounded-t';
                     bar.style.height = `${Math.min(64, item.value * 2)}px`;
                     bar.style.width = '100%'; // mesma largura que wrapper
-                
+
                     const label = document.createElement('span');
                     label.className = 'text-xs mt-1 text-center leading-tight';
                     label.style.minHeight = '1rem'; // evita pular
-                
+
                     label.textContent = item.label;
-                
+
                     wrapper.appendChild(bar);
                     wrapper.appendChild(label);
                     container.appendChild(wrapper);
-                });                              
-                
+                });
+
                 const containerWrapper = document.getElementById('study-chart-wrapper');
                 const chart = document.getElementById('study-chart');
 
@@ -1444,26 +1971,34 @@
                     chart.classList.add('min-w-[600px]');
                 }
             },
-        
-        
+
+
             updateTaskProgress() {
-                const today = new Date().toISOString().split('T')[0];
-                const todayReminders = AppState.reminders.filter(r => r.date === today);
-                const total = todayReminders.length;
-                const completed = todayReminders.filter(r => r.completed).length;
-                
+                const today = new Date();
+                const todayStr = today.toISOString().split('T')[0];
+
+                const todayReminders = AppState.reminders.filter(r => r.date === todayStr);
+                const overdueReminders = AppState.reminders.filter(r =>
+                    !r.completed && new Date(r.date) < today && r.date !== todayStr
+                );
+
+                // Combinar tarefas de hoje e atrasadas
+                const allPendingReminders = [...todayReminders, ...overdueReminders];
+                const total = allPendingReminders.length;
+                const completed = allPendingReminders.filter(r => r.completed).length;
+
                 const counter = document.getElementById('task-counter');
                 if (counter) {
                     counter.textContent = `${completed}/${total}`;
                 }
             },
-        
+
             renderWeeklyChart() {
                 const studyLog = AppState.studyLog || {};
                 const today = new Date();
                 const startOfWeek = new Date(today);
                 startOfWeek.setDate(today.getDate() - today.getDay()); // domingo
-        
+
                 for (let i = 0; i < 7; i++) {
                     const current = new Date(startOfWeek);
                     current.setDate(current.getDate() + i);
@@ -1474,7 +2009,7 @@
                     if (el) el.style.height = `${height}px`;
                 }
             }
-        };              
+        };
         // Calendar Management
         const CalendarManager = {
             init() {
@@ -1511,7 +2046,7 @@
 
             changeMonth(direction) {
                 AppState.currentMonth += direction;
-                
+
                 if (AppState.currentMonth > 11) {
                     AppState.currentMonth = 0;
                     AppState.currentYear++;
@@ -1519,65 +2054,65 @@
                     AppState.currentMonth = 11;
                     AppState.currentYear--;
                 }
-                
+
                 this.renderCalendar();
             },
 
             renderCalendar() {
                 const calendarDays = document.getElementById('calendar-days');
                 if (!calendarDays) return;
-                
+
                 calendarDays.innerHTML = '';
-                
+
                 const firstDay = new Date(AppState.currentYear, AppState.currentMonth, 1);
                 const lastDay = new Date(AppState.currentYear, AppState.currentMonth + 1, 0);
-                
+
                 // Ajuste aqui: usar getDay() que retorna 0 (Domingo) a 6 (Sábado)
-                const startDay = firstDay.getDay(); 
+                const startDay = firstDay.getDay();
                 const totalDays = lastDay.getDate();
                 const today = new Date();
-                
-                const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
-                                  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+                const monthNames = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
                 const monthYearElement = document.getElementById('calendar-month-year');
                 if (monthYearElement) {
                     monthYearElement.textContent = `${monthNames[AppState.currentMonth]} ${AppState.currentYear}`;
                 }
-                
+
                 // Dias vazios no início - garantir que comece no Domingo (0)
                 for (let i = 0; i < startDay; i++) {
                     const emptyDay = document.createElement('div');
                     emptyDay.className = 'calendar-day opacity-0';
                     calendarDays.appendChild(emptyDay);
                 }
-                
+
                 // Dias do mês
                 for (let i = 1; i <= totalDays; i++) {
                     const dayElement = document.createElement('div');
                     dayElement.className = 'calendar-day';
-                    
+
                     // Verificar se é o dia atual
-                    if (i === today.getDate() && 
-                        AppState.currentMonth === today.getMonth() && 
+                    if (i === today.getDate() &&
+                        AppState.currentMonth === today.getMonth() &&
                         AppState.currentYear === today.getFullYear()) {
                         dayElement.classList.add('today');
                     }
-                    
+
                     const dateStr = `${AppState.currentYear}-${(AppState.currentMonth + 1).toString().padStart(2, '0')}-${i.toString().padStart(2, '0')}`;
                     const hasEvent = AppState.events.some(event => event.date === dateStr);
-                    
+
                     if (hasEvent) {
                         dayElement.classList.add('has-event');
                     }
-                    
+
                     dayElement.textContent = i;
                     dayElement.addEventListener('click', () => {
                         this.showEventsForDay(dateStr);
                     });
-                    
+
                     calendarDays.appendChild(dayElement);
                 }
-                
+
                 // Preencher os dias restantes para completar a última semana (opcional)
                 const totalCells = startDay + totalDays;
                 const remainingDays = 7 - (totalCells % 7);
@@ -1593,30 +2128,30 @@
             renderUpcomingEvents() {
                 const upcomingEvents = document.getElementById('upcoming-events');
                 if (!upcomingEvents) return;
-                
+
                 upcomingEvents.innerHTML = '';
-                
+
                 const sortedEvents = [...AppState.events].sort((a, b) => {
                     const dateA = new Date(`${a.date}T${a.time}`);
                     const dateB = new Date(`${b.date}T${b.time}`);
                     return dateA - dateB;
                 });
-                
+
                 const today = new Date().toISOString().split('T')[0];
                 const futureEvents = sortedEvents.filter(event => event.date >= today);
-                
+
                 if (futureEvents.length === 0) {
                     upcomingEvents.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum evento agendado</p>';
                     return;
                 }
-                
+
                 const nextEvents = futureEvents.slice(0, 3);
-                
+
                 nextEvents.forEach(event => {
                     const [year, month, day] = event.date.split('-');
                     const formattedDate = `${parseInt(day)} ${this.getMonthName(parseInt(month) - 1)}`;
 
-                    
+
                     const eventElement = document.createElement('div');
                     eventElement.className = 'flex items-start p-3 bg-gray-50 dark:bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600';
                     eventElement.innerHTML = `
@@ -1629,18 +2164,18 @@
                             ${event.description ? `<p class="text-xs text-gray-400 mt-1">${event.description}</p>` : ''}
                         </div>
                     `;
-                    
+
                     eventElement.addEventListener('click', () => {
                         this.showEventsForDay(event.date);
                     });
-                    
+
                     upcomingEvents.appendChild(eventElement);
                 });
             },
-        
+
             showEventsForDay(dateStr) {
                 const eventsForDay = AppState.events.filter(event => event.date === dateStr);
-                
+
                 if (eventsForDay.length > 0) {
                     // Criar um modal para mostrar os eventos com opção de editar/excluir
                     const modal = document.createElement('div');
@@ -1679,14 +2214,14 @@
                             </div>
                         </div>
                     `;
-                    
+
                     document.body.appendChild(modal);
-                    
+
                     // Adicionar event listeners
                     modal.querySelector('.close-events-modal').addEventListener('click', () => {
                         modal.remove();
                     });
-                    
+
                     modal.querySelectorAll('.edit-event-btn').forEach(btn => {
                         btn.addEventListener('click', () => {
                             const eventId = parseInt(btn.dataset.eventId);
@@ -1697,26 +2232,21 @@
                             }
                         });
                     });
-                    
+
                     modal.querySelectorAll('.delete-event-btn').forEach(btn => {
-                        btn.addEventListener('click', () => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
                             const eventId = parseInt(btn.dataset.eventId);
-                            if (confirm('Tem certeza que deseja excluir este evento?')) {
-                                AppState.events = AppState.events.filter(e => e.id !== eventId);
-                                this.renderCalendar();
-                                this.renderUpcomingEvents();
-                                NotificationsManager.renderNotifications();
-                                modal.remove();
-                            }
+                            NotificationsManager.deleteEvent(eventId);
                         });
                     });
-                    
+
                     modal.querySelector('.add-event-for-day').addEventListener('click', () => {
                         this.openEventModal();
                         document.getElementById('event-date').value = dateStr;
                         modal.remove();
                     });
-                    
+
                     // Fechar modal ao clicar fora
                     modal.addEventListener('click', (e) => {
                         if (e.target === modal) {
@@ -1731,13 +2261,13 @@
                     }
                 }
             },
-        
+
             formatFullDate(dateStr) {
                 const [year, month, day] = dateStr.split('-').map(Number);
                 const date = new Date(year, month - 1, day); // cria localmente, sem UTC
-            
+
                 const monthName = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'][month - 1];
-            
+
                 return `${day} de ${monthName} de ${year}`;
             },
 
@@ -1745,13 +2275,13 @@
                 const modal = document.getElementById('add-event-modal');
                 const title = document.getElementById('modal-title');
                 const saveBtn = document.getElementById('save-event-btn');
-                
+
                 if (event) {
                     // Modo edição
                     title.textContent = 'Editar Evento';
                     saveBtn.textContent = 'Atualizar Evento';
-                    saveBtn.dataset.eventId = event.id;
-                    
+                    saveBtn.dataset.eventId = event.id; // Adiciona o ID do evento ao botão
+
                     document.getElementById('event-title').value = event.title;
                     document.getElementById('event-date').value = event.date;
                     document.getElementById('event-time').value = event.time;
@@ -1760,8 +2290,8 @@
                     // Modo criação
                     title.textContent = 'Novo Evento';
                     saveBtn.textContent = 'Salvar Evento';
-                    delete saveBtn.dataset.eventId;
-                    
+                    delete saveBtn.dataset.eventId; // Remove qualquer ID existente
+
                     // Definir data padrão como hoje
                     const today = new Date().toISOString().split('T')[0];
                     document.getElementById('event-date').value = today;
@@ -1769,19 +2299,23 @@
                     document.getElementById('event-title').value = '';
                     document.getElementById('event-description').value = '';
                 }
-                
+
                 modal.classList.remove('hidden');
             },
 
             closeEventModal() {
                 const modal = document.getElementById('add-event-modal');
                 modal.classList.add('hidden');
-                
+
                 // Limpar campos
                 document.getElementById('event-title').value = '';
                 document.getElementById('event-date').value = '';
                 document.getElementById('event-time').value = '';
                 document.getElementById('event-description').value = '';
+
+                // Remover ID de edição se existir
+                const saveBtn = document.getElementById('save-event-btn');
+                delete saveBtn.dataset.eventId;
             },
 
             saveEvent() {
@@ -1789,28 +2323,58 @@
                 const date = document.getElementById('event-date').value;
                 const time = document.getElementById('event-time').value;
                 const description = document.getElementById('event-description').value.trim();
-            
+
                 if (!title || !date || !time) {
                     alert("Por favor, preencha todos os campos obrigatórios.");
                     return;
                 }
-            
-                const newEvent = {
-                    id: Date.now(),
-                    title,
-                    date,
-                    time,
-                    description
-                };
-            
-                AppState.events.push(newEvent);
-            
-                // ✅ Adicione isso:
-                saveAppState();
-            
-                this.renderCalendar();
-                this.renderUpcomingEvents();
-                this.closeEventModal();
+
+                const saveBtn = document.getElementById('save-event-btn');
+                const isEditing = saveBtn.dataset.eventId;
+
+                // Verificar se já existe um evento idêntico
+                const existingEvent = AppState.events.find(e =>
+                    e.title === title &&
+                    e.date === date &&
+                    e.time === time &&
+                    (!isEditing || e.id !== parseInt(isEditing))
+                );
+
+                if (existingEvent) {
+                    alert("Já existe um evento com esses detalhes.");
+                    return;
+                }
+                if (isEditing) {
+                    // Modo edição - atualizar evento existente
+                    const eventId = parseInt(isEditing);
+                    const eventIndex = AppState.events.findIndex(e => e.id === eventId);
+
+                    if (eventIndex !== -1) {
+                        AppState.events[eventIndex] = {
+                            id: eventId,
+                            title,
+                            date,
+                            time,
+                            description
+                        };
+                    }
+                } else {
+                    // Modo criação - adicionar novo evento
+                    const newEvent = {
+                        id: Date.now(),
+                        title,
+                        date,
+                        time,
+                        description
+                    };
+                    AppState.events.push(newEvent);
+                }
+
+                saveAppState().then(() => {
+                    this.renderCalendar();
+                    this.renderUpcomingEvents();
+                    this.closeEventModal();
+                });
             },
 
             getMonthName(monthIndex) {
@@ -1829,9 +2393,9 @@
             renderSummaries() {
                 const container = document.getElementById('summaries-container');
                 if (!container) return;
-                
+
                 container.innerHTML = '';
-                
+
                 AppState.summaries.forEach(summary => {
                     const summaryElement = document.createElement('div');
                     summaryElement.className = 'summary-card bg-white dark:bg-gray-800 rounded-lg p-4 shadow cursor-pointer';
@@ -1848,11 +2412,11 @@
                             <button class="text-primary-600 text-xs hover:underline">Ver completo</button>
                         </div>
                     `;
-                    
+
                     summaryElement.addEventListener('click', () => {
                         this.showFullSummary(summary);
                     });
-                    
+
                     container.appendChild(summaryElement);
                 });
             },
@@ -1872,7 +2436,7 @@
                     'Inglês': 'bg-pink-100 dark:bg-pink-900 text-pink-800 dark:text-pink-200',
                     'Geografia': 'bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200'
                 };
-                
+
                 return colorMap[subject] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
             },
 
@@ -1897,11 +2461,11 @@
             openSummaryModal() {
                 const modal = document.getElementById('add-summary-modal');
                 modal.classList.remove('hidden');
-                
+
                 // Limpar campos
                 document.getElementById('summary-title').value = '';
                 document.getElementById('summary-content').value = '';
-                
+
                 // Atualizar dropdown de matérias
                 NotesManager.updateSubjectDropdown();
             },
@@ -1914,15 +2478,15 @@
                 const title = document.getElementById('summary-title').value.trim();
                 const subject = document.getElementById('summary-subject').value;
                 const content = document.getElementById('summary-content').value.trim();
-                
+
                 if (!title || !subject || !content) {
                     alert('Por favor, preencha todos os campos obrigatórios.');
                     return;
                 }
-                
+
                 const currentDate = new Date();
                 const formattedDate = `${currentDate.getDate()} ${this.getMonthName(currentDate.getMonth())}`;
-                
+
                 const newSummary = {
                     id: Date.now(),
                     title,
@@ -1930,7 +2494,7 @@
                     content,
                     date: formattedDate
                 };
-                
+
                 AppState.summaries.unshift(newSummary);
                 this.renderSummaries();
                 this.closeSummaryModal();
@@ -1947,25 +2511,101 @@
             init() {
                 this.renderReminders();
                 this.bindEvents();
+
+                // Adicione estes listeners para o modal de edição
+                document.getElementById('close-reminder-actions-modal').addEventListener('click', () => {
+                    this.closeEditModal();
+                });
+
+                document.getElementById('cancel-edit-reminder').addEventListener('click', () => {
+                    this.closeEditModal();
+                });
+
+                document.getElementById('save-edit-reminder').addEventListener('click', () => {
+                    this.saveEditedReminder();
+                });
             },
 
             renderReminders() {
+                const overdueReminders = document.getElementById('overdue-reminders');
                 const todayReminders = document.getElementById('today-reminders');
                 const upcomingReminders = document.getElementById('upcoming-reminders');
-                
-                if (!todayReminders || !upcomingReminders) return;
-                
+                const completedReminders = document.getElementById('completed-reminders');
+
+                if (!overdueReminders || !todayReminders || !upcomingReminders || !completedReminders) return;
+
+                // Limpar todos os containers
+                overdueReminders.innerHTML = '';
                 todayReminders.innerHTML = '';
                 upcomingReminders.innerHTML = '';
-                
-                const today = new Date().toISOString().split('T')[0];
-                
-                AppState.reminders.forEach(reminder => {
-                    const reminderElement = document.createElement('div');
-                    let priorityClass = '';
-                    let iconClass = '';
-                    
-                    // Estilo baseado na prioridade
+                completedReminders.innerHTML = '';
+
+                const today = new Date();
+                const todayStr = today.toISOString().split('T')[0];
+
+                // Separar lembretes concluídos e não concluídos
+                const completed = AppState.reminders.filter(r => r.completed);
+                const pending = AppState.reminders.filter(r => !r.completed);
+
+                // Renderizar lembretes pendentes
+                pending.forEach(reminder => {
+                    const reminderElement = this.createReminderElement(reminder, today, todayStr);
+
+                    const isOverdue = new Date(reminder.date) < today && reminder.date !== todayStr;
+
+                    if (isOverdue) {
+                        overdueReminders.appendChild(reminderElement);
+                    } else if (reminder.date === todayStr) {
+                        todayReminders.appendChild(reminderElement);
+                    } else {
+                        upcomingReminders.appendChild(reminderElement);
+                    }
+                });
+
+                // Renderizar lembretes concluídos
+                completed.forEach(reminder => {
+                    const reminderElement = this.createReminderElement(reminder, today, todayStr, true);
+                    completedReminders.appendChild(reminderElement);
+                });
+
+                // Mensagens quando não há lembretes
+                if (overdueReminders.children.length === 0) {
+                    overdueReminders.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum lembrete atrasado</p>';
+                }
+
+                if (todayReminders.children.length === 0) {
+                    todayReminders.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum lembrete para hoje</p>';
+                }
+
+                if (upcomingReminders.children.length === 0) {
+                    upcomingReminders.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum lembrete futuro</p>';
+                }
+
+                if (completedReminders.children.length === 0) {
+                    completedReminders.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum lembrete concluído</p>';
+                }
+            },
+
+            // Nova função auxiliar para criar elementos de lembrete
+            createReminderElement(reminder, today, todayStr, isCompleted = false) {
+                const reminderElement = document.createElement('div');
+                let priorityClass = '';
+                let iconClass = '';
+
+                // Estilo para itens concluídos
+                if (isCompleted) {
+                    priorityClass = 'border-l-4 border-gray-500';
+                    iconClass = 'fas fa-check-circle text-gray-500';
+                    reminderElement.className = `reminder-item flex items-center p-3 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-900/20 border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-900/30 ${priorityClass}`;
+                }
+                // Estilo para itens atrasados
+                else if (!reminder.completed && new Date(reminder.date) < today && reminder.date !== todayStr) {
+                    priorityClass = 'border-l-4 border-red-500';
+                    iconClass = 'fas fa-exclamation-circle text-red-500';
+                    reminderElement.className = `reminder-item flex items-center p-3 rounded-lg cursor-pointer bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-700 hover:bg-red-100 dark:hover:bg-red-900/30 ${priorityClass}`;
+                }
+                // Estilo padrão baseado na prioridade
+                else {
                     switch (reminder.priority) {
                         case 'alta':
                             priorityClass = 'border-l-4 border-red-500';
@@ -1979,51 +2619,124 @@
                             priorityClass = 'border-l-4 border-green-500';
                             iconClass = 'fas fa-info-circle text-green-500';
                     }
-                    
                     reminderElement.className = `reminder-item flex items-center p-3 rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${priorityClass}`;
-                    
-                    // Conteúdo do lembrete
-                    reminderElement.innerHTML = `
-                        <i class="${iconClass} mr-3"></i>
-                        <div class="flex-1">
-                            <h4 class="font-medium ${reminder.completed ? 'line-through' : ''}">${reminder.title}</h4>
-                            <p class="text-sm text-gray-500 ${reminder.completed ? 'line-through' : ''}">${this.formatReminderDate(reminder.date)} às ${reminder.time}</p>
-                        </div>
-                        <button class="action-btn p-1 rounded" data-reminder-id="${reminder.id}">
-                            <i class="${reminder.completed ? 'fas fa-trash text-red-400 hover:text-red-600' : 'far fa-check-circle text-gray-400 hover:text-green-500'}"></i>
-                        </button>
-                    `;
-                    
-                    if (reminder.date === today) {
-                        todayReminders.appendChild(reminderElement);
-                    } else {
-                        upcomingReminders.appendChild(reminderElement);
-                    }
-                    
-                    // Evento do botão de ação
-                    const actionBtn = reminderElement.querySelector('.action-btn');
-                    if (actionBtn) {
-                        actionBtn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            if (reminder.completed) {
-                                this.deleteReminder(reminder.id);
-                            } else {
-                                this.completeReminder(reminder.id);
-                            }
-                        });
-                    }
-                });
-                
-                // Mensagens quando não há lembretes
-                if (todayReminders.children.length === 0) {
-                    todayReminders.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum lembrete para hoje</p>';
                 }
-                
-                if (upcomingReminders.children.length === 0) {
-                    upcomingReminders.innerHTML = '<p class="text-center text-gray-500 py-4">Nenhum lembrete futuro</p>';
+
+                if (!isCompleted) {
+                    reminderElement.innerHTML = `
+                        <!-- ... (seu HTML existente) -->
+                        <div class="flex items-center space-x-2">
+                            <button class="edit-reminder-btn p-1 text-gray-400 hover:text-primary-500">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn p-1 rounded" data-reminder-id="${reminder.id}">
+                                <i class="far fa-check-circle text-gray-400 hover:text-green-500"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                // Conteúdo do lembrete
+                reminderElement.innerHTML = `
+                    <i class="${iconClass} mr-3"></i>
+                    <div class="flex-1">
+                        <h4 class="font-medium ${isCompleted ? 'line-through text-gray-400 dark:text-gray-500' : ''}">${reminder.title}</h4>
+                        <p class="text-sm ${isCompleted ? 'text-gray-400 dark:text-gray-500 line-through' : (new Date(reminder.date) < today && !isCompleted && reminder.date !== todayStr ? 'text-red-500 dark:text-red-300' : 'text-gray-500')}">
+                            ${this.formatReminderDate(reminder.date)} às ${reminder.time}
+                            ${(!isCompleted && new Date(reminder.date) < today && reminder.date !== todayStr) ? '<span class="text-xs bg-red-100 dark:bg-red-800 text-red-800 dark:text-red-200 px-2 py-1 rounded ml-2">Atrasado</span>' : ''}
+                            ${isCompleted ? '<span class="text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 px-2 py-1 rounded ml-2">Concluído</span>' : ''}
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="edit-reminder-btn p-1 text-gray-400 hover:text-primary-500">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn p-1 rounded" data-reminder-id="${reminder.id}">
+                            <i class="${isCompleted ? 'fas fa-trash text-red-400 hover:text-red-600' : 'far fa-check-circle text-gray-400 hover:text-green-500'}"></i>
+                        </button>
+                    </div>
+                `;
+
+                // Adicione o event listener para o botão de edição
+                reminderElement.querySelector('.edit-reminder-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.openEditModal(reminder.id);
+                });
+
+                // Evento do botão de ação
+                const actionBtn = reminderElement.querySelector('.action-btn');
+                if (actionBtn) {
+                    actionBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (reminder.completed) {
+                            this.deleteReminder(reminder.id);
+                        } else {
+                            this.completeReminder(reminder.id);
+                        }
+                    });
+                }
+
+                reminderElement.querySelector('.edit-reminder-btn')?.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.openEditModal(reminder.id);
+                });
+
+                return reminderElement;
+            },
+
+            openEditModal(reminderId) {
+                const reminder = AppState.reminders.find(r => r.id === reminderId);
+                if (!reminder) return;
+
+                const modal = document.getElementById('reminder-actions-modal');
+                modal.classList.remove('hidden');
+
+                // Preenche os campos com os dados atuais
+                document.getElementById('edit-reminder-title').value = reminder.title;
+                document.getElementById('edit-reminder-date').value = reminder.date;
+                document.getElementById('edit-reminder-time').value = reminder.time;
+                document.getElementById('edit-reminder-priority').value = reminder.priority;
+
+                // Armazena o ID do lembrete sendo editado
+                modal.dataset.reminderId = reminderId;
+            },
+
+            saveEditedReminder() {
+                const modal = document.getElementById('reminder-actions-modal');
+                const reminderId = parseInt(modal.dataset.reminderId);
+
+                const title = document.getElementById('edit-reminder-title').value.trim();
+                const date = document.getElementById('edit-reminder-date').value;
+                const time = document.getElementById('edit-reminder-time').value;
+                const priority = document.getElementById('edit-reminder-priority').value;
+
+                if (!title || !date || !time) {
+                    alert("Por favor, preencha todos os campos obrigatórios.");
+                    return;
+                }
+
+                const reminderIndex = AppState.reminders.findIndex(r => r.id === reminderId);
+                if (reminderIndex !== -1) {
+                    AppState.reminders[reminderIndex] = {
+                        ...AppState.reminders[reminderIndex],
+                        title,
+                        date,
+                        time,
+                        priority
+                    };
+
+                    saveAppState().then(() => {
+                        this.renderReminders();
+                        DashboardManager.updateTaskProgress();
+                        this.closeEditModal();
+                    });
                 }
             },
-            
+
+            closeEditModal() {
+                document.getElementById('reminder-actions-modal').classList.add('hidden');
+            },
+
             // Adicione esta função auxiliar
             formatReminderDate(dateStr) {
                 const [year, month, day] = dateStr.split('-');
@@ -2071,7 +2784,7 @@
             openReminderModal() {
                 const modal = document.getElementById('add-reminder-modal');
                 modal.classList.remove('hidden');
-                
+
                 // Definir a data padrão como hoje
                 const today = new Date().toISOString().split('T')[0];
                 document.getElementById('reminder-date').value = today;
@@ -2090,12 +2803,12 @@
                 const date = document.getElementById('reminder-date').value;
                 const time = document.getElementById('reminder-time').value;
                 const priority = document.getElementById('reminder-priority').value;
-                            
+
                 if (!title || !date || !time) {
                     alert('Por favor, preencha todos os campos obrigatórios.');
                     return;
                 }
-                
+
                 const newReminder = {
                     id: Date.now(),
                     title,
@@ -2104,13 +2817,13 @@
                     priority,
                     completed: false
                 };
-            
+
                 AppState.reminders.unshift(newReminder);
                 saveAppState().then(() => {
                     this.renderReminders();
                     DashboardManager.updateTaskProgress();
                     this.closeReminderModal();
-                    
+
                     // Mostrar a aba de lembretes após salvar
                     const sections = document.querySelectorAll('main > section');
                     const tabButtons = document.querySelectorAll('.tab-btn');
@@ -2128,7 +2841,7 @@
                     });
                 }
             },
-            
+
             deleteReminder(reminderId) {
                 if (confirm('Excluir este lembrete permanentemente?')) {
                     AppState.reminders = AppState.reminders.filter(r => r.id !== reminderId);
@@ -2138,7 +2851,7 @@
                     });
                 }
             },
-            
+
             formatReminderDate(dateStr) {
                 const [year, month, day] = dateStr.split('-');
                 const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
@@ -2151,22 +2864,272 @@
             }
         };
 
+        // Materials Management
+        const MaterialsManager = {
+            init() {
+                this.renderFolders();
+                this.renderMaterials();
+                this.bindEvents();
+            },
+
+            bindEvents() {
+                document.getElementById('add-material-btn').addEventListener('click', () => {
+                    this.openMaterialModal();
+                });
+
+                document.getElementById('add-folder-btn').addEventListener('click', () => {
+                    this.openFolderModal();
+                });
+
+                // Outros event listeners serão adicionados conforme necessário
+            },
+
+            renderFolders() {
+                const foldersContainer = document.querySelector('#materials .grid');
+                if (!foldersContainer) return;
+
+                foldersContainer.innerHTML = '';
+
+                // Pastas padrão (poderia vir do backend também)
+                const defaultFolders = ['Matemática', 'Português', 'Ciências', 'História', 'Programação'];
+
+                defaultFolders.forEach(folder => {
+                    const folderElement = document.createElement('div');
+                    folderElement.className = 'folder-card bg-white dark:bg-gray-800 rounded-lg p-3 shadow border border-gray-200 dark:border-gray-700 flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 transition';
+                    folderElement.innerHTML = `
+                        <i class="fas fa-folder text-primary-500"></i>
+                        <span class="text-sm font-medium truncate">${folder}</span>
+                    `;
+
+                    folderElement.addEventListener('click', () => {
+                        this.filterMaterialsByFolder(folder);
+                    });
+
+                    foldersContainer.appendChild(folderElement);
+                });
+            },
+
+            renderMaterials() {
+                const container = document.getElementById('materials-container');
+                if (!container) return;
+
+                container.innerHTML = '';
+
+                // Exemplo de materiais (no futuro virá da API)
+                const exampleMaterials = [
+                    {
+                        id: 1,
+                        title: 'Apostila de Cálculo I',
+                        description: 'Introdução a limites e derivadas',
+                        type: 'PDF',
+                        folder: 'Matemática',
+                        url: '#'
+                    },
+                    {
+                        id: 2,
+                        title: 'Vídeo Aula - HTML/CSS',
+                        description: 'Fundamentos de desenvolvimento web',
+                        type: 'Vídeo',
+                        folder: 'Programação',
+                        url: '#'
+                    }
+                ];
+
+                if (exampleMaterials.length === 0) {
+                    document.getElementById('no-materials').classList.remove('hidden');
+                    return;
+                }
+
+                document.getElementById('no-materials').classList.add('hidden');
+
+                exampleMaterials.forEach(material => {
+                    const materialElement = document.createElement('div');
+                    materialElement.className = 'material-card bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-gray-200 dark:border-gray-700 hover:shadow-md transition';
+                    materialElement.innerHTML = `
+                        <span class="inline-block px-2 py-1 ${this.getTypeColorClass(material.type)} text-xs rounded mb-2">
+                            ${material.type}
+                        </span>
+                        <h3 class="font-medium text-gray-800 dark:text-gray-200 mb-1">${material.title}</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">${material.description}</p>
+                        <div class="flex space-x-2">
+                            <button class="view-material-btn flex-1 py-1 px-2 bg-primary-600 hover:bg-primary-700 text-white text-xs rounded transition" data-material-id="${material.id}">
+                                Visualizar
+                            </button>
+                            <button class="delete-material-btn py-1 px-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 text-xs rounded transition" data-material-id="${material.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    container.appendChild(materialElement);
+                });
+
+                // Adicionar event listeners para os botões
+                document.querySelectorAll('.view-material-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const materialId = parseInt(btn.dataset.materialId);
+                        this.viewMaterial(materialId);
+                    });
+                });
+
+                document.querySelectorAll('.delete-material-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const materialId = parseInt(btn.dataset.materialId);
+                        this.deleteMaterial(materialId);
+                    });
+                });
+            },
+
+            filterMaterialsByFolder(folder) {
+                // Implementar filtragem por pasta
+                console.log(`Filtrando materiais por: ${folder}`);
+                // No futuro, isso filtrará os materiais da API
+            },
+
+            getTypeColorClass(type) {
+                const colorMap = {
+                    'PDF': 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
+                    'Vídeo': 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
+                    'Link': 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
+                    'Documento': 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200'
+                };
+
+                return colorMap[type] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
+            },
+
+            openMaterialModal() {
+                // Criar modal dinâmico para adicionar material
+                const modal = document.createElement('div');
+                modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+                modal.innerHTML = `
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+                        <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
+                            <h3 class="font-bold text-gray-800 dark:text-white">Adicionar Material</h3>
+                            <button class="close-material-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="p-4">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2 dark:text-white">Título</label>
+                                <input type="text" id="material-title" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="Título do material">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2 dark:text-white">Tipo</label>
+                                <select id="material-type" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                                    <option value="PDF">PDF</option>
+                                    <option value="Vídeo">Vídeo</option>
+                                    <option value="Link">Link</option>
+                                    <option value="Documento">Documento</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2 dark:text-white">Pasta</label>
+                                <select id="material-folder" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400">
+                                    <option value="Matemática">Matemática</option>
+                                    <option value="Português">Português</option>
+                                    <option value="Ciências">Ciências</option>
+                                    <option value="História">História</option>
+                                    <option value="Programação">Programação</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2 dark:text-white">URL/Link</label>
+                                <input type="text" id="material-url" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="https://...">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2 dark:text-white">Descrição</label>
+                                <textarea id="material-description" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" rows="3" placeholder="Descrição do material"></textarea>
+                            </div>
+                        </div>
+                        <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t dark:border-gray-700">
+                            <button class="cancel-material-btn py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700">
+                                Cancelar
+                            </button>
+                            <button class="save-material-btn py-2 px-3 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-primary-600 text-white hover:bg-primary-700 disabled:opacity-50 disabled:pointer-events-none">
+                                Salvar Material
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+
+                // Event listeners para o modal
+                modal.querySelector('.close-material-modal').addEventListener('click', () => {
+                    modal.remove();
+                });
+
+                modal.querySelector('.cancel-material-btn').addEventListener('click', () => {
+                    modal.remove();
+                });
+
+                modal.querySelector('.save-material-btn').addEventListener('click', () => {
+                    this.saveMaterial();
+                    modal.remove();
+                });
+            },
+
+            openFolderModal() {
+                // Modal simples para criar nova pasta
+                const folderName = prompt('Digite o nome da nova pasta:');
+                if (folderName && folderName.trim() !== '') {
+                    // Aqui você faria uma chamada para a API para salvar a nova pasta
+                    console.log(`Nova pasta criada: ${folderName}`);
+                    this.renderFolders();
+                }
+            },
+
+            saveMaterial() {
+                const title = document.getElementById('material-title').value.trim();
+                const type = document.getElementById('material-type').value;
+                const folder = document.getElementById('material-folder').value;
+                const url = document.getElementById('material-url').value.trim();
+                const description = document.getElementById('material-description').value.trim();
+
+                if (!title || !url) {
+                    alert('Por favor, preencha pelo menos o título e a URL do material.');
+                    return;
+                }
+
+                // Aqui você faria uma chamada para a API para salvar o material
+                console.log('Material salvo:', { title, type, folder, url, description });
+
+                // Atualiza a lista de materiais
+                this.renderMaterials();
+            },
+
+            viewMaterial(materialId) {
+                // Aqui você implementaria a visualização do material
+                alert(`Visualizando material com ID: ${materialId}`);
+            },
+
+            deleteMaterial(materialId) {
+                if (confirm('Tem certeza que deseja excluir este material?')) {
+                    // Aqui você faria uma chamada para a API para excluir o material
+                    console.log(`Material excluído: ${materialId}`);
+                    this.renderMaterials();
+                }
+            }
+        };
         // Notifications Management
         const NotificationsManager = {
             init() {
                 this.renderNotifications();
                 this.bindEvents();
             },
-        
+
             bindEvents() {
                 document.getElementById('notifications-btn').addEventListener('click', (e) => {
                     e.stopPropagation(); // Impede a propagação do evento
                     this.toggleNotificationsPanel();
                 });
-            
+
                 // ... outros event listeners
             },
-        
+
             toggleNotificationsPanel() {
                 const panel = document.getElementById('notifications-panel');
                 panel.classList.toggle('translate-x-full');
@@ -2174,13 +3137,13 @@
                 // Não muda a aba ativa, apenas mostra/oculta o painel
                 TabManager.switchToSection(currentActiveTab, document.querySelectorAll('main > section'));
             },
-        
+
             // ... mantenha as outras funções
-        
+
             renderNotifications() {
                 const container = document.getElementById('notifications-container');
                 if (!container) return;
-                
+
                 container.innerHTML = '';
 
                 const today = new Date().toISOString().split('T')[0];
@@ -2203,7 +3166,7 @@
                                 <i class="fas fa-times text-gray-400 hover:text-red-500"></i>
                             </button>
                         `;
-                        
+
                         container.appendChild(notificationElement);
                     });
                 } else {
@@ -2217,16 +3180,16 @@
                     badge.classList.toggle('hidden', todayEvents.length === 0);
                 }
             },
-        
+
             bindEvents() {
                 document.getElementById('notifications-btn').addEventListener('click', () => {
                     this.toggleNotificationsPanel();
                 });
-            
+
                 document.getElementById('close-notifications').addEventListener('click', () => {
                     this.closeNotificationsPanel();
                 });
-            
+
                 // Deletar notificação/evento
                 document.addEventListener('click', (e) => {
                     if (e.target.closest('.delete-notification-btn')) {
@@ -2235,25 +3198,56 @@
                     }
                 });
             },
-        
+
             deleteEvent(eventId) {
-                if (confirm('Deseja remover este evento?')) {
-                    AppState.events = AppState.events.filter(event => event.id !== eventId);
-                    this.renderNotifications();
-                    CalendarManager.renderCalendar();
-                    CalendarManager.renderUpcomingEvents();
+                if (!confirm('Deseja excluir este evento permanentemente?')) {
+                    return;
                 }
+
+                const loadingIndicator = document.createElement('div');
+                loadingIndicator.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                loadingIndicator.innerHTML = '<div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">Deletando evento...</div>';
+                document.body.appendChild(loadingIndicator);
+
+                fetch(`http://localhost:8080/events/${eventId}`, {
+                    method: 'DELETE'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(() => {
+                        // Atualiza o estado local
+                        AppState.events = AppState.events.filter(event => event.id !== eventId);
+
+                        // Atualiza as views
+                        this.renderNotifications();
+                        CalendarManager.renderCalendar();
+                        CalendarManager.renderUpcomingEvents();
+
+                        // Fecha qualquer modal aberto
+                        document.querySelectorAll('.fixed.inset-0').forEach(el => el.remove());
+                    })
+                    .catch(error => {
+                        console.error('Error deleting event:', error);
+                        alert('Falha ao deletar evento: ' + error.message);
+                    })
+                    .finally(() => {
+                        loadingIndicator.remove();
+                    });
             },
-        
+
             toggleNotificationsPanel() {
                 const panel = document.getElementById('notifications-panel');
                 panel.classList.toggle('translate-x-full');
             },
-        
+
             closeNotificationsPanel() {
                 const panel = document.getElementById('notifications-panel');
                 panel.classList.add('translate-x-full');
-                
+
                 // Restaura a aba que estava ativa antes
                 TabManager.switchToSection(currentActiveTab, document.querySelectorAll('main > section'));
             }
@@ -2269,7 +3263,8 @@
             SummariesManager.init();
             RemindersManager.init();
             NotificationsManager.init();
-            
+            MaterialsManager.init();
+
             // Initialize task counter
             const taskCounter = document.getElementById('task-counter');
             if (taskCounter) {
@@ -2279,7 +3274,7 @@
                 const total = todayReminders.length;
                 taskCounter.textContent = `${completed}/${total}`;
             }
-            
+
 
             // Request notification permission
             if ('Notification' in window && Notification.permission === 'default') {
@@ -2288,4 +3283,5 @@
         });
     </script>
 </body>
+
 </html>

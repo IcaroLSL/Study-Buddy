@@ -1,10 +1,39 @@
 {
-  "notes": [],
+  "notes": [
+    {
+      "id": 1,
+      "title": "Matemática Básica",
+      "content": "Fórmulas importantes para álgebra linear e geometria analítica...",
+      "subject": "Matemática",
+      "date": "15 Jun"
+    },
+    {
+      "id": 2,
+      "title": "História do Brasil",
+      "content": "Principais eventos do período colonial até a república...",
+      "subject": "História",
+      "date": "14 Jun"
+    },
+    {
+      "id": 4,
+      "title": "Química Orgânica",
+      "content": "Reações de hidrocarbonetos e grupos funcionais...",
+      "subject": "Química",
+      "date": "10 Jun"
+    },
+    {
+      "id": 6,
+      "title": "Curse",
+      "content": "Hello, world",
+      "subject": "Programação",
+      "date": "31 de mai."
+    }
+  ],
   "reminders": [
     {
-      "id": 1749480437009,
-      "title": "xfgxhvf",
-      "date": "2025-06-09",
+      "id": 1750074490042,
+      "title": "Tela de login",
+      "date": "2025-06-16",
       "time": "12:00",
       "priority": "media",
       "completed": false
@@ -12,32 +41,35 @@
     {
       "id": 1749095559087,
       "title": "criar pagina de configuração",
-      "date": "2025-06-06",
-      "time": "10:00",
+      "date": "2025-06-16",
+      "time": "11:30",
       "priority": "media",
       "completed": false
     },
     {
       "id": 1749095404687,
       "title": "musica do modo foco",
-      "date": "2025-06-15",
+      "date": "2025-06-12",
       "time": "20:00",
       "priority": "baixa",
-      "completed": false
-    },
-    {
-      "id": 1749095282569,
-      "title": "finalizar gráfico dashboard",
-      "date": "2025-06-06",
-      "time": "10:00",
-      "priority": "alta",
       "completed": true
     }
   ],
   "studyLog": {
-    "2025-06-04": 25
+    "2025-06-04": 25,
+    "2025-06-12": 2
   },
-  "subjects": [],
+  "subjects": [
+    "Matemática",
+    "Português",
+    "História",
+    "Geografia",
+    "Biologia",
+    "Química",
+    "Física",
+    "Inglês",
+    "Programação"
+  ],
   "events": [
     {
       "id": 1749087576146,
@@ -47,32 +79,20 @@
       "description": "Nota \u003e= 8"
     },
     {
-      "id": 1749088211265,
-      "title": "Seminario Elvo",
-      "date": "2025-06-16",
-      "time": "08:00",
-      "description": "Apresentação sobre inteligência artificial"
+      "id": 1749587862069,
+      "title": "Prova Engenharia de Software II",
+      "date": "2025-06-24",
+      "time": "12:00",
+      "description": "Tirar nota proxima de 6"
     },
     {
-      "id": 1749138257106,
-      "title": "Prova Ingês",
-      "date": "2025-06-16",
-      "time": "12:00",
-      "description": ""
-    },
-    {
-      "id": 1749480451401,
-      "title": "vgnh",
-      "date": "2025-06-09",
-      "time": "12:00",
-      "description": "vfgnh"
-    },
-    {
-      "id": 1749480490289,
-      "title": "fvngnf",
-      "date": "2025-06-10",
-      "time": "12:00",
-      "description": "cgfbc"
+      "id": 1749588035117,
+      "title": "Aplicativo IHC",
+      "date": "2025-06-12",
+      "time": "11:30",
+      "description": "Analize de aplicação IHC"
     }
-  ]
+  ],
+  "materials": null,
+  "folders": null
 }
