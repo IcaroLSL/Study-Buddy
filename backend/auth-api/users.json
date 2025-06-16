@@ -1,0 +1,9 @@
+{
+  "teste123@email.com": {
+    "id": 1750109205,
+    "email": "teste123@email.com",
+    "password": "$2a$14$Tz4lKN1uSyDjBbhwTzKvEukGVsL1ILAwwhvFMfuVgO9g0F6i7oTY6",
+    "name": "teste de usuario",
+    "createdAt": "2025-06-16T18:26:45-03:00"
+  }
+}

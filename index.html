@@ -839,6 +839,132 @@
                     </div>
                 </div>
             </section>
+            <section id="config" class="mb-8 fade-in hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg font-semibold">Configurações</h2>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-6">
+                    <h3 class="font-medium mb-4">Conta</h3>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1 dark:text-white">Nome de Usuário</label>
+                            <input type="text" id="username"
+                                class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                                placeholder="Digite seu nome de usuário">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1 dark:text-white">Email</label>
+                            <input type="email" id="email"
+                                class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                                placeholder="Digite seu email">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1 dark:text-white">Alterar Senha</label>
+                            <input type="password" id="new-password"
+                                class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400 mb-2"
+                                placeholder="Nova senha">
+                            <input type="password" id="confirm-password"
+                                class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                                placeholder="Confirmar nova senha">
+                        </div>
+
+                        <button id="save-account-btn"
+                            class="w-full py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition">
+                            Salvar Alterações
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mb-6">
+                    <h3 class="font-medium mb-4">Preferências</h3>
+
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 dark:text-white">Tema Escuro</label>
+                                <p class="text-xs text-gray-500">Ative ou desative o modo escuro</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="dark-mode-toggle" class="sr-only peer" checked>
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600">
+                                </div>
+                            </label>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <label class="block text-sm font-medium mb-1 dark:text-white">Notificações</label>
+                                <p class="text-xs text-gray-500">Ative para receber lembretes</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="notifications-toggle" class="sr-only peer" checked>
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary-600">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow">
+                    <h3 class="font-medium mb-4">Música de Fundo</h3>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-1 dark:text-white">Playlist do Spotify</label>
+                            <input type="text" id="spotify-playlist"
+                                class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                                placeholder="Cole o link da playlist">
+                            <p class="text-xs text-gray-500 mt-1">Exemplo:
+                                https://open.spotify.com/playlist/37i9dQZF1DX9sIqqvKsjG8</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-1 dark:text-white">Playlist do YouTube</label>
+                            <input type="text" id="youtube-playlist"
+                                class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400"
+                                placeholder="Cole o ID da playlist">
+                            <p class="text-xs text-gray-500 mt-1">Exemplo: PLu1OeKsX41Tdri-S7bSPiP7RBm67cpeY9</p>
+                        </div>
+
+                        <button id="save-music-btn"
+                            class="w-full py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition">
+                            Salvar Preferências Musicais
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-lg p-4 shadow mt-4">
+                    <h3 class="font-medium mb-4 text-red-500">Zona de Perigo</h3>
+
+                    <div class="space-y-4">
+                        <button id="export-data-btn"
+                            class="w-full py-2 border border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            Exportar Dados
+                        </button>
+
+                        <button id="import-data-btn"
+                            class="w-full py-2 border border-gray-300 text-gray-700 dark:border-gray-600 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                            Importar Dados
+                        </button>
+
+                        <button id="reset-data-btn"
+                            class="w-full py-2 border border-red-300 text-red-600 dark:border-red-600 dark:text-red-400 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition">
+                            Redefinir Todos os Dados
+                        </button>
+
+                        <button id="delete-account-btn"
+                            class="w-full py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                            Excluir Conta Permanentemente
+                        </button>
+                    </div>
+                </div>
+            </section>
         </main>
 
         <nav
@@ -1769,7 +1895,7 @@
                 const nextBtn = document.getElementById('next-song');
                 const prevBtn = document.getElementById('prev-song');
                 const closeBtn = document.getElementById('close-music-player');
-                const playlistId = "PLu1OeKsX41Tdri-S7bSPiP7RBm67cpeY9";
+                const playlistId = AppState.config.youtubePlaylist || "PLu1OeKsX41Tdri-S7bSPiP7RBm67cpeY9";
 
                 // Carregar estado salvo ou usar false como padrão
                 const savedState = localStorage.getItem('musicEnabled');
@@ -3253,6 +3379,258 @@
             }
         };
 
+        // Config Manager
+        const ConfigManager = {
+            init() {
+                this.loadConfig();
+                this.bindEvents();
+            },
+
+            loadConfig() {
+                // Carrega configurações do localStorage ou usa padrões
+                const savedConfig = localStorage.getItem('studyBuddyConfig');
+
+                if (savedConfig) {
+                    AppState.config = JSON.parse(savedConfig);
+                } else {
+                    // Configurações padrão
+                    AppState.config = {
+                        username: 'Estudante',
+                        email: '',
+                        darkMode: true,
+                        notifications: true,
+                        spotifyPlaylist: '1QcsybeUidDJIrPQTHS6dD',
+                        youtubePlaylist: 'PLu1OeKsX41Tdri-S7bSPiP7RBm67cpeY9'
+                    };
+                }
+
+                // Preenche os campos do formulário
+                document.getElementById('username').value = AppState.config.username;
+                document.getElementById('email').value = AppState.config.email;
+                document.getElementById('dark-mode-toggle').checked = AppState.config.darkMode;
+                document.getElementById('notifications-toggle').checked = AppState.config.notifications;
+                document.getElementById('spotify-playlist').value = AppState.config.spotifyPlaylist;
+                document.getElementById('youtube-playlist').value = AppState.config.youtubePlaylist;
+
+                // Aplica o tema
+                if (AppState.config.darkMode) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            },
+
+            saveConfig() {
+                localStorage.setItem('studyBuddyConfig', JSON.stringify(AppState.config));
+            },
+
+            bindEvents() {
+                // Salvar configurações da conta
+                document.getElementById('save-account-btn').addEventListener('click', () => {
+                    const username = document.getElementById('username').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const newPassword = document.getElementById('new-password').value;
+                    const confirmPassword = document.getElementById('confirm-password').value;
+
+                    if (!username) {
+                        alert('Por favor, insira um nome de usuário válido.');
+                        return;
+                    }
+
+                    if (newPassword && newPassword !== confirmPassword) {
+                        alert('As senhas não coincidem.');
+                        return;
+                    }
+
+                    AppState.config.username = username;
+                    AppState.config.email = email;
+
+                    if (newPassword) {
+                        // Aqui você faria a atualização da senha no backend
+                        console.log('Senha alterada para:', newPassword);
+                    }
+
+                    this.saveConfig();
+                    alert('Configurações da conta salvas com sucesso!');
+                });
+
+                // Alternar tema escuro
+                document.getElementById('dark-mode-toggle').addEventListener('change', (e) => {
+                    AppState.config.darkMode = e.target.checked;
+                    this.saveConfig();
+
+                    if (e.target.checked) {
+                        document.documentElement.classList.add('dark');
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                    }
+                });
+
+                // Alternar notificações
+                document.getElementById('notifications-toggle').addEventListener('change', (e) => {
+                    AppState.config.notifications = e.target.checked;
+                    this.saveConfig();
+
+                    if (e.target.checked && Notification.permission !== 'granted') {
+                        Notification.requestPermission();
+                    }
+                });
+
+                // Salvar preferências musicais
+                document.getElementById('save-music-btn').addEventListener('click', () => {
+                    const spotifyPlaylist = document.getElementById('spotify-playlist').value.trim();
+                    const youtubePlaylist = document.getElementById('youtube-playlist').value.trim();
+
+                    // Extrai apenas o ID da playlist do Spotify se for uma URL completa
+                    let spotifyId = spotifyPlaylist;
+                    if (spotifyPlaylist.includes('spotify.com')) {
+                        const match = spotifyPlaylist.match(/playlist\/([a-zA-Z0-9]+)/);
+                        if (match) spotifyId = match[1];
+                    }
+
+                    AppState.config.spotifyPlaylist = spotifyId;
+                    AppState.config.youtubePlaylist = youtubePlaylist;
+                    this.saveConfig();
+
+                    // Atualiza o player de música se estiver na aba de foco
+                    if (currentActiveTab === 'focus') {
+                        TimerManager.setupBackgroundMusicToggle();
+                    }
+
+                    alert('Preferências musicais atualizadas!');
+                });
+
+                // Exportar dados
+                document.getElementById('export-data-btn').addEventListener('click', () => {
+                    const data = {
+                        notes: AppState.notes,
+                        reminders: AppState.reminders,
+                        studyLog: AppState.studyLog,
+                        subjects: AppState.subjects,
+                        events: AppState.events,
+                        summaries: AppState.summaries,
+                        config: AppState.config
+                    };
+
+                    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `studybuddy-backup-${new Date().toISOString().split('T')[0]}.json`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+
+                // Importar dados
+                document.getElementById('import-data-btn').addEventListener('click', () => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = '.json';
+
+                    input.onchange = e => {
+                        const file = e.target.files[0];
+                        if (!file) return;
+
+                        const reader = new FileReader();
+                        reader.onload = event => {
+                            try {
+                                const data = JSON.parse(event.target.result);
+
+                                if (confirm('Isso substituirá todos os seus dados atuais. Continuar?')) {
+                                    AppState.notes = data.notes || [];
+                                    AppState.reminders = data.reminders || [];
+                                    AppState.studyLog = data.studyLog || {};
+                                    AppState.subjects = data.subjects || [];
+                                    AppState.events = data.events || [];
+                                    AppState.summaries = data.summaries || [];
+                                    AppState.config = data.config || {
+                                        username: 'Estudante',
+                                        email: '',
+                                        darkMode: true,
+                                        notifications: true,
+                                        spotifyPlaylist: '1QcsybeUidDJIrPQTHS6dD',
+                                        youtubePlaylist: 'PLu1OeKsX41Tdri-S7bSPiP7RBm67cpeY9'
+                                    };
+
+                                    // Salva todos os dados
+                                    saveAppState();
+                                    this.saveConfig();
+
+                                    // Recarrega as visualizações
+                                    NotesManager.renderNotes();
+                                    RemindersManager.renderReminders();
+                                    CalendarManager.renderCalendar();
+                                    CalendarManager.renderUpcomingEvents();
+                                    SummariesManager.renderSummaries();
+                                    DashboardManager.updateStudyTime();
+                                    DashboardManager.updateTaskProgress();
+                                    DashboardManager.renderStudyChart();
+                                    this.loadConfig();
+
+                                    alert('Dados importados com sucesso!');
+                                }
+                            } catch (error) {
+                                alert('Erro ao importar dados: arquivo inválido.');
+                                console.error(error);
+                            }
+                        };
+                        reader.readAsText(file);
+                    };
+                    input.click();
+                });
+
+                // Redefinir dados
+                document.getElementById('reset-data-btn').addEventListener('click', () => {
+                    if (confirm('Tem certeza que deseja redefinir TODOS os dados? Isso não pode ser desfeito.')) {
+                        AppState.notes = [];
+                        AppState.reminders = [];
+                        AppState.studyLog = {};
+                        AppState.subjects = [];
+                        AppState.events = [];
+                        AppState.summaries = [];
+
+                        saveAppState().then(() => {
+                            NotesManager.renderNotes();
+                            RemindersManager.renderReminders();
+                            CalendarManager.renderCalendar();
+                            CalendarManager.renderUpcomingEvents();
+                            SummariesManager.renderSummaries();
+                            DashboardManager.updateStudyTime();
+                            DashboardManager.updateTaskProgress();
+                            DashboardManager.renderStudyChart();
+
+                            alert('Todos os dados foram redefinidos.');
+                        });
+                    }
+                });
+
+                // Excluir conta
+                document.getElementById('delete-account-btn').addEventListener('click', () => {
+                    if (confirm('Tem certeza que deseja excluir sua conta PERMANENTEMENTE? Todos os dados serão perdidos.')) {
+                        // Aqui você faria uma chamada para o backend para excluir a conta
+                        // Por enquanto, apenas limpa os dados locais
+                        localStorage.clear();
+                        AppState.notes = [];
+                        AppState.reminders = [];
+                        AppState.studyLog = {};
+                        AppState.subjects = [];
+                        AppState.events = [];
+                        AppState.summaries = [];
+                        AppState.config = {
+                            username: 'Estudante',
+                            email: '',
+                            darkMode: true,
+                            notifications: true,
+                            spotifyPlaylist: '1QcsybeUidDJIrPQTHS6dD',
+                            youtubePlaylist: 'PLu1OeKsX41Tdri-S7bSPiP7RBm67cpeY9'
+                        };
+
+                        // Recarrega a página para aplicar as mudanças
+                        location.reload();
+                    }
+                });
+            }
+        };
         // Initialize all managers when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
             ThemeManager.init();
@@ -3264,6 +3642,7 @@
             RemindersManager.init();
             NotificationsManager.init();
             MaterialsManager.init();
+            ConfigManager.init();
 
             // Initialize task counter
             const taskCounter = document.getElementById('task-counter');

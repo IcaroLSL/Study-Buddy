@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .login-container {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+        }
+
+        .dark .login-container {
+            background: linear-gradient(135deg, #075985 0%, #1e40af 100%);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen flex items-center justify-center p-4">
+    <div class="login-container rounded-2xl shadow-2xl overflow-hidden w-full max-w-md">
+        <div class="p-8 bg-white dark:bg-gray-800">
+            <div class="flex justify-end mb-2">
+                <button id="theme-toggle" type="button"
+                    class="text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-full p-2">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
+            </div>
+
+            <div class="text-center mb-8">
+                <i class="fas fa-graduation-cap text-4xl text-primary-600 dark:text-primary-500 mb-4"></i>
+                <h1 class="text-2xl font-bold text-gray-800 dark:text-white">StudyBuddy</h1>
+                <p class="text-gray-600 dark:text-gray-300">Seu acompanhante de estudos</p>
+            </div>
+
+            <form id="login-form" class="space-y-4">
+                <div>
+                    <label for="email"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" id="email" name="email" required
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="seu@email.com">
+                </div>
+
+                <div>
+                    <label for="password"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Senha</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                        placeholder="••••••••">
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember-me" name="remember-me" type="checkbox"
+                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700">
+                        <label for="remember-me" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">Lembrar de
+                            mim</label>
+                    </div>
+
+                    <a href="#"
+                        id="forgot-password"
+                        class="text-sm text-primary-600 dark:text-primary-500 hover:text-primary-500 dark:hover:text-primary-400">Esqueceu
+                        a senha?</a>
+                </div>
+
+                <button type="submit"
+                    class="w-full py-2 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800">
+                    Entrar
+                </button>
+            </form>
+
+            <div class="divider my-6 text-center text-gray-500 dark:text-gray-400">ou</div>
+
+            <button id="google-login"
+                class="w-full py-2 px-4 bg-white dark:bg-gray-700 text-gray-800 dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center space-x-2">
+                <img src="https://www.google.com/favicon.ico" alt="Google" class="w-5 h-5">
+                <span>Entrar com Google</span>
+            </button>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    Não tem uma conta?
+                    <a href="#" id="register-link"
+                        class="text-primary-600 dark:text-primary-500 hover:text-primary-500 dark:hover:text-primary-400 font-medium">Cadastre-se</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const userTheme = localStorage.getItem('theme');
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+        const themeCheck = () => {
+            if (userTheme === 'dark' || (!userTheme && systemTheme)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-adjust');
+            } else {
+                document.getElementById('theme-icon').classList.replace('fa-adjust', 'fa-moon');
+            }
+        };
+
+        const themeSwitch = () => {
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+                document.getElementById('theme-icon').classList.replace('fa-adjust', 'fa-moon');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+                document.getElementById('theme-icon').classList.replace('fa-moon', 'fa-adjust');
+            }
+        };
+
+        document.getElementById('theme-toggle').addEventListener('click', themeSwitch);
+        themeCheck();
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
+
+            try {
+                const response = await fetch('http://localhost:8081/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, rememberMe })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(errorData.error || 'Erro ao fazer login');
+                    return;
+                }
+
+                const data = await response.json();
+                localStorage.setItem('jwtToken', data.token);
+                window.location.href = 'index.html';  // Ajuste para o destino desejado
+            } catch (err) {
+                console.error('Erro ao conectar com a Auth API:', err);
+                alert('Erro de conexão com o servidor de autenticação.');
+            }
+        });
+
+        document.getElementById('google-login').addEventListener('click', () => {
+            window.location.href = 'http://localhost:8081/auth/google';
+        });
+
+        document.getElementById('forgot-password').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'forgot-password.html'; // Mude o nome se seu arquivo de cadastro tiver outro nome
+        });
+
+        document.getElementById('register-link').addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'register.html'; // Mude o nome se seu arquivo de cadastro tiver outro nome
+        });
+    </script>
+</body>
+</html>
