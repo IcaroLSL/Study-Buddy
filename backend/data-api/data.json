@@ -44,7 +44,7 @@
       "date": "2025-06-16",
       "time": "11:30",
       "priority": "media",
-      "completed": false
+      "completed": true
     },
     {
       "id": 1749095404687,
@@ -70,29 +70,7 @@
     "Inglês",
     "Programação"
   ],
-  "events": [
-    {
-      "id": 1749087576146,
-      "title": "Prova Jean S.O.",
-      "date": "2025-06-25",
-      "time": "08:00",
-      "description": "Nota \u003e= 8"
-    },
-    {
-      "id": 1749587862069,
-      "title": "Prova Engenharia de Software II",
-      "date": "2025-06-24",
-      "time": "12:00",
-      "description": "Tirar nota proxima de 6"
-    },
-    {
-      "id": 1749588035117,
-      "title": "Aplicativo IHC",
-      "date": "2025-06-12",
-      "time": "11:30",
-      "description": "Analize de aplicação IHC"
-    }
-  ],
+  "events": [],
   "materials": null,
   "folders": null
 }
