@@ -75,8 +75,7 @@
                             mim</label>
                     </div>
 
-                    <a href="#"
-                        id="forgot-password"
+                    <a href="#" id="forgot-password"
                         class="text-sm text-primary-600 dark:text-primary-500 hover:text-primary-500 dark:hover:text-primary-400">Esqueceu
                         a senha?</a>
                 </div>
@@ -144,21 +143,29 @@
                 const response = await fetch('http://localhost:8081/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, password, rememberMe })
-                });
+                    body: JSON.stringify({ email, password })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    localStorage.setItem("token", data.token); // Salva o token
+                })
+                //if (!response.ok) {
+                //    const errorData = await response.json();
+                //    alert(errorData.error || 'Erro ao fazer login');
+                //    return;
+                //}
+//
+                //const { token, user } = await response.json();
+                //console.log('Token recebido:', token);
+                //// Armazena token e dados do usuário
+                //localStorage.setItem('jwtToken', token);
+                localStorage.setItem('user', JSON.stringify(user));
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    alert(errorData.error || 'Erro ao fazer login');
-                    return;
-                }
-
-                const data = await response.json();
-                localStorage.setItem('jwtToken', data.token);
-                window.location.href = 'index.html';  // Ajuste para o destino desejado
+                // Redireciona para a página principal
+                window.location.href = 'index.html';
             } catch (err) {
-                console.error('Erro ao conectar com a Auth API:', err);
-                alert('Erro de conexão com o servidor de autenticação.');
+                console.error('Erro ao conectar com a API:', err);
+                alert('Erro de conexão com o servidor');
             }
         });
 
@@ -177,4 +184,5 @@
         });
     </script>
 </body>
+
 </html>

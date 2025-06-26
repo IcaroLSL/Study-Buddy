@@ -61,15 +61,15 @@ type Material struct {
 }
 
 var (
-	dataFile = "data.json"
-	mutex    sync.Mutex
+	dataFile  = "data.json"
+	mutex     sync.Mutex
 	jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 )
 
 func main() {
 	r := gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins:     []string{"http://127.0.0.1:5500"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -77,13 +77,17 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	protected := r.Group("/")
-	protected.Use(authMiddleware())
-	{
-		protected.GET("/data", handleGetData)
-		protected.POST("/data", handleSaveData)
-		protected.DELETE("/events/:id", handleDeleteEvent)
-	}
+	// protected := r.Group("/")
+	// protected.Use(authMiddleware())
+	// {
+	// 	protected.GET("/data", handleGetData)
+	// 	protected.POST("/data", handleSaveData)
+	// 	protected.DELETE("/events/:id", handleDeleteEvent)
+	// }
+	// Desativando temporariamente a autenticação
+	r.GET("/data", handleGetData)
+	r.POST("/data", handleSaveData)
+	r.DELETE("/events/:id", handleDeleteEvent)
 
 	r.Run(":8080")
 }
@@ -172,7 +176,7 @@ func handleDeleteEvent(c *gin.Context) {
 		}
 	}
 
-data.Events = newEvents
+	data.Events = newEvents
 
 	updatedBytes, _ := json.MarshalIndent(data, "", "  ")
 	_ = ioutil.WriteFile(dataFile, updatedBytes, 0644)

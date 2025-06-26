@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"os"
 	"time"
-
+	// "strings"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
@@ -52,8 +52,18 @@ func main() {
 		MaxAge:           12 * time.Hour,
 	}))
 
+	// Rotas de autenticação
 	r.POST("/auth/login", handleLogin)
 	r.POST("/auth/register", handleRegister)
+
+	// Rotas protegidas
+	// authGroup := r.Group("/")
+	// authGroup.Use(AuthMiddleware())
+	// {
+	//     authGroup.GET("/data", handleGetData)
+	//     authGroup.POST("/data", handleSaveData)
+	//     authGroup.DELETE("/events/:id", handleDeleteEvent)
+	// }
 
 	r.Run(":8081")
 }
@@ -157,26 +167,46 @@ func generateJWT(user User, rememberMe bool) (string, error) {
 }
 
 // MIDDLEWARE: Copie esse código para a data-api depois
-func AuthMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		tokenString := c.GetHeader("Authorization")
-		if tokenString == "" {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Token de autenticação não fornecido"})
-			return
-		}
+// func AuthMiddleware() gin.HandlerFunc {
+//     return func(c *gin.Context) {
+//         // Extrai o token do header
+//         authHeader := c.GetHeader("Authorization")
+//         if authHeader == "" {
+//             c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+//                 "error": "Token de autenticação não fornecido",
+//             })
+//             return
+//         }
 
-		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-				return nil, fmt.Errorf("método de assinatura inválido")
-			}
-			return jwtSecret, nil
-		})
+//         // Remove o prefixo "Bearer "
+//         tokenString := strings.TrimPrefix(authHeader, "Bearer ")
 
-		if err != nil || !token.Valid {
-			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Token inválido"})
-			return
-		}
+//         // Parse do token com o segredo compartilhado
+//         token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+//             // Verifica o método de assinatura
+//             if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+//                 return nil, fmt.Errorf("método de assinatura inesperado: %v", token.Header["alg"])
+//             }
+//             return jwtSecret, nil
+//         })
 
-		c.Next()
-	}
-}
+//         // Tratamento de erros
+//         if err != nil {
+//             c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+//                 "error": "Token inválido",
+//                 "details": err.Error(),
+//             })
+//             return
+//         }
+
+//         // Verifica se o token é válido
+//         if !token.Valid {
+//             c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
+//                 "error": "Token expirado ou inválido",
+//             })
+//             return
+//         }
+
+//         c.Next()
+//     }
+// }

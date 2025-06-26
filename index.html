@@ -1279,10 +1279,48 @@
     </div>
 
     <script>
+        //async function fetchWithAuth(url, options = {}) {
+        //    const token = localStorage.getItem('jwtToken');
+        //    if (!token) {
+        //        window.location.href = 'login.html';
+        //        return Promise.reject('Não autenticado');
+        //    }
+        //
+        //    options.headers = {
+        //        ...options.headers,
+        //        'Authorization': `Bearer ${token}`
+        //    };
+        //
+        //    const response = await fetch(url, options);
+        //
+        //    if (response.status === 401) {
+        //        // Token inválido ou expirado
+        //        localStorage.removeItem('jwtToken');
+        //        window.location.href = 'login.html';
+        //        return Promise.reject('Sessão expirada');
+        //    }
+        //
+        //    return response;
+        //}
+
+        // const token = localStorage.getItem("token");
+// 
+        // fetch("http://localhost:8080/data", {
+        //     method: "GET",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         "Authorization": `Bearer ${token}`
+        //     }
+        // })
+        // .then(response => response.json())
+        // .then(data => console.log(data))
+        // .catch(error => console.error("Erro ao buscar dados:", error));
+
+
         async function loadAppState() {
             try {
                 const res = await fetch("http://localhost:8080/data");
-                if (!res.ok) throw new Error("Failed to fetch data");
+                // if (!res.ok) throw new Error("Failed to fetch data");
                 const data = await res.json();
 
                 AppState.notes = data.notes || [];
@@ -1290,6 +1328,7 @@
                 AppState.studyLog = data.studyLog || {};
                 AppState.subjects = data.subjects || [];
                 AppState.events = data.events || [];
+                AppState.config = data.config || {};
 
                 console.log('Dados carregados:', data); // Debug
 
@@ -1303,6 +1342,7 @@
                 AppState.reminders = [];
                 AppState.studyLog = {};
                 AppState.subjects = [];
+                AppState.config = {};
             }
         }
 
@@ -1344,6 +1384,7 @@
                         reminders: AppState.reminders,
                         studyLog: AppState.studyLog,
                         subjects: AppState.subjects,
+                        config: AppState.config,
                         events: AppState.events  // Certifique-se que isso está incluído
                     })
                 });
@@ -1360,6 +1401,7 @@
             reminders: [],
             studyLog: {},
             subjects: [],
+            config: {},
             timer: {
                 timeLeft: 25 * 60,
                 isRunning: false,
@@ -3633,6 +3675,12 @@
         };
         // Initialize all managers when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
+            // const token = localStorage.getItem('jwtToken');
+            // if (!token) {
+            //     window.location.href = 'login.html';
+            // }
+
+            ConfigManager.init();
             ThemeManager.init();
             TabManager.init();
             NotesManager.init();
@@ -3642,7 +3690,6 @@
             RemindersManager.init();
             NotificationsManager.init();
             MaterialsManager.init();
-            ConfigManager.init();
 
             // Initialize task counter
             const taskCounter = document.getElementById('task-counter');
