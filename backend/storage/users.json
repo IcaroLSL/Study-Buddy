@@ -1,16 +1,9 @@
 {
-  "test@example.com": {
-    "id": 1764104921,
-    "email": "test@example.com",
-    "password": "$2a$14$AYl3swIr4zNaWI4NYBLRcuL.vdpcny3v6BIKO/.8Qh5gqai.4wiHu",
-    "name": "Test User",
-    "createdAt": "2025-11-25T21:08:41Z"
-  },
-  "teste123@email.com": {
-    "id": 1750109205,
-    "email": "teste123@email.com",
-    "password": "$2a$14$Tz4lKN1uSyDjBbhwTzKvEukGVsL1ILAwwhvFMfuVgO9g0F6i7oTY6",
-    "name": "teste de usuario",
-    "createdAt": "2025-06-16T18:26:45-03:00"
+  "yoku@gmail.com": {
+    "id": 1764105508,
+    "email": "yoku@gmail.com",
+    "password": "$2a$14$dI8RnbcKwW5NlTnYvsXVauqccj2wTNtuXIw1uLn96r/lUtWi7boXG",
+    "name": "yoku",
+    "createdAt": "2025-11-25T18:18:28-03:00"
   }
 }
