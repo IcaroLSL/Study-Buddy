@@ -1279,47 +1279,33 @@
     </div>
 
     <script>
-        //async function fetchWithAuth(url, options = {}) {
-        //    const token = localStorage.getItem('jwtToken');
-        //    if (!token) {
-        //        window.location.href = 'login.html';
-        //        return Promise.reject('Não autenticado');
-        //    }
-        //
-        //    options.headers = {
-        //        ...options.headers,
-        //        'Authorization': `Bearer ${token}`
-        //    };
-        //
-        //    const response = await fetch(url, options);
-        //
-        //    if (response.status === 401) {
-        //        // Token inválido ou expirado
-        //        localStorage.removeItem('jwtToken');
-        //        window.location.href = 'login.html';
-        //        return Promise.reject('Sessão expirada');
-        //    }
-        //
-        //    return response;
-        //}
+        async function fetchWithAuth(url, options = {}) {
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                window.location.href = '/login';
+                return Promise.reject('Não autenticado');
+            }
 
-        // const token = localStorage.getItem("token");
-// 
-        // fetch("http://localhost:8080/data", {
-        //     method: "GET",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         "Authorization": `Bearer ${token}`
-        //     }
-        // })
-        // .then(response => response.json())
-        // .then(data => console.log(data))
-        // .catch(error => console.error("Erro ao buscar dados:", error));
+            options.headers = {
+                ...options.headers,
+                'Authorization': `Bearer ${token}`
+            };
 
+            const response = await fetch(url, options);
+
+            if (response.status === 401) {
+                // Token inválido ou expirado
+                localStorage.removeItem('jwtToken');
+                window.location.href = '/login';
+                return Promise.reject('Sessão expirada');
+            }
+
+            return response;
+        }
 
         async function loadAppState() {
             try {
-                const res = await fetch("http://localhost:8080/data");
+                const res = await fetchWithAuth("/api/data");
                 // if (!res.ok) throw new Error("Failed to fetch data");
                 const data = await res.json();
 
@@ -1376,7 +1362,7 @@
 
         async function saveAppState() {
             try {
-                const res = await fetch("http://localhost:8080/data", {
+                const res = await fetchWithAuth("/api/data", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -3377,7 +3363,7 @@
                 loadingIndicator.innerHTML = '<div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">Deletando evento...</div>';
                 document.body.appendChild(loadingIndicator);
 
-                fetch(`http://localhost:8080/events/${eventId}`, {
+                fetchWithAuth(`/api/events/${eventId}`, {
                     method: 'DELETE'
                 })
                     .then(response => {
@@ -3675,10 +3661,11 @@
         };
         // Initialize all managers when DOM is loaded
         document.addEventListener('DOMContentLoaded', () => {
-            // const token = localStorage.getItem('jwtToken');
-            // if (!token) {
-            //     window.location.href = 'login.html';
-            // }
+            const token = localStorage.getItem('jwtToken');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
 
             ConfigManager.init();
             ThemeManager.init();
