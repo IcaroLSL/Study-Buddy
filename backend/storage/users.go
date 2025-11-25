@@ -40,15 +40,25 @@ func LoadUsers() {
 	defer usersMutex.Unlock()
 
 	bytes, err := os.ReadFile(usersFile)
-	if err == nil {
-		json.Unmarshal(bytes, &users)
+	if err != nil {
+		log.Printf("INFO: Could not read users file: %v (this is normal on first run)", err)
+		return
+	}
+	if err := json.Unmarshal(bytes, &users); err != nil {
+		log.Printf("WARNING: Could not parse users file: %v", err)
 	}
 }
 
 // SaveUsers saves users to the JSON file
 func SaveUsers() {
-	bytes, _ := json.MarshalIndent(users, "", "  ")
-	_ = os.WriteFile(usersFile, bytes, 0644)
+	bytes, err := json.MarshalIndent(users, "", "  ")
+	if err != nil {
+		log.Printf("ERROR: Could not serialize users: %v", err)
+		return
+	}
+	if err := os.WriteFile(usersFile, bytes, 0644); err != nil {
+		log.Printf("ERROR: Could not write users file: %v", err)
+	}
 }
 
 // GetUser retrieves a user by email

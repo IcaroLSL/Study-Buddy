@@ -65,7 +65,10 @@ func DeleteEvent(eventID int64) (models.AppData, error) {
 
 	data.Events = newEvents
 
-	updatedBytes, _ := json.MarshalIndent(data, "", "  ")
+	updatedBytes, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		return models.AppData{}, err
+	}
 	if err := os.WriteFile(dataFile, updatedBytes, 0644); err != nil {
 		return models.AppData{}, err
 	}
