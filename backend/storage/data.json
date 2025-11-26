@@ -60,60 +60,15 @@
     "2025-06-12": 2
   },
   "subjects": [
-    {
-      "id": 1,
-      "name": "Matemática",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    },
-    {
-      "id": 2,
-      "name": "Português",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    },
-    {
-      "id": 3,
-      "name": "História",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    },
-    {
-      "id": 4,
-      "name": "Geografia",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    },
-    {
-      "id": 5,
-      "name": "Biologia",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    },
-    {
-      "id": 6,
-      "name": "Química",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    },
-    {
-      "id": 7,
-      "name": "Física",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    },
-    {
-      "id": 8,
-      "name": "Inglês",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    },
-    {
-      "id": 9,
-      "name": "Programação",
-      "description": "",
-      "createdAt": "2025-01-01T00:00:00Z"
-    }
+    "Matemática",
+    "Português",
+    "História",
+    "Geografia",
+    "Biologia",
+    "Química",
+    "Física",
+    "Inglês",
+    "Programação"
   ],
   "events": [],
   "materials": null,

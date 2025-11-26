@@ -44,7 +44,7 @@ type AppData struct {
 	Notes     []Note         `json:"notes"`
 	Reminders []Reminder     `json:"reminders"`
 	StudyLog  map[string]int `json:"studyLog"`
-	Subjects  []Subject      `json:"subjects"`
+	Subjects  []string       `json:"subjects"`
 	Events    []Event        `json:"events"`
 	Materials []Material     `json:"materials"`
 	Folders   []string       `json:"folders"`

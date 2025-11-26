@@ -48,13 +48,6 @@ func main() {
 		api.GET("/data", handlers.HandleGetData)
 		api.POST("/data", handlers.HandleSaveData)
 		api.DELETE("/events/:id", handlers.HandleDeleteEvent)
-
-		// Rotas para gerenciamento de matérias (subjects)
-		api.GET("/subjects", handlers.HandleGetSubjects)
-		api.POST("/subjects", handlers.HandleCreateSubject)
-		api.PUT("/subjects/:id", handlers.HandleUpdateSubject)
-		api.DELETE("/subjects/:id", handlers.HandleDeleteSubject)
-		api.PUT("/subjects/:id/move", handlers.HandleMoveSubject)
 	}
 
 	log.Println("Server starting on port 8080...")
