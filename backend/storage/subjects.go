@@ -80,9 +80,10 @@ func MoveSubject(subjects *[]models.Subject, subjectID int64, newParentID *int64
 func findAndRemoveSubject(subjects *[]models.Subject, id int64) *models.Subject {
 	for i := range *subjects {
 		if (*subjects)[i].ID == id {
-			subject := (*subjects)[i]
+			subject := new(models.Subject)
+			*subject = (*subjects)[i]
 			*subjects = append((*subjects)[:i], (*subjects)[i+1:]...)
-			return &subject
+			return subject
 		}
 		if found := findAndRemoveSubject(&(*subjects)[i].Children, id); found != nil {
 			return found
