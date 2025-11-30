@@ -48,6 +48,15 @@ func main() {
 		api.GET("/data", handlers.HandleGetData)
 		api.POST("/data", handlers.HandleSaveData)
 		api.DELETE("/events/:id", handlers.HandleDeleteEvent)
+
+		// Materials routes
+		api.GET("/materials", handlers.HandleGetMaterials)
+		api.GET("/materials/:id", handlers.HandleGetMaterialNode)
+		api.POST("/materials/folder", handlers.HandleCreateFolder)
+		api.POST("/materials/material", handlers.HandleCreateMaterial)
+		api.PUT("/materials/:id", handlers.HandleUpdateNode)
+		api.DELETE("/materials/:id", handlers.HandleDeleteNode)
+		api.PUT("/materials/:id/move", handlers.HandleMoveNode)
 	}
 
 	log.Println("Server starting on port 8080...")
