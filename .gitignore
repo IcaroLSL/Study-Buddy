@@ -14,3 +14,7 @@ node_modules/
 # Temporary files
 *.tmp
 *.log
+
+# Uploads (keep .gitkeep only)
+backend/storage/uploads/*
+!backend/storage/uploads/.gitkeep
