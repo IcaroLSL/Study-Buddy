@@ -149,6 +149,10 @@ func HandleMoveNode(c *gin.Context) {
 	}
 
 	// Return the updated tree
-	updatedTree, _ := storage.LoadMaterials()
+	updatedTree, err := storage.LoadMaterials()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao carregar materiais atualizados"})
+		return
+	}
 	c.JSON(http.StatusOK, updatedTree)
 }
