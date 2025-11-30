@@ -18,9 +18,11 @@
             "materialType": "PDF",
             "url": "https://exemplo.com/calculo.pdf",
             "description": "Introdução a limites e derivadas",
-            "dateAdded": "2025-11-30"
+            "dateAdded": "2025-11-30",
+            "isFile": false
           }
-        ]
+        ],
+        "isFile": false
       },
       {
         "id": "folder-2",
@@ -36,15 +38,18 @@
             "materialType": "Vídeo",
             "url": "https://exemplo.com/htmlcss.mp4",
             "description": "Fundamentos de desenvolvimento web",
-            "dateAdded": "2025-11-30"
+            "dateAdded": "2025-11-30",
+            "isFile": false
           }
-        ]
+        ],
+        "isFile": false
       },
       {
         "id": "folder-1764472482070974054",
         "name": "Nova Pasta Teste",
         "type": "folder",
-        "parentId": "root"
+        "parentId": "root",
+        "isFile": false
       },
       {
         "id": "material-1764472482076729728",
@@ -54,8 +59,34 @@
         "materialType": "PDF",
         "url": "https://example.com/doc.pdf",
         "description": "Descrição do material de teste",
-        "dateAdded": "2025-11-30"
+        "dateAdded": "2025-11-30",
+        "isFile": false
+      },
+      {
+        "id": "material-1764514956285782123",
+        "name": "Test PDF Material",
+        "type": "material",
+        "parentId": "root",
+        "materialType": "PDF",
+        "filePath": "storage/uploads/test_1764514945487736993.pdf",
+        "fileName": "test.pdf",
+        "fileSize": 27,
+        "description": "This is a test PDF",
+        "dateAdded": "2025-11-30",
+        "isFile": true
+      },
+      {
+        "id": "material-1764514988781759953",
+        "name": "Test Link Material",
+        "type": "material",
+        "parentId": "root",
+        "materialType": "Link",
+        "url": "https://example.com",
+        "description": "This is a test link",
+        "dateAdded": "2025-11-30",
+        "isFile": false
       }
-    ]
+    ],
+    "isFile": false
   }
 }

@@ -3,7 +3,6 @@ package handlers
 import (
 	"fmt"
 	"io"
-	"mime/multipart"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -267,16 +266,15 @@ func HandleUploadFile(c *gin.Context) {
 
 	file, header, err := c.Request.FormFile("file")
 	if err != nil {
-		if err.Error() == "http: request body too large" {
+		// Check for max bytes error - the error message may vary
+		if strings.Contains(err.Error(), "too large") || strings.Contains(err.Error(), "request body") {
 			c.JSON(http.StatusRequestEntityTooLarge, gin.H{"error": "Arquivo muito grande. Limite: 50MB"})
 			return
 		}
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Erro ao receber arquivo"})
 		return
 	}
-	defer func(file multipart.File) {
-		_ = file.Close()
-	}(file)
+	defer file.Close()
 
 	// Validate file extension
 	if !isAllowedExtension(header.Filename) {
@@ -302,9 +300,7 @@ func HandleUploadFile(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao salvar arquivo"})
 		return
 	}
-	defer func(dst *os.File) {
-		_ = dst.Close()
-	}(dst)
+	defer dst.Close()
 
 	// Copy file content
 	written, err := io.Copy(dst, file)
