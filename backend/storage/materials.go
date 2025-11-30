@@ -125,6 +125,11 @@ func AddFolder(tree *models.MaterialsTree, name string, parentID string) (*model
 
 // AddMaterial adds a new material to the tree
 func AddMaterial(tree *models.MaterialsTree, name, parentID, materialType, url, description string) (*models.MaterialNode, error) {
+	return AddMaterialWithFile(tree, name, parentID, materialType, url, "", "", 0, description, false)
+}
+
+// AddMaterialWithFile adds a new material to the tree with file support
+func AddMaterialWithFile(tree *models.MaterialsTree, name, parentID, materialType, url, filePath, fileName string, fileSize int64, description string, isFile bool) (*models.MaterialNode, error) {
 	parent := FindNodeByID(tree.Root, parentID)
 	if parent == nil {
 		return nil, errors.New("pasta pai não encontrada")
@@ -140,8 +145,12 @@ func AddMaterial(tree *models.MaterialsTree, name, parentID, materialType, url, 
 		ParentID:     parentID,
 		MaterialType: materialType,
 		URL:          url,
+		FilePath:     filePath,
+		FileName:     fileName,
+		FileSize:     fileSize,
 		Description:  description,
 		DateAdded:    time.Now().Format("2006-01-02"),
+		IsFile:       isFile,
 	}
 
 	parent.Children = append(parent.Children, newMaterial)
