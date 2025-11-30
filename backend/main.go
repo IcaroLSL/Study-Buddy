@@ -54,10 +54,16 @@ func main() {
 		api.GET("/materials/:id", handlers.HandleGetMaterialNode)
 		api.POST("/materials/folder", handlers.HandleCreateFolder)
 		api.POST("/materials/material", handlers.HandleCreateMaterial)
+		api.POST("/materials/upload", handlers.HandleUploadFile)
+		api.GET("/materials/download/:id", handlers.HandleDownloadFile)
+		api.GET("/materials/view/:id", handlers.HandleViewFile)
 		api.PUT("/materials/:id", handlers.HandleUpdateNode)
 		api.DELETE("/materials/:id", handlers.HandleDeleteNode)
 		api.PUT("/materials/:id/move", handlers.HandleMoveNode)
 	}
+
+	// Serve uploads directory for static file access (optional)
+	r.Static("/uploads", "./storage/uploads")
 
 	log.Println("Server starting on port 8080...")
 	r.Run(":8080")

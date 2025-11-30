@@ -808,6 +808,7 @@
                                 <option value="Vídeo">Vídeo</option>
                                 <option value="Link">Link</option>
                                 <option value="Documento">Documento</option>
+                                <option value="Imagem">Imagem</option>
                             </select>
                         </div>
                     </div>
@@ -3180,16 +3181,45 @@
                 materials.forEach(material => {
                     const materialElement = document.createElement('div');
                     materialElement.className = 'material-card bg-white dark:bg-gray-800 rounded-lg p-4 shadow border border-gray-200 dark:border-gray-700 hover:shadow-md transition';
+                    
+                    // Build action buttons based on whether it's a file or link
+                    let actionButtons = '';
+                    if (material.isFile) {
+                        // File: show view and download buttons
+                        actionButtons = `
+                            <a href="/api/materials/view/${material.id}" target="_blank" class="view-material-btn flex-1 py-1 px-2 bg-primary-600 hover:bg-primary-700 text-white text-xs rounded transition text-center">
+                                <i class="fas fa-eye mr-1"></i> Visualizar
+                            </a>
+                            <a href="/api/materials/download/${material.id}" class="download-material-btn py-1 px-2 bg-green-600 hover:bg-green-700 text-white text-xs rounded transition text-center">
+                                <i class="fas fa-download"></i>
+                            </a>
+                        `;
+                    } else {
+                        // Link: show view button (opens URL)
+                        actionButtons = `
+                            <a href="${material.url}" target="_blank" class="view-material-btn flex-1 py-1 px-2 bg-primary-600 hover:bg-primary-700 text-white text-xs rounded transition text-center">
+                                <i class="fas fa-external-link-alt mr-1"></i> Visualizar
+                            </a>
+                        `;
+                    }
+
+                    // Show file indicator if it's a file
+                    const fileIndicator = material.isFile ? 
+                        `<span class="inline-block px-2 py-0.5 bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 text-xs rounded mb-2 ml-1">
+                            <i class="fas fa-file mr-1"></i>${material.fileName ? this.formatFileSize(material.fileSize) : 'Arquivo'}
+                        </span>` : '';
+                    
                     materialElement.innerHTML = `
-                        <span class="inline-block px-2 py-1 ${this.getTypeColorClass(material.materialType)} text-xs rounded mb-2">
-                            ${material.materialType}
-                        </span>
+                        <div class="flex flex-wrap gap-1 mb-2">
+                            <span class="inline-block px-2 py-1 ${this.getTypeColorClass(material.materialType)} text-xs rounded">
+                                ${material.materialType}
+                            </span>
+                            ${fileIndicator}
+                        </div>
                         <h3 class="font-medium text-gray-800 dark:text-gray-200 mb-1">${material.name}</h3>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">${material.description || 'Sem descrição'}</p>
                         <div class="flex space-x-2">
-                            <a href="${material.url}" target="_blank" class="view-material-btn flex-1 py-1 px-2 bg-primary-600 hover:bg-primary-700 text-white text-xs rounded transition text-center">
-                                Visualizar
-                            </a>
+                            ${actionButtons}
                             <button class="delete-material-btn py-1 px-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 text-xs rounded transition" data-material-id="${material.id}">
                                 <i class="fas fa-trash"></i>
                             </button>
@@ -3222,7 +3252,8 @@
                     'PDF': 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200',
                     'Vídeo': 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200',
                     'Link': 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200',
-                    'Documento': 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200'
+                    'Documento': 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200',
+                    'Imagem': 'bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200'
                 };
 
                 return colorMap[type] || 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200';
@@ -3237,7 +3268,7 @@
                 modal.id = 'material-modal';
                 modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
                 modal.innerHTML = `
-                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
                         <div class="flex justify-between items-center py-3 px-4 border-b dark:border-gray-700">
                             <h3 class="font-bold text-gray-800 dark:text-white">Adicionar Material</h3>
                             <button class="close-material-modal text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
@@ -3256,6 +3287,7 @@
                                     <option value="Vídeo">Vídeo</option>
                                     <option value="Link">Link</option>
                                     <option value="Documento">Documento</option>
+                                    <option value="Imagem">Imagem</option>
                                 </select>
                             </div>
                             <div class="mb-4">
@@ -3264,10 +3296,58 @@
                                     ${folderOptions}
                                 </select>
                             </div>
+                            
+                            <!-- Source toggle: Link or File -->
                             <div class="mb-4">
+                                <label class="block text-sm font-medium mb-2 dark:text-white">Origem</label>
+                                <div class="flex rounded-lg bg-gray-100 dark:bg-gray-700 p-1">
+                                    <button type="button" id="source-link-btn" class="flex-1 py-2 px-3 text-sm font-medium rounded-md bg-white dark:bg-gray-600 shadow-sm text-primary-600 dark:text-primary-400">
+                                        <i class="fas fa-link mr-1"></i> Link
+                                    </button>
+                                    <button type="button" id="source-file-btn" class="flex-1 py-2 px-3 text-sm font-medium rounded-md text-gray-500 dark:text-gray-400">
+                                        <i class="fas fa-file-upload mr-1"></i> Arquivo
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Link input section -->
+                            <div id="link-section" class="mb-4">
                                 <label class="block text-sm font-medium mb-2 dark:text-white">URL/Link</label>
                                 <input type="text" id="material-url" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" placeholder="https://...">
                             </div>
+
+                            <!-- File upload section (hidden by default) -->
+                            <div id="file-section" class="mb-4 hidden">
+                                <label class="block text-sm font-medium mb-2 dark:text-white">Arquivo</label>
+                                <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center cursor-pointer hover:border-primary-500 transition" id="file-drop-zone">
+                                    <input type="file" id="material-file" class="hidden" accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.jpg,.jpeg,.png,.gif,.mp4,.mp3">
+                                    <div id="file-upload-placeholder">
+                                        <i class="fas fa-cloud-upload-alt text-3xl text-gray-400 mb-2"></i>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Clique para selecionar ou arraste o arquivo</p>
+                                        <p class="text-xs text-gray-400 mt-1">PDF, DOC, DOCX, PPT, PPTX, XLS, XLSX, TXT, JPG, PNG, GIF, MP4, MP3 (Max: 50MB)</p>
+                                    </div>
+                                    <div id="file-preview" class="hidden">
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <i class="fas fa-file text-2xl text-primary-500"></i>
+                                            <div class="text-left">
+                                                <p id="file-name" class="text-sm font-medium text-gray-800 dark:text-gray-200"></p>
+                                                <p id="file-size" class="text-xs text-gray-500"></p>
+                                            </div>
+                                            <button type="button" id="remove-file-btn" class="p-1 text-red-500 hover:text-red-700">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Progress bar -->
+                                <div id="upload-progress" class="hidden mt-2">
+                                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                        <div id="progress-bar" class="bg-primary-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                                    </div>
+                                    <p id="progress-text" class="text-xs text-gray-500 mt-1 text-center">Enviando...</p>
+                                </div>
+                            </div>
+
                             <div class="mb-4">
                                 <label class="block text-sm font-medium mb-2 dark:text-white">Descrição</label>
                                 <textarea id="material-description" class="py-2 px-3 block w-full border border-gray-200 rounded-lg text-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-900 dark:border-gray-700 dark:text-gray-400" rows="3" placeholder="Descrição do material"></textarea>
@@ -3286,9 +3366,128 @@
 
                 document.body.appendChild(modal);
 
+                // State for the modal
+                let isFileMode = false;
+                let selectedFile = null;
+
+                const sourceLinkBtn = modal.querySelector('#source-link-btn');
+                const sourceFileBtn = modal.querySelector('#source-file-btn');
+                const linkSection = modal.querySelector('#link-section');
+                const fileSection = modal.querySelector('#file-section');
+                const fileInput = modal.querySelector('#material-file');
+                const fileDropZone = modal.querySelector('#file-drop-zone');
+                const fileUploadPlaceholder = modal.querySelector('#file-upload-placeholder');
+                const filePreview = modal.querySelector('#file-preview');
+                const fileNameEl = modal.querySelector('#file-name');
+                const fileSizeEl = modal.querySelector('#file-size');
+                const removeFileBtn = modal.querySelector('#remove-file-btn');
+
+                // Toggle between link and file modes
+                sourceLinkBtn.addEventListener('click', () => {
+                    isFileMode = false;
+                    sourceLinkBtn.classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-primary-600', 'dark:text-primary-400');
+                    sourceLinkBtn.classList.remove('text-gray-500', 'dark:text-gray-400');
+                    sourceFileBtn.classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-primary-600', 'dark:text-primary-400');
+                    sourceFileBtn.classList.add('text-gray-500', 'dark:text-gray-400');
+                    linkSection.classList.remove('hidden');
+                    fileSection.classList.add('hidden');
+                });
+
+                sourceFileBtn.addEventListener('click', () => {
+                    isFileMode = true;
+                    sourceFileBtn.classList.add('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-primary-600', 'dark:text-primary-400');
+                    sourceFileBtn.classList.remove('text-gray-500', 'dark:text-gray-400');
+                    sourceLinkBtn.classList.remove('bg-white', 'dark:bg-gray-600', 'shadow-sm', 'text-primary-600', 'dark:text-primary-400');
+                    sourceLinkBtn.classList.add('text-gray-500', 'dark:text-gray-400');
+                    fileSection.classList.remove('hidden');
+                    linkSection.classList.add('hidden');
+                });
+
+                // File drop zone click
+                fileDropZone.addEventListener('click', () => {
+                    if (!selectedFile) {
+                        fileInput.click();
+                    }
+                });
+
+                // File selection
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        this.handleFileSelection(file, modal);
+                        selectedFile = file;
+                    }
+                });
+
+                // Drag and drop
+                fileDropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    fileDropZone.classList.add('border-primary-500', 'bg-primary-50', 'dark:bg-primary-900/20');
+                });
+
+                fileDropZone.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    fileDropZone.classList.remove('border-primary-500', 'bg-primary-50', 'dark:bg-primary-900/20');
+                });
+
+                fileDropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    fileDropZone.classList.remove('border-primary-500', 'bg-primary-50', 'dark:bg-primary-900/20');
+                    const file = e.dataTransfer.files[0];
+                    if (file) {
+                        this.handleFileSelection(file, modal);
+                        selectedFile = file;
+                    }
+                });
+
+                // Remove file
+                removeFileBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectedFile = null;
+                    fileInput.value = '';
+                    fileUploadPlaceholder.classList.remove('hidden');
+                    filePreview.classList.add('hidden');
+                });
+
                 modal.querySelector('.close-material-modal').addEventListener('click', () => modal.remove());
                 modal.querySelector('.cancel-material-btn').addEventListener('click', () => modal.remove());
-                modal.querySelector('.save-material-btn').addEventListener('click', () => this.saveMaterial(modal));
+                modal.querySelector('.save-material-btn').addEventListener('click', () => this.saveMaterial(modal, isFileMode, selectedFile));
+            },
+
+            handleFileSelection(file, modal) {
+                const maxSize = 50 * 1024 * 1024; // 50MB
+                const allowedTypes = ['.pdf', '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.txt', '.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mp3'];
+                const ext = '.' + file.name.split('.').pop().toLowerCase();
+
+                if (!allowedTypes.includes(ext)) {
+                    alert('Tipo de arquivo não permitido. Tipos permitidos: ' + allowedTypes.join(', '));
+                    return false;
+                }
+
+                if (file.size > maxSize) {
+                    alert('Arquivo muito grande. Tamanho máximo: 50MB');
+                    return false;
+                }
+
+                const fileUploadPlaceholder = modal.querySelector('#file-upload-placeholder');
+                const filePreview = modal.querySelector('#file-preview');
+                const fileNameEl = modal.querySelector('#file-name');
+                const fileSizeEl = modal.querySelector('#file-size');
+
+                fileUploadPlaceholder.classList.add('hidden');
+                filePreview.classList.remove('hidden');
+                fileNameEl.textContent = file.name;
+                fileSizeEl.textContent = this.formatFileSize(file.size);
+
+                return true;
+            },
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
             },
 
             getAllFolders(node, path = '') {
@@ -3372,29 +3571,98 @@
                 }
             },
 
-            async saveMaterial(modal) {
+            async saveMaterial(modal, isFileMode = false, selectedFile = null) {
                 const title = document.getElementById('material-title').value.trim();
                 const type = document.getElementById('material-type').value;
                 const folderId = document.getElementById('material-folder').value;
                 const url = document.getElementById('material-url').value.trim();
                 const description = document.getElementById('material-description').value.trim();
 
-                if (!title || !url) {
-                    alert('Por favor, preencha pelo menos o título e a URL do material.');
+                if (!title) {
+                    alert('Por favor, preencha o título do material.');
+                    return;
+                }
+
+                if (!isFileMode && !url) {
+                    alert('Por favor, preencha a URL do material.');
+                    return;
+                }
+
+                if (isFileMode && !selectedFile) {
+                    alert('Por favor, selecione um arquivo.');
                     return;
                 }
 
                 try {
+                    let materialData = {
+                        name: title,
+                        parentId: folderId,
+                        materialType: type,
+                        description: description,
+                        isFile: isFileMode
+                    };
+
+                    if (isFileMode && selectedFile) {
+                        // Show progress
+                        const progressDiv = modal.querySelector('#upload-progress');
+                        const progressBar = modal.querySelector('#progress-bar');
+                        const progressText = modal.querySelector('#progress-text');
+                        progressDiv.classList.remove('hidden');
+
+                        // Upload file first
+                        const formData = new FormData();
+                        formData.append('file', selectedFile);
+
+                        const token = localStorage.getItem('jwtToken');
+                        const xhr = new XMLHttpRequest();
+                        
+                        const uploadResult = await new Promise((resolve, reject) => {
+                            xhr.upload.addEventListener('progress', (e) => {
+                                if (e.lengthComputable) {
+                                    const percent = Math.round((e.loaded / e.total) * 100);
+                                    progressBar.style.width = percent + '%';
+                                    progressText.textContent = `Enviando... ${percent}%`;
+                                }
+                            });
+
+                            xhr.addEventListener('load', () => {
+                                if (xhr.status >= 200 && xhr.status < 300) {
+                                    resolve(JSON.parse(xhr.responseText));
+                                } else {
+                                    try {
+                                        const error = JSON.parse(xhr.responseText);
+                                        reject(new Error(error.error || 'Erro ao fazer upload'));
+                                    } catch {
+                                        reject(new Error('Erro ao fazer upload do arquivo'));
+                                    }
+                                }
+                            });
+
+                            xhr.addEventListener('error', () => {
+                                reject(new Error('Erro de rede ao fazer upload'));
+                            });
+
+                            xhr.open('POST', '/api/materials/upload');
+                            xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+                            xhr.send(formData);
+                        });
+
+                        progressText.textContent = 'Salvando material...';
+                        progressBar.style.width = '100%';
+
+                        // Add file info to material data
+                        materialData.filePath = uploadResult.filePath;
+                        materialData.fileName = uploadResult.fileName;
+                        materialData.fileSize = uploadResult.fileSize;
+                        materialData.url = ''; // No URL for files
+                    } else {
+                        materialData.url = url;
+                    }
+
                     const response = await fetchWithAuth('/api/materials/material', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            name: title,
-                            parentId: folderId,
-                            materialType: type,
-                            url: url,
-                            description: description
-                        })
+                        body: JSON.stringify(materialData)
                     });
 
                     if (!response.ok) {
