@@ -1,0 +1,61 @@
+{
+  "root": {
+    "id": "root",
+    "name": "Raiz",
+    "type": "folder",
+    "children": [
+      {
+        "id": "folder-1",
+        "name": "Matemática",
+        "type": "folder",
+        "parentId": "root",
+        "children": [
+          {
+            "id": "material-1",
+            "name": "Apostila de Cálculo I",
+            "type": "material",
+            "parentId": "folder-1",
+            "materialType": "PDF",
+            "url": "https://exemplo.com/calculo.pdf",
+            "description": "Introdução a limites e derivadas",
+            "dateAdded": "2025-11-30"
+          }
+        ]
+      },
+      {
+        "id": "folder-2",
+        "name": "Programação",
+        "type": "folder",
+        "parentId": "root",
+        "children": [
+          {
+            "id": "material-2",
+            "name": "Vídeo Aula - HTML/CSS",
+            "type": "material",
+            "parentId": "folder-2",
+            "materialType": "Vídeo",
+            "url": "https://exemplo.com/htmlcss.mp4",
+            "description": "Fundamentos de desenvolvimento web",
+            "dateAdded": "2025-11-30"
+          }
+        ]
+      },
+      {
+        "id": "folder-1764472482070974054",
+        "name": "Nova Pasta Teste",
+        "type": "folder",
+        "parentId": "root"
+      },
+      {
+        "id": "material-1764472482076729728",
+        "name": "Novo Material Teste",
+        "type": "material",
+        "parentId": "root",
+        "materialType": "PDF",
+        "url": "https://example.com/doc.pdf",
+        "description": "Descrição do material de teste",
+        "dateAdded": "2025-11-30"
+      }
+    ]
+  }
+}

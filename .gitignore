@@ -1,0 +1,16 @@
+# Binary files
+*.exe
+study-buddy
+study-buddy-arm64
+study-buddy-darwin
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log

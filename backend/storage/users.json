@@ -1,4 +1,11 @@
 {
+  "test@example.com": {
+    "id": 1764472480,
+    "email": "test@example.com",
+    "password": "$2a$14$uuWjkAyrC8Bq8KBMtqHSperzTpqIE4VR7imydByF..qn0Q5zi7RHm",
+    "name": "Test User",
+    "createdAt": "2025-11-30T03:14:40Z"
+  },
   "yoku@gmail.com": {
     "id": 1764105508,
     "email": "yoku@gmail.com",
