@@ -41,7 +41,6 @@ func main() {
 		auth.POST("/register", handlers.HandleRegister)
 	}
 
-	// Protected API routes
 	api := r.Group("/api")
 	api.Use(middleware.AuthMiddleware())
 	{
