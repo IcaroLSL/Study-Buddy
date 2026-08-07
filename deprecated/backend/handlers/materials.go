@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-	"studybuddy/models"
-	"studybuddy/storage"
+	"studybuddy/backend/models"
+	"studybuddy/backend/storage"
 	"time"
 
 	"github.com/gin-gonic/gin"

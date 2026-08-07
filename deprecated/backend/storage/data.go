@@ -3,7 +3,7 @@ package storage
 import (
 	"encoding/json"
 	"os"
-	"studybuddy/models"
+	"studybuddy/backend/models"
 	"sync"
 )
 

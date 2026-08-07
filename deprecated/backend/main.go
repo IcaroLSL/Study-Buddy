@@ -2,9 +2,9 @@ package main
 
 import (
 	"log"
-	"studybuddy/handlers"
-	"studybuddy/middleware"
-	"studybuddy/storage"
+	"studybuddy/backend/handlers"
+	"studybuddy/backend/middleware"
+	"studybuddy/backend/storage"
 	"time"
 
 	"github.com/gin-contrib/cors"

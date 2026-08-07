@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"studybuddy/models"
+	"studybuddy/backend/models"
 	"sync"
 	"time"
 

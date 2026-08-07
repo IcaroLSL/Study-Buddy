@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"net/http"
-	"studybuddy/models"
-	"studybuddy/storage"
+	"studybuddy/backend/models"
+	"studybuddy/backend/storage"
 
 	"github.com/gin-gonic/gin"
 )

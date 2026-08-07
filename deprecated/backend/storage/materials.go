@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"studybuddy/models"
+	"studybuddy/backend/models"
 	"sync"
 	"time"
 )
