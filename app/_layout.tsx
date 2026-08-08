@@ -1,13 +1,12 @@
-import { ScreenContent } from 'components/ScreenContent';
+import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-
-import './global.css';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import '../global.css';
 
-export default function App() {
+export default function RootLayout() {
   return (
     <SafeAreaProvider>
-      <ScreenContent title="Home" path="App.tsx"></ScreenContent>
+      <Stack screenOptions={{ headerShown: false }} />
       <StatusBar style="auto" />
     </SafeAreaProvider>
   );
