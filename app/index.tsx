@@ -14,6 +14,7 @@ import {
   useColorScheme,
   Image
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -38,6 +39,8 @@ export default function LoginScreen() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const router = useRouter();
 
   const colorScheme = useColorScheme();
   const iconColor = colorScheme === 'dark' ? 'white' : 'black';
@@ -231,11 +234,7 @@ export default function LoginScreen() {
                 <Text className={isDark ? 'text-sm text-gray-400' : 'text-sm text-gray-600'}>
                   Não tem uma conta?{' '}
                 </Text>
-                <Pressable
-                  onPress={() =>
-                    Alert.alert('Cadastro', 'A tela de cadastro será migrada em uma próxima etapa.')
-                  }
-                >
+                <Pressable onPress={() => router.push('/register')} >
                   <Text className="text-sm font-medium text-blue-600">Cadastre-se</Text>
                 </Pressable>
               </View>
