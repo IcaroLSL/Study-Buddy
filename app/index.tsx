@@ -11,8 +11,12 @@ import {
   Text,
   TextInput,
   View,
+  useColorScheme,
+  Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -34,6 +38,9 @@ export default function LoginScreen() {
   const [rememberMe, setRememberMe] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const colorScheme = useColorScheme();
+  const iconColor = colorScheme === 'dark' ? 'white' : 'black';
 
   const canSubmit = useMemo(
     () => email.trim().length > 0 && password.length > 0 && !isSubmitting,
@@ -96,7 +103,7 @@ export default function LoginScreen() {
                   }
                   onPress={() => setIsDark((current) => !current)}
                 >
-                  <Text className="text-lg">{isDark ? '◐' : '☾'}</Text>
+                  {isDark ? <MaterialIcons name="light-mode" size={12} color="white" /> : <MaterialIcons name="dark-mode" size={12} color="black" />}
                 </Pressable>
               </View>
 
@@ -106,7 +113,7 @@ export default function LoginScreen() {
                     isDark ? 'mb-4 text-5xl text-blue-400' : 'mb-4 text-5xl text-blue-600'
                   }
                 >
-                  🎓
+                <FontAwesome6 name="graduation-cap" size={24} color='#2563eb' />
                 </Text>
                 <Text
                   className={
@@ -216,7 +223,7 @@ export default function LoginScreen() {
                 }
                 onPress={() => Linking.openURL(`${API_BASE_URL}/auth/google`)}
               >
-                <Text className="text-lg">G</Text>
+                <Image source={{uri: 'https://www.google.com/favicon.ico'}} className="w-5 h-5" />
                 <Text className={isDark ? 'text-white' : 'text-gray-800'}>Entrar com Google</Text>
               </Pressable>
 
@@ -247,6 +254,6 @@ const inputStyles = {
 };
 
 const buttonStyles = {
-  enabled: 'w-full rounded-lg bg-blue-600 px-4 py-3',
-  disabled: 'w-full rounded-lg bg-blue-300 px-4 py-3',
+  enabled: 'w-full rounded-lg bg-icon-blue-600 px-4 py-3',
+  disabled: 'w-full rounded-lg bg-icon-blue-600/90 px-4 py-3',
 };
