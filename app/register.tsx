@@ -1,6 +1,7 @@
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';7
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from 'expo-router';
+import { useToggleTheme } from 'hooks/useToggleTheme';
 import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
@@ -27,7 +28,7 @@ export default function RegisterScreen() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isDark, setIsDark] = useState(false);
+  const { isDark, setDarkTheme, setLightTheme } = useToggleTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const canSubmit = useMemo(
@@ -90,25 +91,25 @@ export default function RegisterScreen() {
               <Pressable
                   accessibilityLabel="Alternar tema"
                   className={
-                    isDark ? 'rounded-full bg-gray-700 p-3' : 'rounded-full bg-gray-100 p-3'
+                    isDark ? 'rounded-full bg-gray-700 px-3 py-4' : 'rounded-full bg-gray-100 px-3 py-4'
                   }
-                  onPress={() => setIsDark((current) => !current)}
+                  onPress={() => isDark ? setLightTheme() : setDarkTheme()}
                 >
-                  {isDark ? <MaterialIcons name="light-mode" size={12} color="white" /> : <MaterialIcons name="dark-mode" size={12} color="black" />}
+                  {isDark ? <MaterialIcons name="light-mode" size={20} color="white" /> : <MaterialIcons name="dark-mode" size={20} color="black" />}
                 </Pressable>
             </View>
 
             <View className="mb-6 items-center">
-              <FontAwesome5 color={isDark ? '#2563EB' : '#3B82F6'} name="user-plus" size={40} />
+              <FontAwesome5 color={isDark ? '#2563EB' : '#3B82F6'} name="user-plus" size={82} />
               <Text
                 className={
                   isDark
-                    ? 'mt-4 text-2xl font-bold text-white'
-                    : 'mt-4 text-2xl font-bold text-gray-800'
+                    ? 'mt-4 mr-6 text-2xl font-bold text-white'
+                    : 'mt-4 mr-6 text-2xl font-bold text-gray-800'
                 }>
                 Criar Conta
               </Text>
-              <Text className={isDark ? 'mt-1 text-gray-300' : 'mt-1 text-gray-600'}>
+              <Text className={isDark ? 'mt-1 mr-6 text-gray-300' : 'mt-1 mr-6 text-gray-600'}>
                 Comece sua jornada de estudos!
               </Text>
             </View>
@@ -173,7 +174,7 @@ export default function RegisterScreen() {
               <Text className={isDark ? 'text-sm text-gray-400' : 'text-sm text-gray-600'}>
                 Já tem uma conta?{' '}
               </Text>
-              <Pressable onPress={() => router.replace('/')}>
+              <Pressable onPress={() => router.replace('/home')}>
                 <Text className="text-sm font-medium text-blue-600">Entrar</Text>
               </Pressable>
             </View>
@@ -196,6 +197,6 @@ const inputStyles = {
 };
 
 const buttonStyles = {
-  enabled: 'w-full rounded-lg bg-icon-blue-600 px-4 py-3',
-  disabled: 'w-full rounded-lg bg-icon-blue-600/90 px-4 py-3',
+  enabled: 'w-full rounded-lg bg-secondary-600 px-4 py-3',
+  disabled: 'w-full rounded-lg bg-secondary-600/90 px-4 py-3',
 };
