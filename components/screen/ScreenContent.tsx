@@ -12,7 +12,8 @@ import { StatusBar } from 'expo-status-bar';
 import NotificationCard from 'components/ui/NotificationCard';
 
 
-type TabId = 'dashboard' | 'techniques' | 'community' | 'focus' | 'config';
+
+type TabId = 'home' | 'tecnicas' | 'ia' | 'focus' | 'config';
 
 type BottomTab = {
   id: TabId;
@@ -34,9 +35,9 @@ interface ScreenContentProps {
 }
 
 const bottomTabs: BottomTab[] = [
-  { id: 'dashboard', label: 'Início', icon: 'house' },
-  { id: 'techniques', label: 'Técnicas', icon: 'lightbulb' },
-  { id: 'community', label: 'Comunidade', icon: 'users' },
+  { id: 'home', label: 'Início', icon: 'house' },
+  { id: 'tecnicas', label: 'Técnicas', icon: 'lightbulb' },
+  { id: 'ia', label: 'IA', icon: 'robot' },
   { id: 'focus', label: 'Foco', icon: 'bolt' },
   { id: 'config', label: 'Configurações', icon: 'gear' },
 ];
@@ -172,7 +173,7 @@ export const ScreenContent: React.FC<ScreenContentProps> = ({
                     accessibilityState={{ selected: isSelected }}
                     className="min-w-[64px] items-center px-2 py-3"
                     key={tab.id}
-                    onPress={() => onTabChange?.(tab.id)}>
+                    onPress={() => router.replace(`/${tab.id}`)}>
                     <FontAwesome6 color={tabColor} name={tab.icon} size={24} />
                     <Text className="mt-1 text-sm font-medium" style={{ color: tabColor }}>
                       {tab.label}
@@ -192,12 +193,12 @@ export const ScreenContent: React.FC<ScreenContentProps> = ({
 const getTabFromRoute = (path: string, title: string): TabId => {
   const route = `${path} ${title}`.toLowerCase();
 
-  if (route.includes('technique') || route.includes('técnica')) return 'techniques';
-  if (route.includes('community') || route.includes('comunidade')) return 'community';
-  if (route.includes('focus') || route.includes('foco')) return 'focus';
-  if (route.includes('config') || route.includes('settings')) return 'config';
+  if (route.includes('tecnica') || route.includes('tecnicas'))                return 'tecnicas';
+  if (route.includes('ia')      || route.includes('inteligencia artificial')) return 'ia';
+  if (route.includes('focus')   || route.includes('foco'))                    return 'focus';
+  if (route.includes('config')  || route.includes('settings'))                return 'config';
 
-  return 'dashboard';
+  return 'home';
 };
 
 const styles = {

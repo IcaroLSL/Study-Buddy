@@ -66,12 +66,14 @@ export default function Home() {
             <StudyPerformanceChart studyLog={mockStudyLog} />
             {/* Seção 1 */}
             <View className="mt-4 flex-row justify-between">
-                <View className="bg-white p-5 rounded-lg dark:bg-gray-800">
-                    <View className="items-center rounded-full py-7 bg-purple-100 dark:bg-purple-900 " >
-                        <MaterialIcons name="calendar-month" size={26} color="#9333EA" />
+                <View className="bg-white pt-5 pb-5 pr-7 pl-7 rounded-lg dark:bg-gray-800">
+                    <View className="items-center rounded-full py-8 px-[5px] bg-purple-100 dark:bg-purple-900 " >
+                        {/* <MaterialIcons name="calendar-month" size={24} color="#9333EA" /> */}
+                        {/* <FontAwesome5 name="calendar-alt" size={24} color="#9333EA" /> */}
+                        <Entypo name="calendar" size={24} color="#9333EA" />
                     </View>
                     <Text className="mt-2 text-md font-medium text-gray-800 dark:text-white">
-                        Calendario
+                        Calendário
                     </Text>
                 </View>
                 <View className="bg-white pt-5 pb-5 pr-8 pl-8 rounded-lg dark:bg-gray-800">
@@ -93,12 +95,12 @@ export default function Home() {
             </View>
             {/* Seção 2 */}
             <View className="mt-4 flex-row justify-between">
-                <View className="bg-white pt-5 pb-5 pr-8 pl-8 rounded-lg dark:bg-gray-800">
+                <View className="bg-white pt-5 pb-5 pr-9 pl-9 rounded-lg dark:bg-gray-800">
                     <View className="items-center rounded-full bg-yellow-200 dark:bg-yellow-900  py-7" >
                         <Entypo name="archive" size={24} color="#CA8A04" />                    
                     </View>
                     <Text className="mt-2 text-md font-medium text-gray-800 dark:text-white">
-                        Resumos
+                        Arquivos
                     </Text>
                 </View>
             </View>
