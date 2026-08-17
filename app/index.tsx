@@ -18,6 +18,7 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { useToggleTheme } from 'hooks/useToggleTheme';
 
 const API_BASE_URL = 'http://localhost:8080';
 
@@ -37,7 +38,7 @@ export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const { isDark, setDarkTheme, setLightTheme } = useToggleTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
@@ -102,25 +103,19 @@ export default function LoginScreen() {
                 <Pressable
                   accessibilityLabel="Alternar tema"
                   className={
-                    isDark ? 'rounded-full bg-gray-700 p-3' : 'rounded-full bg-gray-100 p-3'
+                    isDark ? 'rounded-full px-3 py-4 bg-gray-700' : 'rounded-full px-3 py-4 bg-gray-100'
                   }
-                  onPress={() => setIsDark((current) => !current)}
+                  onPress={() => isDark ? setLightTheme() : setDarkTheme()}
                 >
-                  {isDark ? <MaterialIcons name="light-mode" size={12} color="white" /> : <MaterialIcons name="dark-mode" size={12} color="black" />}
+                  {isDark ? <MaterialIcons name="light-mode" size={20} color="white" /> : <MaterialIcons name="dark-mode" size={20} color="black" />}
                 </Pressable>
               </View>
 
               <View className="mb-8 items-center">
+                <FontAwesome6 name="graduation-cap" size={92} color='#2563eb' />
                 <Text
                   className={
-                    isDark ? 'mb-4 text-5xl text-blue-400' : 'mb-4 text-5xl text-blue-600'
-                  }
-                >
-                <FontAwesome6 name="graduation-cap" size={24} color='#2563eb' />
-                </Text>
-                <Text
-                  className={
-                    isDark ? 'text-2xl font-bold text-white' : 'text-2xl font-bold text-gray-800'
+                    isDark ? 'text-4xl font-bold text-white' : 'text-4xl font-bold text-gray-800'
                   }
                 >
                   StudyBuddy
@@ -253,6 +248,6 @@ const inputStyles = {
 };
 
 const buttonStyles = {
-  enabled: 'w-full rounded-lg bg-icon-blue-600 px-4 py-3',
-  disabled: 'w-full rounded-lg bg-icon-blue-600/90 px-4 py-3',
+  enabled: 'w-full rounded-lg bg-secondary-600 px-4 py-3',
+  disabled: 'w-full rounded-lg bg-secondary-600/90 px-4 py-3',
 };
